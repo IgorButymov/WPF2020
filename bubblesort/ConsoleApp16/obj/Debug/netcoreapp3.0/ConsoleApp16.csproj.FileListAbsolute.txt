@@ -1,0 +1,11 @@
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\bin\Debug\netcoreapp3.0\ConsoleApp16.exe
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\bin\Debug\netcoreapp3.0\ConsoleApp16.deps.json
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\bin\Debug\netcoreapp3.0\ConsoleApp16.runtimeconfig.json
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\bin\Debug\netcoreapp3.0\ConsoleApp16.runtimeconfig.dev.json
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\bin\Debug\netcoreapp3.0\ConsoleApp16.dll
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\bin\Debug\netcoreapp3.0\ConsoleApp16.pdb
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\obj\Debug\netcoreapp3.0\ConsoleApp16.csprojAssemblyReference.cache
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\obj\Debug\netcoreapp3.0\ConsoleApp16.AssemblyInfoInputs.cache
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\obj\Debug\netcoreapp3.0\ConsoleApp16.AssemblyInfo.cs
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\obj\Debug\netcoreapp3.0\ConsoleApp16.dll
+C:\Users\sashe\source\repos\ConsoleApp16\ConsoleApp16\obj\Debug\netcoreapp3.0\ConsoleApp16.pdb
