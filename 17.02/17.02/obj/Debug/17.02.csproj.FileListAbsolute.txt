@@ -1,0 +1,7 @@
+C:\Users\pc\source\repos\17.02\17.02\obj\Debug\17.02.csprojAssemblyReference.cache
+C:\Users\pc\source\repos\17.02\17.02\obj\Debug\17.02.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\17.02\17.02\bin\Debug\17.02.exe.config
+C:\Users\pc\source\repos\17.02\17.02\bin\Debug\17.02.exe
+C:\Users\pc\source\repos\17.02\17.02\bin\Debug\17.02.pdb
+C:\Users\pc\source\repos\17.02\17.02\obj\Debug\17.02.exe
+C:\Users\pc\source\repos\17.02\17.02\obj\Debug\17.02.pdb
