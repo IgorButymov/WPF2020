@@ -1,0 +1,7 @@
+C:\Users\pc\source\repos\Chapter2.2\Chapter2.2\bin\Debug\Chapter2.2.exe.config
+C:\Users\pc\source\repos\Chapter2.2\Chapter2.2\bin\Debug\Chapter2.2.exe
+C:\Users\pc\source\repos\Chapter2.2\Chapter2.2\bin\Debug\Chapter2.2.pdb
+C:\Users\pc\source\repos\Chapter2.2\Chapter2.2\obj\Debug\Chapter2.2.csprojAssemblyReference.cache
+C:\Users\pc\source\repos\Chapter2.2\Chapter2.2\obj\Debug\Chapter2.2.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\Chapter2.2\Chapter2.2\obj\Debug\Chapter2.2.exe
+C:\Users\pc\source\repos\Chapter2.2\Chapter2.2\obj\Debug\Chapter2.2.pdb
