@@ -1,0 +1,6 @@
+C:\Users\pc\source\repos\Chapter5\Chapter5\bin\Debug\Chapter5.exe.config
+C:\Users\pc\source\repos\Chapter5\Chapter5\bin\Debug\Chapter5.exe
+C:\Users\pc\source\repos\Chapter5\Chapter5\bin\Debug\Chapter5.pdb
+C:\Users\pc\source\repos\Chapter5\Chapter5\obj\Debug\Chapter5.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\Chapter5\Chapter5\obj\Debug\Chapter5.exe
+C:\Users\pc\source\repos\Chapter5\Chapter5\obj\Debug\Chapter5.pdb
