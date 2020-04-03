@@ -1,0 +1,6 @@
+C:\Users\pc\source\repos\Chapter14\bin\Debug\Chapter14.exe.config
+C:\Users\pc\source\repos\Chapter14\bin\Debug\Chapter14.exe
+C:\Users\pc\source\repos\Chapter14\bin\Debug\Chapter14.pdb
+C:\Users\pc\source\repos\Chapter14\obj\Debug\Chapter14.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\Chapter14\obj\Debug\Chapter14.exe
+C:\Users\pc\source\repos\Chapter14\obj\Debug\Chapter14.pdb
