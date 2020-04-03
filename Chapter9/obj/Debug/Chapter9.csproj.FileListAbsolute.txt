@@ -1,0 +1,7 @@
+C:\Users\pc\source\repos\Chapter9\bin\Debug\Chapter9.exe.config
+C:\Users\pc\source\repos\Chapter9\bin\Debug\Chapter9.exe
+C:\Users\pc\source\repos\Chapter9\bin\Debug\Chapter9.pdb
+C:\Users\pc\source\repos\Chapter9\obj\Debug\Chapter9.csprojAssemblyReference.cache
+C:\Users\pc\source\repos\Chapter9\obj\Debug\Chapter9.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\Chapter9\obj\Debug\Chapter9.exe
+C:\Users\pc\source\repos\Chapter9\obj\Debug\Chapter9.pdb
