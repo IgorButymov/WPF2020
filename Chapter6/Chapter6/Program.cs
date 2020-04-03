@@ -10,7 +10,8 @@ namespace Petzold.MeetTheDockers { public class MeetTheDockers : Window {
             Application app = new Application(); //создание нового приложения
             app.Run(new MeetTheDockers());
         } //Запускает стандартный цикл обработки сообщений приложения в текущем потоке
-        public MeetTheDockers() { Title = "Meet the Dockers";
+        public MeetTheDockers() { 
+                Title = "Meet the Dockers";//заголовок 
             DockPanel dock = new DockPanel(); Content = dock;             // сооздание меню
             Menu menu = new Menu(); 
             MenuItem item = new MenuItem();
