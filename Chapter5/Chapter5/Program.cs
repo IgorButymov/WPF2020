@@ -8,16 +8,17 @@ namespace Petzold.StackThirtyButtons { class StackThirtyButtons : Window {
         [STAThread] //Это означает, что все потоки в этой программе выполняются в рамках одного процесса, а управление программой осуществляется одним главным потоком. Этo нужно, чтоб не было проблем, если приложение подключает компоненты
         public static void Main() {
             Application app = new Application(); //создание нового приложения
-            app.Run(new StackThirtyButtons());
-        } //Запускает стандартный цикл обработки сообщений приложения в текущем потоке
-        public StackThirtyButtons() { Title = "Stack Thirty Buttons";
+            app.Run(new StackThirtyButtons());//Запускает стандартный цикл обработки сообщений приложения в текущем потоке
+        } 
+        public StackThirtyButtons() { 
+                Title = "Stack Thirty Buttons"; //заголовок
             SizeToContent = SizeToContent.WidthAndHeight;
             ResizeMode = ResizeMode.CanMinimize; AddHandler(Button.ClickEvent, new RoutedEventHandler(ButtonOnClick));
             StackPanel stackMain = new StackPanel(); //создание объекта класса выравнивающего дочерние объекты в одну линию, в данном случае горизонатльно (строка ниже) 
             stackMain.Orientation = Orientation.Horizontal;
             stackMain.Margin = new Thickness(5); Content = stackMain;
-            for (int i = 0; i < 3; i++) { StackPanel stackChild = new StackPanel();
-                stackMain.Children.Add(stackChild);
+            for (int i = 0; i < 3; i++) { StackPanel stackChild = new StackPanel();//создание трех панелей 
+                stackMain.Children.Add(stackChild);//добавление их в стэк
                 for (int j = 0; j < 10; j++) { Button btn = new Button();
                     btn.Content = "Button No. " + (10 * i + j + 1); //именует кнопки
                     btn.Margin = new Thickness(5); stackChild.Children.Add(btn); } } }
