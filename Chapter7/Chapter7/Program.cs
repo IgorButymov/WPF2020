@@ -9,7 +9,7 @@ namespace Petzold.PlayJeuDeTacquin { public class Tile : Canvas { const int SIZE
         TextBlock txtblk;
         public Tile()
         {
-            Width = SIZE;
+            Width = SIZE; //размеры
             Height = SIZE;                 
             Polygon poly = new Polygon(); //Рисует многоугольник, представляющий собой последовательность соединенных линий, образующих замкнутый контур, верхняя левая граница
             poly.Points = new PointCollection(new  Point[]              
