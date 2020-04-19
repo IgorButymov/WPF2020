@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"      
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">   <!-- адрес файла объявляющего требуемое пространство имен, стэк-панель -->
+  <Path Fill="Blue" Stroke="Red" StrokeThickness="3"> <!--цвет заливки, цвет контура, ширина контура-->
+    <Path.Data>
+      <RectangleGeometry Rect="96 48 288 192" RadiusX="24"  RadiusY="24" /> <!--параметры прямоугольника-->
+    </Path.Data>
+  </Path>
+</Canvas>
