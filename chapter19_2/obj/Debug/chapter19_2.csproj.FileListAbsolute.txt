@@ -1,0 +1,7 @@
+C:\Users\pc\source\repos\chapter19_2\obj\Debug\chapter19_2.csprojAssemblyReference.cache
+C:\Users\pc\source\repos\chapter19_2\obj\Debug\chapter19_2.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\chapter19_2\bin\Debug\chapter19_2.exe.config
+C:\Users\pc\source\repos\chapter19_2\bin\Debug\chapter19_2.exe
+C:\Users\pc\source\repos\chapter19_2\bin\Debug\chapter19_2.pdb
+C:\Users\pc\source\repos\chapter19_2\obj\Debug\chapter19_2.exe
+C:\Users\pc\source\repos\chapter19_2\obj\Debug\chapter19_2.pdb
