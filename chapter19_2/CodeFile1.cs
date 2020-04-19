@@ -49,7 +49,7 @@ namespace Petzold.LoadXamlFile
                     } // в противном случае установить в качестве содержимого frame
                     else frame.Content = obj;
                 }
-                catch (Exception exc)
+                catch (Exception exc)//Обработка исключения
                 {
 
                     MessageBox.Show(exc.Message, Title);//показ месседж-бокса
