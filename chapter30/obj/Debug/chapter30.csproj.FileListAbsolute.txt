@@ -1,0 +1,6 @@
+C:\Users\pc\source\repos\chapter30\obj\Debug\chapter30.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\chapter30\bin\Debug\chapter30.exe.config
+C:\Users\pc\source\repos\chapter30\bin\Debug\chapter30.exe
+C:\Users\pc\source\repos\chapter30\bin\Debug\chapter30.pdb
+C:\Users\pc\source\repos\chapter30\obj\Debug\chapter30.exe
+C:\Users\pc\source\repos\chapter30\obj\Debug\chapter30.pdb
