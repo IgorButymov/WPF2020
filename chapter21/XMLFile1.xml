@@ -1,0 +1,21 @@
+﻿ 
+<StackPanel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"     
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"    
+             Orientation="Horizontal">   <!-- адрес файла объявляющего требуемое пространство имен,главная стэк-панель, ориентация - горизонтальная -->
+  <StackPanel.Resources>  <!-- ресурсы стэк-панели-->
+    <SolidColorBrush x:Key="brushText"  Color="Blue" />   
+ </StackPanel.Resources>   
+  <StackPanel>      
+    <StackPanel.Resources> <!-- ресурсы Другой стэк-панели--> 
+      <SolidColorBrush x:Key="brushText"  Color="Red" /> 
+        </StackPanel.Resources>        
+ <Button HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24" Foreground="{StaticResource  brushText}">   <!--новая кнопка, ее параметры-->
+   Button with Red text      <!--содержимое кнопки-->
+ </Button>  
+   </StackPanel>  
+   <StackPanel>       
+     <Button HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24" Foreground="{StaticResource  brushText}"> <!--новая кнопка, ее параметры-->
+       Button with Blue text     <!--содержимое кнопки--> 
+     </Button>     
+</StackPanel>
+</StackPanel> 
