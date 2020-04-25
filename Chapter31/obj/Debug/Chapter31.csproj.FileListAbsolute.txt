@@ -1,0 +1,7 @@
+C:\Users\pc\source\repos\Chapter31\bin\Debug\Chapter31.exe.config
+C:\Users\pc\source\repos\Chapter31\bin\Debug\Chapter31.exe
+C:\Users\pc\source\repos\Chapter31\bin\Debug\Chapter31.pdb
+C:\Users\pc\source\repos\Chapter31\obj\Debug\Chapter31.csprojAssemblyReference.cache
+C:\Users\pc\source\repos\Chapter31\obj\Debug\Chapter31.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\Chapter31\obj\Debug\Chapter31.exe
+C:\Users\pc\source\repos\Chapter31\obj\Debug\Chapter31.pdb
