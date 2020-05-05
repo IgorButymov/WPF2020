@@ -1,0 +1,21 @@
+06.05.2020 0:21:28
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 0:21:28
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 0:22:22
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+

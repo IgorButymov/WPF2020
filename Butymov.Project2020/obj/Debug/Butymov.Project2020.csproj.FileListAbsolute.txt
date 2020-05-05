@@ -1,0 +1,7 @@
+C:\Users\pc\source\repos\Butymov.Project2020\bin\Debug\Butymov.Project2020.exe.config
+C:\Users\pc\source\repos\Butymov.Project2020\bin\Debug\Butymov.Project2020.exe
+C:\Users\pc\source\repos\Butymov.Project2020\bin\Debug\Butymov.Project2020.pdb
+C:\Users\pc\source\repos\Butymov.Project2020\obj\Debug\Butymov.Project2020.csprojAssemblyReference.cache
+C:\Users\pc\source\repos\Butymov.Project2020\obj\Debug\Butymov.Project2020.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\Butymov.Project2020\obj\Debug\Butymov.Project2020.exe
+C:\Users\pc\source\repos\Butymov.Project2020\obj\Debug\Butymov.Project2020.pdb
