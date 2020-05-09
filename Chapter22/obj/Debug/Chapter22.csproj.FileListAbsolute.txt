@@ -1,0 +1,2 @@
+C:\Users\pc\source\repos\Chapter22\obj\Debug\Chapter22.csprojAssemblyReference.cache
+C:\Users\pc\source\repos\Chapter22\obj\Debug\Chapter22.csproj.CoreCompileInputs.cache
