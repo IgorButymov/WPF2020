@@ -1,0 +1,7 @@
+C:\Users\pc\source\repos\chapter29\bin\Debug\chapter29.exe.config
+C:\Users\pc\source\repos\chapter29\bin\Debug\chapter29.exe
+C:\Users\pc\source\repos\chapter29\bin\Debug\chapter29.pdb
+C:\Users\pc\source\repos\chapter29\obj\Debug\chapter29.csprojAssemblyReference.cache
+C:\Users\pc\source\repos\chapter29\obj\Debug\chapter29.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\chapter29\obj\Debug\chapter29.exe
+C:\Users\pc\source\repos\chapter29\obj\Debug\chapter29.pdb
