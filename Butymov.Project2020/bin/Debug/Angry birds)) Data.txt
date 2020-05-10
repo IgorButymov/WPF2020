@@ -19,3 +19,38 @@ Highest point: 236,409745542833
 Initial angle: 45
 Initial speed: 80
 
+06.05.2020 15:50:46
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 17:52:19
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 20:01:19
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 23:47:57
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+08.05.2020 21:21:01
+Дистанция: 579,955475654772
+Время полёта: 1,4
+Наивысшая точка: 236,409745542833
+Начальный угол: 45
+Начальная скорость: 80
+
