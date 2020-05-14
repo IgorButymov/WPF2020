@@ -54,3 +54,10 @@ Initial speed: 80
 Начальный угол: 45
 Начальная скорость: 80
 
+14.05.2020 23:43:17
+Range: 0,054030230586814
+Flight time: 0,03
+Highest point: 0,0351470984807896
+Initial angle: 1
+Initial speed: 1
+
