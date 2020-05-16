@@ -1,0 +1,7 @@
+C:\Users\pc\source\repos\Chapter15(choice)\bin\Debug\Chapter15(choice).exe.config
+C:\Users\pc\source\repos\Chapter15(choice)\bin\Debug\Chapter15(choice).exe
+C:\Users\pc\source\repos\Chapter15(choice)\bin\Debug\Chapter15(choice).pdb
+C:\Users\pc\source\repos\Chapter15(choice)\obj\Debug\Chapter15(choice).csprojAssemblyReference.cache
+C:\Users\pc\source\repos\Chapter15(choice)\obj\Debug\Chapter15(choice).csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\Chapter15(choice)\obj\Debug\Chapter15(choice).exe
+C:\Users\pc\source\repos\Chapter15(choice)\obj\Debug\Chapter15(choice).pdb
