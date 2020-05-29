@@ -781,7 +781,8 @@ namespace Butymov.Project2020
             Window1Canvas.Children.Add(Window1Stack);
             /*Canvas.SetLeft(Window1Stack, (Window1Canvas.Width / 6) - 5);
             Canvas.SetTop(Window1Stack, (Window1Canvas.Height / 1.5) - 5);*/
-            Canvas.SetLeft(Window1Stack, (Width / 16) - (Width / 30));
+            //Canvas.SetLeft(Window1Stack, (Width / 16) - (Width / 30));
+            Canvas.SetLeft(Window1Stack, (Width / 34.28));
             Canvas.SetTop(Window1Stack, (Height / 5));
             Content = Window1Canvas;
             //клик по кнопке Exit на первом экране
@@ -871,16 +872,22 @@ namespace Butymov.Project2020
                 WindowSettingsCanvas.Children.Add(ImageSettingsTheBird);
                 WindowSettingsCanvas.Children.Add(ImageThemeIcon);
                 WindowSettingsCanvas.Children.Add(WindowSettingsStack);
-                
-                Canvas.SetLeft(WindowSettingsStack, (Width / 3) - (Width / 11.5));
-                Canvas.SetTop(WindowSettingsStack, (Height / 4));
-                Canvas.SetLeft(ImageTheFlag, (Width / 2) - (Width / 16));
-                Canvas.SetTop(ImageTheFlag, (Height / 4) - (Height/50));
-                Canvas.SetLeft(ImageSettingsTheBird, (Width / 4) - (Width / 14));
-                Canvas.SetTop(ImageSettingsTheBird, (Height / 4) - (Height / 50));
-                Canvas.SetLeft(ImageThemeIcon, (Width / 4) - (Width / 14));
-                Canvas.SetTop(ImageThemeIcon, (Height / 2) - (Height / 120));
 
+                //Canvas.SetLeft(WindowSettingsStack, (Width / 3) - (Width / 11.5));
+                Canvas.SetLeft(WindowSettingsStack, (Width / 4.05));
+                Canvas.SetTop(WindowSettingsStack, (Height / 4));
+                //Canvas.SetLeft(ImageTheFlag, (Width / 2) - (Width / 16));
+                Canvas.SetLeft(ImageTheFlag, (Width / 2.28));
+                //Canvas.SetTop(ImageTheFlag, (Height / 4) - (Height/50));
+                Canvas.SetTop(ImageTheFlag, (Height / 4.34));
+                //Canvas.SetLeft(ImageSettingsTheBird, (Width / 4) - (Width / 14));
+                Canvas.SetLeft(ImageSettingsTheBird, (Width / 5.59));
+                //Canvas.SetTop(ImageSettingsTheBird, (Height / 4) - (Height / 50));
+                Canvas.SetTop(ImageSettingsTheBird, (Height / 4.34));
+                //Canvas.SetLeft(ImageThemeIcon, (Width / 4) - (Width / 14));
+                Canvas.SetLeft(ImageThemeIcon, (Width / 5.59));
+                //Canvas.SetTop(ImageThemeIcon, (Height / 2) - (Height / 120));
+                Canvas.SetTop(ImageThemeIcon, (Height / 2.03) );
 
 
                 Content = WindowSettingsCanvas;
@@ -903,8 +910,8 @@ namespace Butymov.Project2020
                     WindowSettingsCanvas.Children.Add(ImageTheFlag);
                     WindowSettingsCanvas.Children.Add(ImageSettingsTheBird);
                     WindowSettingsCanvas.Children.Add(WindowSettingsStack);
-                    Canvas.SetLeft(ImageThemeIcon, (Width / 4) - (Width / 14));
-                    Canvas.SetTop(ImageThemeIcon, (Height / 2) - (Height / 120));
+                    Canvas.SetLeft(ImageThemeIcon, (Width / 5.59));
+                    Canvas.SetTop(ImageThemeIcon, (Height / 2.03));
                     /*Canvas.SetLeft(ImageWindowSettingsBackground, (WindowSettingsCanvas.Width / 6) - 300);
                     Canvas.SetTop(ImageWindowSettingsBackground, (WindowSettingsCanvas.Height / 1.5) - 552);*///было верно
                 };
@@ -919,8 +926,8 @@ namespace Butymov.Project2020
                     WindowSettingsCanvas.Children.Add(ImageTheFlag);
                     WindowSettingsCanvas.Children.Add(ImageSettingsTheBird);
                     WindowSettingsCanvas.Children.Add(WindowSettingsStack);
-                    Canvas.SetLeft(ImageSettingsTheBird, (Width / 4) - (Width / 14));
-                    Canvas.SetTop(ImageSettingsTheBird, (Height / 4) - (Height / 50));
+                    Canvas.SetLeft(ImageSettingsTheBird, (Width / 5.59));
+                    Canvas.SetTop(ImageSettingsTheBird, (Height / 4.34));
 
                 };
                 //клик по кнопке Language на экране настроек
@@ -934,8 +941,8 @@ namespace Butymov.Project2020
                     WindowSettingsCanvas.Children.Add(ImageTheFlag);
                     WindowSettingsCanvas.Children.Add(ImageSettingsTheBird);
                     WindowSettingsCanvas.Children.Add(WindowSettingsStack);
-                    Canvas.SetLeft(ImageTheFlag, (Width / 2) - (Width / 16));
-                    Canvas.SetTop(ImageTheFlag, (Height / 4) - (Height / 50));
+                    Canvas.SetLeft(ImageTheFlag, (Width / 2.28));
+                    Canvas.SetTop(ImageTheFlag, (Height / 4.34));
                 };
             }
             //клик по кнопке Play на первом экране
@@ -1051,12 +1058,18 @@ namespace Butymov.Project2020
                 Window2Canvas.Children.Add(ImageBasketVisible);
                 Window2Canvas.Children.Add(ImageBasketInvisible);
                 Window2Canvas.Children.Add(Window2Stack);
-                Canvas.SetLeft(ImageWindow2TheBird, (Width / 50) - (Width / 6));
+                /*Canvas.SetLeft(ImageWindow2TheBird, (Width / 50) - (Width / 6));
                 Canvas.SetTop(ImageWindow2TheBird, (Height / 2) + (Height / 50));
                 Canvas.SetLeft(ImageBasketInvisible, (Width / 50) - (Width / 6) + RandomX);
                 Canvas.SetTop(ImageBasketInvisible, (Height / 2) + (Height / 50));
                 Canvas.SetLeft(ImageBasketVisible, (Width / 50) - (Width / 6) + RandomX);
-                Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));
+                Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));*/
+                Canvas.SetLeft(ImageWindow2TheBird, (Width / (-6.81)));
+                Canvas.SetTop(ImageWindow2TheBird, (Height / 1.92));
+                Canvas.SetLeft(ImageBasketInvisible, (Width / (-6.81)) + RandomX);
+                Canvas.SetTop(ImageBasketInvisible, (Height / 1.92));
+                Canvas.SetLeft(ImageBasketVisible, (Width / (-6.81)) + RandomX);
+                Canvas.SetTop(ImageBasketVisible, (Height / 1.92));
                 Canvas.SetLeft(Window2Stack, (Width / 7.4) );
                 Canvas.SetTop(Window2Stack, (Height / 4));
                 Content = Window2Canvas;
@@ -1179,12 +1192,18 @@ namespace Butymov.Project2020
                             Window2Canvas.Children.Add(ImageBasketInvisible);
                             Window2Canvas.Children.Add(ImageWindow2TheBird);
                             Window2Canvas.Children.Add(Window2Stack);
-                            Canvas.SetLeft(ImageTheBird, (Width / 50) - (Width / 6));
+                            /*Canvas.SetLeft(ImageTheBird, (Width / 50) - (Width / 6));
                             Canvas.SetTop(ImageTheBird, (Height / 2) + (Height / 50));
                             Canvas.SetLeft(ImageBasketInvisible, (Width / 50) - (Width / 6) + RandomX);
                             Canvas.SetTop(ImageBasketInvisible, (Height / 2) + (Height / 50));
                             Canvas.SetLeft(ImageBasketVisible, (Width / 50) - (Width / 6) + RandomX);
-                            Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));
+                            Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));*/
+                            Canvas.SetLeft(ImageTheBird, (Width / (-6.81)));
+                            Canvas.SetTop(ImageTheBird, (Height / 1.92));
+                            Canvas.SetLeft(ImageBasketInvisible, (Width / (-6.81)) + RandomX);
+                            Canvas.SetTop(ImageBasketInvisible, (Height / 1.92));
+                            Canvas.SetLeft(ImageBasketVisible, (Width / (-6.81)) + RandomX);
+                            Canvas.SetTop(ImageBasketVisible, (Height / 1.92));
                             Content = Window2Canvas;
                             
                         };
@@ -1200,12 +1219,18 @@ namespace Butymov.Project2020
                             Window3Canvas.Children.Add(ImageBasketInvisible);
                             Window3Canvas.Children.Add(ImageTheBird);
                             Window3Canvas.Children.Add(ImageBasketVisible);
-                            Canvas.SetLeft(ImageTheBird, (Width / 50) - (Width / 6));
+                            /*Canvas.SetLeft(ImageTheBird, (Width / 50) - (Width / 6));
                             Canvas.SetTop(ImageTheBird, (Height / 2) + (Height / 50));
                             Canvas.SetLeft(ImageBasketInvisible, (Width / 50) - (Width / 6) + RandomX);
                             Canvas.SetTop(ImageBasketInvisible, (Height / 2) + (Height / 50));
                             Canvas.SetLeft(ImageBasketVisible, (Width / 50) - (Width / 6) + RandomX);
-                            Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));
+                            Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));*/
+                            Canvas.SetLeft(ImageTheBird, (Width / (-6.81)));
+                            Canvas.SetTop(ImageTheBird, (Height / 1.92));
+                            Canvas.SetLeft(ImageBasketInvisible, (Width / (-6.81)) + RandomX);
+                            Canvas.SetTop(ImageBasketInvisible, (Height / 1.92));
+                            Canvas.SetLeft(ImageBasketVisible, (Width / (-6.81)) + RandomX);
+                            Canvas.SetTop(ImageBasketVisible, (Height / 1.92));
                             BirdTimer.Start();
                         };
                         int InitialSpeed = System.Convert.ToInt16(Window2InitialVelocity.Text);
@@ -1326,12 +1351,18 @@ namespace Butymov.Project2020
                         Window3Canvas.Children.Add(ImageBasketInvisible);
                         Window3Canvas.Children.Add(ImageTheBird);
                         Window3Canvas.Children.Add(ImageBasketVisible);
-                        Canvas.SetLeft(ImageTheBird, (Width / 50) - (Width / 6));
+                        /*Canvas.SetLeft(ImageTheBird, (Width / 50) - (Width / 6));
                         Canvas.SetTop(ImageTheBird, (Height / 2) + (Height / 50));
                         Canvas.SetLeft(ImageBasketInvisible, (Width / 50) - (Width / 6) + RandomX);
                         Canvas.SetTop(ImageBasketInvisible, (Height / 2) + (Height / 50));
                         Canvas.SetLeft(ImageBasketVisible, (Width / 50) - (Width / 6) + RandomX);
-                        Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));
+                        Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));*/
+                        Canvas.SetLeft(ImageTheBird, (Width / (-6.81)));
+                        Canvas.SetTop(ImageTheBird, (Height / 1.92));
+                        Canvas.SetLeft(ImageBasketInvisible, (Width / (-6.81)) + RandomX);
+                        Canvas.SetTop(ImageBasketInvisible, (Height / 1.92));
+                        Canvas.SetLeft(ImageBasketVisible, (Width / (-6.81)) + RandomX);
+                        Canvas.SetTop(ImageBasketVisible, (Height / 1.92));
                         //объявление и параметры таймера
                         BirdTimer = new DispatcherTimer();
                         BirdTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
@@ -1359,8 +1390,10 @@ namespace Butymov.Project2020
                                 Window3Canvas.Children.Add(Trajectory);
                                 Window3Canvas.Children.Add(ImageTheBird);
                                 Window3Canvas.Children.Add(ImageBasketVisible);
-                                Canvas.SetLeft(Trajectory, (Width / 2) - (Width / 2.77));
-                                Canvas.SetTop(Trajectory, (Height / 1) - (Height/3.1));
+                                /*Canvas.SetLeft(Trajectory, (Width / 2) - (Width / 2.77));
+                                Canvas.SetTop(Trajectory, (Height / 1) - (Height/3.1));*/
+                                Canvas.SetLeft(Trajectory, (Width / 7.19));
+                                Canvas.SetTop(Trajectory, (Height / 1.476) );
                                 LastPoint = T;
                                 BirdTimer.Stop();
                                 AnimationCounter++;
@@ -1369,8 +1402,10 @@ namespace Butymov.Project2020
                                 if ((GoalCheck(MaxLenght) == true) && (Window3Canvas.Children.Contains(ImageWinScreen) == false))
                                 {
                                     Window3Canvas.Children.Add(ImageWinScreen);
-                                    Canvas.SetLeft(ImageWinScreen, (Width / 2) - (Width / 2.1));
-                                    Canvas.SetTop(ImageWinScreen, (Height / 3) - (Height / 3.1));
+                                    /*Canvas.SetLeft(ImageWinScreen, (Width / 2) - (Width / 2.1));
+                                    Canvas.SetTop(ImageWinScreen, (Height / 3) - (Height / 3.1));*/
+                                    Canvas.SetLeft(ImageWinScreen, (Width / 32.53));
+                                    Canvas.SetTop(ImageWinScreen, (Height / 92.97) );
                                     IsWin = 1;
                                 }
                                 Window3Canvas.Children.Add(Window3Stack);
@@ -1619,7 +1654,8 @@ namespace Butymov.Project2020
                                 Canvas.SetTop(Window4GridForButtons, (Height / 3) );
 
                                 Canvas.SetLeft(Window4Stack, (Width / 4));
-                                Canvas.SetTop(Window4Stack, (Height / 10) - (Height / 9.5));
+                                //Canvas.SetTop(Window4Stack, (Height / 10) - (Height / 9.5));
+                                Canvas.SetTop(Window4Stack, (Height / (-190.09)));
 
                                 Canvas.SetLeft(Window4Score, (Width / 3.15));
                                 Canvas.SetTop(Window4Score, (Height / 4));
