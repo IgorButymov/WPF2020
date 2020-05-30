@@ -13,11 +13,21 @@ using System.Timers;
 using System.Windows.Threading;
 using System.IO;
 using System.Windows.Media.Imaging;
+using System.Media;
 
 namespace Butymov.Project2020
 {
     public class MainWindow : Window
     {
+        //User'sData.txt
+        //первое число - язык
+        //1 - английский, 2 - русский 
+        //второе число - птица
+        //1 - красная, 2 - синяя
+        //третье число - тема
+        //1 - светлая, 2 - тёмная
+
+
         //объекты первого экрана
         TextBlock Window1TextBlockPlay;
         TextBlock Window1TextBlockSettings;
@@ -85,9 +95,9 @@ namespace Butymov.Project2020
         //объекты окна настроек
         Canvas WindowSettingsCanvas;
         StackPanel WindowSettingsStack;
-        int BirdValue = 1; //1 - красная, 2 - синяя
-        int LanguageValue = 1; //1 - английский, 2 - русский
-        int ThemeValue = 1; //1 - светлая, 2 - темная
+        int BirdValue; //1 - красная, 2 - синяя
+        int LanguageValue; //1 - английский, 2 - русский
+        int ThemeValue; //1 - светлая, 2 - темная
         Image ImageSettingsTheBird;
         Image ImageSettingsRedBird;
         Image ImageSettingsBlueBird;
@@ -129,80 +139,193 @@ namespace Butymov.Project2020
         int WidthForElements;
         double[] CosTable;
         double[] SinTable;
-        //тесты
-        Image TestImageBackround;
-        BitmapImage TestBitmapImageBackround;
+        string UD;
+        SoundPlayer SoundPlayerStartGame;
+        SoundPlayer SoundPlayerFalling;
+        SoundPlayer SoundPlayerWinGame;
+        SoundPlayer SoundPlayerButtonClick;
         [STAThread]
         public static void Main()
-        { 
+        {
             Application app = new Application();
             app.Run(new MainWindow());
         }
-        
-        void Window1CanvasOnSizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            //Canvas.SetLeft(Window1Stack, (args.NewSize.Width / -150)+40);//было верно
-            //Canvas.SetTop(Window1Stack, (args.NewSize.Height / -150)+200);//было верно
 
-
-            //Canvas.SetLeft(ImageWindow1Background, (args.NewSize.Width / 6) - 300);//было верно
-            //Canvas.SetTop(ImageWindow1Background, (args.NewSize.Height / 1.5) - 552);//было верно
-            //тесты
-            //Canvas.SetLeft(TestImageBackround, (args.NewSize.Width * 1.5) );
-            //Canvas.SetTop(TestImageBackround, (args.NewSize.Height * 1.5) );
-        }
-        void Window2CanvasOnSizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            /*Canvas.SetLeft(Window2Stack, (args.NewSize.Width / -150) + 190);
-            Canvas.SetTop(Window2Stack, (args.NewSize.Height / -150) + 200);
-            Canvas.SetLeft(ImageWindow2Background, (args.NewSize.Width / 6) - 300);
-            Canvas.SetTop(ImageWindow2Background, (args.NewSize.Height / 1.5) - 552);*/
-        }
-        void Window3CanvasOnSizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            /*Canvas.SetLeft(ImageTheBird, (args.NewSize.Width / 6) -400); //-230
-            Canvas.SetTop(ImageTheBird, (args.NewSize.Height / 1.5) -130); //-70 ///400*400
-            Canvas.SetLeft(ImageBackground, (args.NewSize.Width / 6) - 300);
-            Canvas.SetTop(ImageBackground, (args.NewSize.Height / 1.5) -552);
-            Canvas.SetLeft(Trajectory, (args.NewSize.Width  / 6) - 5);
-            Canvas.SetTop(Trajectory, (args.NewSize.Height / 1.5) - 5);
-            Canvas.SetLeft(Window3Stack, (args.NewSize.Width / -150)+190);
-            Canvas.SetTop(Window3Stack, (args.NewSize.Height / -150)+150);
-            Canvas.SetLeft(ImageWinScreen, (args.NewSize.Width / 6) - 220);
-            Canvas.SetTop(ImageWinScreen, (args.NewSize.Height / 1.5) - 552);*/
-        }
-        void Window4CanvasOnSizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            /*Canvas.SetLeft(Window4Score, (args.NewSize.Width / 10)+300);
-            Canvas.SetTop(Window4Score, (args.NewSize.Height / 4));
-            Canvas.SetLeft(Window4Stack, (args.NewSize.Width / 7.5)+120);
-            Canvas.SetTop(Window4Stack, (args.NewSize.Height / 100)+20);
-            Canvas.SetLeft(Window4GridForButtons, (args.NewSize.Width / 56)+190);
-            Canvas.SetTop(Window4GridForButtons, (args.NewSize.Height / 3));
-            Canvas.SetLeft(ImageWindow4Background, (args.NewSize.Width / 6) - 300);
-            Canvas.SetTop(ImageWindow4Background, (args.NewSize.Height / 1.5) - 552);*/
-        }
-        void WindowSettingsCanvasOnSizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            /*Canvas.SetLeft(WindowSettingsStack, (args.NewSize.Width / -150) + 330);
-            Canvas.SetTop(WindowSettingsStack, (args.NewSize.Height / -150) + 200);*/
-            /*Canvas.SetLeft(ImageSettingsTheBird, (args.NewSize.Width / -150) + 200);
-            Canvas.SetTop(ImageSettingsTheBird, (args.NewSize.Height / -150) + 147);
-            Canvas.SetLeft(ImageTheFlag, (args.NewSize.Width / -150) + 570);
-            Canvas.SetTop(ImageTheFlag, (args.NewSize.Height / -150) + 147);*/
-            /*Canvas.SetLeft(ImageThemeIcon, (args.NewSize.Width / -150) + 200);
-            Canvas.SetTop(ImageThemeIcon, (args.NewSize.Height / -150) + 360);*///было верно
-            //Canvas.SetLeft(ImageWindowSettingsBackground, (args.NewSize.Width / 6) - 300);//было верно
-            //Canvas.SetTop(ImageWindowSettingsBackground, (args.NewSize.Height / 1.5) - 552);//было верно
-        }
         public MainWindow()
         {
-            //тесты
+            //работа со звуком
+            //начало игры
+            SoundPlayerStartGame = new SoundPlayer();
+            SoundPlayerStartGame.SoundLocation = @"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Sounds\StartGame.wav";
+            SoundPlayerStartGame.Load();
+            //падение
+            SoundPlayerFalling = new SoundPlayer();
+            SoundPlayerFalling.SoundLocation = @"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Sounds\Falling.wav";
+            SoundPlayerFalling.Load();
+            //победа
+            SoundPlayerWinGame = new SoundPlayer();
+            SoundPlayerWinGame.SoundLocation = @"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Sounds\WinGame.wav";
+            SoundPlayerStartGame.Load();
+            //клик по кнопке
+            SoundPlayerButtonClick = new SoundPlayer();
+            SoundPlayerButtonClick.SoundLocation = @"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Sounds\ButtonClick.wav";
+            SoundPlayerButtonClick.Load();
+            //работа с файлом User'sData.txt
+            const string UDPath = @"C:\Users\pc\source\repos\Butymov.Project2020\User'sData.txt";
+            IsUDFileExists();
+            //чтение из файла
+            string[] ReadUD = File.ReadAllLines(UDPath);
+            string CheckReadUD = ReadUD[0];
+            //проверка корректных данных в файле
+            if (CheckReadUD.Length != 3)
+            {
+                var UDFile = File.Create(UDPath);
+                UDFile.Close();
+                const string ValueForDataIfUDFileDoNotExist = "111";
+                File.AppendAllText(UDPath, ValueForDataIfUDFileDoNotExist);
+                ReadUD = File.ReadAllLines(UDPath);
+                MessageBox.Show("Data file was not correct, settings have been reset.", "Warning.");
+            }
+            UD = System.Convert.ToString(ReadUD[0]);
+            //функция, отвечающая за установку значений языка, птицы, темы при запуске
+            void SetDataValue()
+            {
+                if (UD[0] == '1')
+                {
+                    LanguageValue = 1;
+                }
+                if (UD[0] == '2')
+                {
+                    LanguageValue = 2;
+                }
+
+                if (UD[1] == '1')
+                {
+                    BirdValue = 1;
+                }
+                if (UD[1] == '2')
+                {
+                    BirdValue = 2;
+                }
+
+                if (UD[2] == '1')
+                {
+                    ThemeValue = 1;
+                }
+                if (UD[2] == '2')
+                {
+                    ThemeValue = 2;
+                }
+                if ((UD[0] != '1') && (UD[0] != '2'))
+                {
+                    var UDFile = File.Create(UDPath);
+                    UDFile.Close();
+                    const string ValueForDataIfUDFileDoNotExist = "111";
+                    File.AppendAllText(UDPath, ValueForDataIfUDFileDoNotExist);
+                    MessageBox.Show("Data was not correct, settings have been reset.", "Warning.");
+                    LanguageValue = 1;
+                    BirdValue = 1;
+                    ThemeValue = 1;
+                }
+                if ((UD[1] != '1') && (UD[1] != '2'))
+                {
+                    var UDFile = File.Create(UDPath);
+                    UDFile.Close();
+                    const string ValueForDataIfUDFileDoNotExist = "111";
+                    File.AppendAllText(UDPath, ValueForDataIfUDFileDoNotExist);
+                    MessageBox.Show("Data was not correct, settings have been reset.", "Warning.");
+                    LanguageValue = 1;
+                    BirdValue = 1;
+                    ThemeValue = 1;
+                }
+                if ((UD[2] != '1') && (UD[2] != '2'))
+                {
+                    var UDFile = File.Create(UDPath);
+                    UDFile.Close();
+                    const string ValueForDataIfUDFileDoNotExist = "111";
+                    File.AppendAllText(UDPath, ValueForDataIfUDFileDoNotExist);
+                    MessageBox.Show("Data was not correct, settings have been reset.", "Warning.");
+                    LanguageValue = 1;
+                    BirdValue = 1;
+                    ThemeValue = 1;
+                }
+
+            }
+            //функция, отвечающая за установку языка, птицы, темы при запуске
+            void SetData()
+            {
+                switch (LanguageValue)
+                {
+                    case 1:
+                        ImageWinScreen = ImageEnglishWinScreen;
+                        ImageTheFlag = ImageBritishFlag;
+                        break;
+                    case 2:
+                        ImageWinScreen = ImageRussianWinScreen;
+                        ImageTheFlag = ImageRussianFlag;
+                        break;
+                }
+                switch (BirdValue)
+                {
+                    case 1:
+                        ImageTheBird = ImageRedBird;
+                        ImageSettingsTheBird = ImageSettingsRedBird;
+                        break;
+                    case 2:
+                        ImageTheBird = ImageBlueBird;
+                        ImageSettingsTheBird = ImageSettingsBlueBird;
+                        break;
+                }
+                switch (ThemeValue)
+                {
+                    case 1:
+                        ImageBackgroundForAll = ImageLightBackgroundForAll;
+                        ImageWindow2Background = ImageWindow2LightBackground;
+                        ImageBackground = ImageLightBackground;
+                        ImageThemeIcon = ImageThemeIconSun;
+                        break;
+                    case 2:
+                        ImageBackgroundForAll = ImageDarkBackgroundForAll;
+                        ImageWindow2Background = ImageWindow2DarkBackground;
+                        ImageBackground = ImageDarkBackground;
+                        ImageThemeIcon = ImageThemeIconMoon;
+                        break;
+                }
+            }
+            //функция, отвечающая за переписывание файла с данными (вызывается при нажатии на кнопку Language, Bird, Theme)
+            void WriteNewDataToFile()
+            {
+                var UDFile = File.Create(UDPath);
+                UDFile.Close();
+                char LanguageValueForData = System.Convert.ToChar(LanguageValue);
+                char BirdValueForData = System.Convert.ToChar(BirdValue);
+                char ThemeValueForData = System.Convert.ToChar(ThemeValue);
+                string ValueFordata = "";
+                ValueFordata += LanguageValue;
+                ValueFordata += BirdValue;
+                ValueFordata += ThemeValue;
+                File.AppendAllText(UDPath, ValueFordata);
+            }
+            //функция, отвечающая за проверку существования файла
+            bool IsUDFileExists()
+            {
+                if (!File.Exists(UDPath))
+                {
+                    var UDFile = File.Create(UDPath);
+                    UDFile.Close();
+                    const string ValueForDataIfUDFileDoNotExist = "111";
+                    File.AppendAllText(UDPath, ValueForDataIfUDFileDoNotExist);
+                    MessageBox.Show("Data file did not exist, settings have been reset.", "Warning.");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            //разрешение экрана, установка размеров элементов 
             double Width = System.Windows.SystemParameters.PrimaryScreenWidth;
             double Height = System.Windows.SystemParameters.PrimaryScreenHeight;
-            Console.WriteLine(Width);
-            Console.WriteLine(Height);
-            
             TextBlocksFontSize = System.Convert.ToInt16(Width / 57);
             ButtonsHeight = System.Convert.ToInt16(Height / 15.5);
             ButtonsWidth = System.Convert.ToInt16(Width / 7);
@@ -210,35 +333,28 @@ namespace Butymov.Project2020
             WindowGridMargin = System.Convert.ToInt16(Width / 6.8);
             WidthForElements = System.Convert.ToInt16(Width / 2);
 
-            
-
             //значения cos и sin
             //dpva.ru/Guide/GuideMathematics/GuideMathematicsFiguresTables/CosinusTable0to360by1/
             //dpva.ru/Guide/GuideMathematics/GuideMathematicsFiguresTables/SinusTable0to360by1/
-            CosTable = new double[181] {1, 0.9998, 0.9994, 0.9986, 0.9976, 0.9962, 0.9945, 0.9925, 0.9903, 0.9877, 0.9848, 0.9816, 0.9781, 0.9744, 0.9703, 0.9659, 0.9613, 0.9563, 0.9511, 0.9455, 0.9397, 0.9336, 0.9272, 0.9205, 0.9135, 0.9063, 0.8988, 0.891, 0.8829, 0.8746, 0.866, 0.8572, 0.848, 0.8387, 0.829, 0.8192, 0.809, 0.7986, 0.788, 0.7771, 0.766, 0.7547, 0.7431, 0.7314, 0.7193, 0.7071, 0.6947, 0.682, 0.6691, 0.6561, 0.6428, 0.6293, 0.6157, 0.6018, 0.5878, 0.5736, 0.5592, 0.5446, 0.5299, 0.515, 0.5, 0.4848, 0.4695, 0.454, 0.4384, 0.4226, 0.4067, 0.3907, 0.3746, 0.3584, 0.342, 0.3256, 0.309, 0.2924, 0.2756, 0.2588, 0.2419, 0.225, 0.2079, 0.1908, 0.1736, 0.1564, 0.1392, 0.1219, 0.1045, 0.0872, 0.0698, 0.0523, 0.0349, 0.0175, 0, -0.0175, -0.0349, -0.0523, -0.0698, -0.0872, -0.1045, -0.1219, -0.1392, -0.1564, -0.1736, -0.1908, -0.2079, -0.225, -0.2419, -0.2588, -0.2756, -0.2924, -0.309, -0.3256, -0.342, -0.3584, -0.3746, -0.3907, -0.4067, -0.4226, -0.4384, -0.454, -0.4695, -0.4848, -0.5, -0.515, -0.5299, -0.5446, -0.5592, -0.5736, -0.5878, -0.6018, -0.6157, -0.6293, -0.6428, -0.6561, -0.6691, -0.682, -0.6947, -0.7071, -0.7193, -0.7314, -0.7431, -0.7547, -0.766, -0.7771, -0.788, -0.7986, -0.809, -0.8192, -0.829, -0.8387, -0.848, -0.8572, -0.866, -0.8746, -0.8829, -0.891, -0.8988, -0.9063, -0.9135, -0.9205, -0.9272, -0.9336, -0.9397, -0.9455, -0.9511, -0.9563, -0.9613, -0.9659, -0.9703, -0.9744, -0.9781, -0.9816, -0.9848, -0.9877, -0.9903, -0.9925, -0.9945, -0.9962, -0.9976, -0.9986, -0.9994, -0.9998, -1};
-            SinTable = new double[181] {0, 0.0175, 0.0349, 0.0523, 0.0698, 0.0872, 0.1045, 0.1219, 0.1392, 0.1564, 0.1736, 0.1908, 0.2079, 0.225, 0.2419, 0.2588, 0.2756, 0.2924, 0.309, 0.3256, 0.342, 0.3584, 0.3746, 0.3907, 0.4067, 0.4226, 0.4384, 0.454, 0.4695, 0.4848, 0.5, 0.515, 0.5299, 0.5446, 0.5592, 0.5736, 0.5878, 0.6018, 0.6157, 0.6293, 0.6428, 0.6561, 0.6691, 0.682, 0.6947, 0.7071, 0.7193, 0.7314, 0.7431, 0.7547, 0.766, 0.7771, 0.788, 0.7986, 0.809, 0.8192, 0.829, 0.8387, 0.848, 0.8572, 0.866, 0.8746, 0.8829, 0.891, 0.8988, 0.9063, 0.9135, 0.9205, 0.9272, 0.9336, 0.9397, 0.9455, 0.9511, 0.9563, 0.9613, 0.9659, 0.9703, 0.9744, 0.9781, 0.9816, 0.9848, 0.9877, 0.9903, 0.9925, 0.9945, 0.9962, 0.9976, 0.9986, 0.9994, 0.9998, 1, 0.9998, 0.9994, 0.9986, 0.9976, 0.9962, 0.9945, 0.9925, 0.9903, 0.9877, 0.9848, 0.9816, 0.9781, 0.9744, 0.9703, 0.9659, 0.9613, 0.9563, 0.9511, 0.9455, 0.9397, 0.9336, 0.9272, 0.9205, 0.9135, 0.9063, 0.8988, 0.891, 0.8829, 0.8746, 0.866, 0.8572, 0.848, 0.8387, 0.829, 0.8192, 0.809, 0.7986, 0.788, 0.7771, 0.766, 0.7547, 0.7431, 0.7314, 0.7193, 0.7071, 0.6947, 0.682, 0.6691, 0.6561, 0.6428, 0.6293, 0.6157, 0.6018, 0.5878, 0.5736, 0.5592, 0.5446, 0.5299, 0.515, 0.5, 0.4848, 0.4695, 0.454, 0.4384, 0.4226, 0.4067, 0.3907, 0.3746, 0.3584, 0.342, 0.3256, 0.309, 0.2924, 0.2756, 0.2588, 0.2419, 0.225, 0.2079, 0.1908, 0.1736, 0.1564, 0.1392, 0.1219, 0.1045, 0.0872, 0.0698, 0.0523, 0.0349, 0.0175, 0 };
-            int TriesCounter = 0; //счётчик попыток
+            CosTable = new double[181] { 1, 0.9998, 0.9994, 0.9986, 0.9976, 0.9962, 0.9945, 0.9925, 0.9903, 0.9877, 0.9848, 0.9816, 0.9781, 0.9744, 0.9703, 0.9659, 0.9613, 0.9563, 0.9511, 0.9455, 0.9397, 0.9336, 0.9272, 0.9205, 0.9135, 0.9063, 0.8988, 0.891, 0.8829, 0.8746, 0.866, 0.8572, 0.848, 0.8387, 0.829, 0.8192, 0.809, 0.7986, 0.788, 0.7771, 0.766, 0.7547, 0.7431, 0.7314, 0.7193, 0.7071, 0.6947, 0.682, 0.6691, 0.6561, 0.6428, 0.6293, 0.6157, 0.6018, 0.5878, 0.5736, 0.5592, 0.5446, 0.5299, 0.515, 0.5, 0.4848, 0.4695, 0.454, 0.4384, 0.4226, 0.4067, 0.3907, 0.3746, 0.3584, 0.342, 0.3256, 0.309, 0.2924, 0.2756, 0.2588, 0.2419, 0.225, 0.2079, 0.1908, 0.1736, 0.1564, 0.1392, 0.1219, 0.1045, 0.0872, 0.0698, 0.0523, 0.0349, 0.0175, 0, -0.0175, -0.0349, -0.0523, -0.0698, -0.0872, -0.1045, -0.1219, -0.1392, -0.1564, -0.1736, -0.1908, -0.2079, -0.225, -0.2419, -0.2588, -0.2756, -0.2924, -0.309, -0.3256, -0.342, -0.3584, -0.3746, -0.3907, -0.4067, -0.4226, -0.4384, -0.454, -0.4695, -0.4848, -0.5, -0.515, -0.5299, -0.5446, -0.5592, -0.5736, -0.5878, -0.6018, -0.6157, -0.6293, -0.6428, -0.6561, -0.6691, -0.682, -0.6947, -0.7071, -0.7193, -0.7314, -0.7431, -0.7547, -0.766, -0.7771, -0.788, -0.7986, -0.809, -0.8192, -0.829, -0.8387, -0.848, -0.8572, -0.866, -0.8746, -0.8829, -0.891, -0.8988, -0.9063, -0.9135, -0.9205, -0.9272, -0.9336, -0.9397, -0.9455, -0.9511, -0.9563, -0.9613, -0.9659, -0.9703, -0.9744, -0.9781, -0.9816, -0.9848, -0.9877, -0.9903, -0.9925, -0.9945, -0.9962, -0.9976, -0.9986, -0.9994, -0.9998, -1 };
+            SinTable = new double[181] { 0, 0.0175, 0.0349, 0.0523, 0.0698, 0.0872, 0.1045, 0.1219, 0.1392, 0.1564, 0.1736, 0.1908, 0.2079, 0.225, 0.2419, 0.2588, 0.2756, 0.2924, 0.309, 0.3256, 0.342, 0.3584, 0.3746, 0.3907, 0.4067, 0.4226, 0.4384, 0.454, 0.4695, 0.4848, 0.5, 0.515, 0.5299, 0.5446, 0.5592, 0.5736, 0.5878, 0.6018, 0.6157, 0.6293, 0.6428, 0.6561, 0.6691, 0.682, 0.6947, 0.7071, 0.7193, 0.7314, 0.7431, 0.7547, 0.766, 0.7771, 0.788, 0.7986, 0.809, 0.8192, 0.829, 0.8387, 0.848, 0.8572, 0.866, 0.8746, 0.8829, 0.891, 0.8988, 0.9063, 0.9135, 0.9205, 0.9272, 0.9336, 0.9397, 0.9455, 0.9511, 0.9563, 0.9613, 0.9659, 0.9703, 0.9744, 0.9781, 0.9816, 0.9848, 0.9877, 0.9903, 0.9925, 0.9945, 0.9962, 0.9976, 0.9986, 0.9994, 0.9998, 1, 0.9998, 0.9994, 0.9986, 0.9976, 0.9962, 0.9945, 0.9925, 0.9903, 0.9877, 0.9848, 0.9816, 0.9781, 0.9744, 0.9703, 0.9659, 0.9613, 0.9563, 0.9511, 0.9455, 0.9397, 0.9336, 0.9272, 0.9205, 0.9135, 0.9063, 0.8988, 0.891, 0.8829, 0.8746, 0.866, 0.8572, 0.848, 0.8387, 0.829, 0.8192, 0.809, 0.7986, 0.788, 0.7771, 0.766, 0.7547, 0.7431, 0.7314, 0.7193, 0.7071, 0.6947, 0.682, 0.6691, 0.6561, 0.6428, 0.6293, 0.6157, 0.6018, 0.5878, 0.5736, 0.5592, 0.5446, 0.5299, 0.515, 0.5, 0.4848, 0.4695, 0.454, 0.4384, 0.4226, 0.4067, 0.3907, 0.3746, 0.3584, 0.342, 0.3256, 0.309, 0.2924, 0.2756, 0.2588, 0.2419, 0.225, 0.2079, 0.1908, 0.1736, 0.1564, 0.1392, 0.1219, 0.1045, 0.0872, 0.0698, 0.0523, 0.0349, 0.0175, 0 };
+
+            //счётчик попыток
+            int TriesCounter = 0;
             int IsWin = 0; //0 - не выиграл, 1 - выиграл
+
             //размеры окна
             this.WindowState = WindowState.Maximized;
+
             //птицы для второго окна
             ImageWindow2TheBird = new Image();
             ImageWindow2TheBird.Width = WidthForElements;
             //красная птица для второго окна
-            /*ImageWindow2RedBird = new Image();
-            ImageWindow2RedBird.Width = 700;
-            BitmapImageWindow2RedBird = new BitmapImage();
-            BitmapImageWindow2RedBird.BeginInit();
-            BitmapImageWindow2RedBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\RedBird.png");
-            BitmapImageWindow2RedBird.DecodePixelWidth = 700;
-            BitmapImageWindow2RedBird.EndInit();
-            ImageWindow2RedBird.Source = BitmapImageWindow2RedBird;
-            ImageWindow2RedBird.Margin = new Thickness(40);*///было верно
             ImageWindow2RedBird = new Image();
             ImageWindow2RedBird.Width = WidthForElements;
             BitmapImageWindow2RedBird = new BitmapImage();
             BitmapImageWindow2RedBird.BeginInit();
-            BitmapImageWindow2RedBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\RedBird.png");
+            BitmapImageWindow2RedBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\RedBird.png");
             BitmapImageWindow2RedBird.DecodePixelWidth = WidthForElements;
             BitmapImageWindow2RedBird.EndInit();
             ImageWindow2RedBird.Source = BitmapImageWindow2RedBird;
@@ -248,7 +364,7 @@ namespace Butymov.Project2020
             ImageWindow2BlueBird.Width = WidthForElements;
             BitmapImageWindow2BlueBird = new BitmapImage();
             BitmapImageWindow2BlueBird.BeginInit();
-            BitmapImageWindow2BlueBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\BlueBird.png");
+            BitmapImageWindow2BlueBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\BlueBird.png");
             BitmapImageWindow2BlueBird.DecodePixelWidth = WidthForElements;
             BitmapImageWindow2BlueBird.EndInit();
             ImageWindow2BlueBird.Source = BitmapImageWindow2BlueBird;
@@ -260,7 +376,7 @@ namespace Butymov.Project2020
             ImageBasketVisible.Width = WidthForElements;
             BitmapImageBasketVisible = new BitmapImage();
             BitmapImageBasketVisible.BeginInit();
-            BitmapImageBasketVisible.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\BasketVisible.png");
+            BitmapImageBasketVisible.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\BasketVisible.png");
             BitmapImageBasketVisible.DecodePixelWidth = WidthForElements;
             BitmapImageBasketVisible.EndInit();
             ImageBasketVisible.Source = BitmapImageBasketVisible;
@@ -270,7 +386,7 @@ namespace Butymov.Project2020
             ImageBasketInvisible.Width = WidthForElements;
             BitmapImageBasketInvisible = new BitmapImage();
             BitmapImageBasketInvisible.BeginInit();
-            BitmapImageBasketInvisible.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\BasketInvisible.png");
+            BitmapImageBasketInvisible.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\BasketInvisible.png");
             BitmapImageBasketInvisible.DecodePixelWidth = WidthForElements;
             BitmapImageBasketInvisible.EndInit();
             ImageBasketInvisible.Source = BitmapImageBasketInvisible;
@@ -283,7 +399,7 @@ namespace Butymov.Project2020
             ImageEnglishWinScreen.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageEnglishWinScreen = new BitmapImage();
             BitmapImageEnglishWinScreen.BeginInit();
-            BitmapImageEnglishWinScreen.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\EnglishWinScreen.png");
+            BitmapImageEnglishWinScreen.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\EnglishWinScreen.png");
             BitmapImageEnglishWinScreen.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
             BitmapImageEnglishWinScreen.EndInit();
             ImageEnglishWinScreen.Source = BitmapImageEnglishWinScreen;
@@ -293,7 +409,7 @@ namespace Butymov.Project2020
             ImageRussianWinScreen.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageRussianWinScreen = new BitmapImage();
             BitmapImageRussianWinScreen.BeginInit();
-            BitmapImageRussianWinScreen.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\RussianWinScreen.png");
+            BitmapImageRussianWinScreen.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\RussianWinScreen.png");
             BitmapImageRussianWinScreen.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
             BitmapImageRussianWinScreen.EndInit();
             ImageRussianWinScreen.Source = BitmapImageRussianWinScreen;
@@ -302,76 +418,31 @@ namespace Butymov.Project2020
             ImageBackgroundForAll = new Image();
             ImageBackgroundForAll.Width = System.Convert.ToInt16(Width * 1.3);
             //светлый фон для окон
-            /*ImageLightBackgroundForAll = new Image();
-            ImageLightBackgroundForAll.Width = 1730;
-            BitmapImageLightBackgroundForAll = new BitmapImage();
-            BitmapImageLightBackgroundForAll.BeginInit();
-            BitmapImageLightBackgroundForAll.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\LightBackgroundForAll.png");
-            BitmapImageLightBackgroundForAll.DecodePixelWidth = 1730;
-            BitmapImageLightBackgroundForAll.EndInit();
-            ImageLightBackgroundForAll.Source = BitmapImageLightBackgroundForAll;
-            ImageLightBackgroundForAll.Margin = new Thickness(40);*///было верно
             ImageLightBackgroundForAll = new Image();
             ImageLightBackgroundForAll.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageLightBackgroundForAll = new BitmapImage();
             BitmapImageLightBackgroundForAll.BeginInit();
-            BitmapImageLightBackgroundForAll.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\LightBackgroundForAll.png");
+            BitmapImageLightBackgroundForAll.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackgroundForAll.png");
             BitmapImageLightBackgroundForAll.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
             BitmapImageLightBackgroundForAll.EndInit();
             ImageLightBackgroundForAll.Source = BitmapImageLightBackgroundForAll;
             ImageLightBackgroundForAll.Margin = new Thickness(0);
             //темный фон для окон
-            /*ImageDarkBackgroundForAll = new Image();
-            ImageDarkBackgroundForAll.Width = 1730;
-            BitmapImageDarkBackgroundForAll = new BitmapImage();
-            BitmapImageDarkBackgroundForAll.BeginInit();
-            BitmapImageDarkBackgroundForAll.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\DarkBackgroundForAll.png");
-            BitmapImageDarkBackgroundForAll.DecodePixelWidth = 1730;
-            BitmapImageDarkBackgroundForAll.EndInit();
-            ImageDarkBackgroundForAll.Source = BitmapImageDarkBackgroundForAll;
-            ImageDarkBackgroundForAll.Margin = new Thickness(40);*///было верно
             ImageDarkBackgroundForAll = new Image();
             ImageDarkBackgroundForAll.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageDarkBackgroundForAll = new BitmapImage();
             BitmapImageDarkBackgroundForAll.BeginInit();
-            BitmapImageDarkBackgroundForAll.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\DarkBackgroundForAll.png");
+            BitmapImageDarkBackgroundForAll.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackgroundForAll.png");
             BitmapImageDarkBackgroundForAll.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
             BitmapImageDarkBackgroundForAll.EndInit();
             ImageDarkBackgroundForAll.Source = BitmapImageDarkBackgroundForAll;
             ImageDarkBackgroundForAll.Margin = new Thickness(0);
-            //фон для окон по умолчанию
-            switch (ThemeValue)
-            {
-                case 1:
-                    ImageBackgroundForAll = ImageLightBackgroundForAll;
-                    break;
-                case 2:
-                    ImageBackgroundForAll = ImageDarkBackgroundForAll;
-                    break;
-            }
-            //установка фона на окна
-            ImageWindow1Background = new Image();
-            ImageWindow1Background.Width = System.Convert.ToInt16(Width * 1.3);
-            ImageWindow1Background = ImageBackgroundForAll;
-            //второе окно
-            ImageWindow2Background = new Image();
-            ImageWindow2Background.Width = System.Convert.ToInt16(Width * 1.3);
-            //победный экран по умолчанию
-            switch(LanguageValue)
-            {
-                case 1:
-                    ImageWinScreen = ImageEnglishWinScreen;
-                    break;
-                case 2:
-                    ImageWinScreen = ImageRussianWinScreen;
-                    break;
-            }
             //фон для второго окна
             ImageWindow2LightBackground = new Image();
             ImageWindow2LightBackground.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageWindow2LightBackground = new BitmapImage();
             BitmapImageWindow2LightBackground.BeginInit();
-            BitmapImageWindow2LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\LightBackground.png");
+            BitmapImageWindow2LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackground.png");
             BitmapImageWindow2LightBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
             BitmapImageWindow2LightBackground.EndInit();
             ImageWindow2LightBackground.Source = BitmapImageWindow2LightBackground;
@@ -381,26 +452,21 @@ namespace Butymov.Project2020
             ImageWindow2DarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageWindow2DarkBackground = new BitmapImage();
             BitmapImageWindow2DarkBackground.BeginInit();
-            BitmapImageWindow2DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\DarkBackground.png");
+            BitmapImageWindow2DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackground.png");
             BitmapImageWindow2DarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
             BitmapImageWindow2DarkBackground.EndInit();
             ImageWindow2DarkBackground.Source = BitmapImageWindow2DarkBackground;
             ImageWindow2DarkBackground.Margin = new Thickness(0);
-            //фон экрана настроек по умолчанию
-            ImageWindowSettingsBackground = new Image();
-            //ImageWindowSettingsBackground.Width = 1730;//было верно
-            ImageWindowSettingsBackground.Width = System.Convert.ToInt16(Width * 1.3);
-            ImageWindowSettingsBackground = ImageBackgroundForAll;
+
             //иконка темы
             ImageThemeIcon = new Image();
-            //ImageThemeIcon.Width = 700;//было верно
             ImageThemeIcon.Width = WidthForElements;
             //иконка солнца для темы
             ImageThemeIconSun = new Image();
             ImageThemeIconSun.Width = WidthForElements;
             BitmapImageIconSun = new BitmapImage();
             BitmapImageIconSun.BeginInit();
-            BitmapImageIconSun.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\SunSettings.png");
+            BitmapImageIconSun.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\SunSettings.png");
             BitmapImageIconSun.DecodePixelWidth = WidthForElements;
             BitmapImageIconSun.EndInit();
             ImageThemeIconSun.Source = BitmapImageIconSun;
@@ -410,7 +476,7 @@ namespace Butymov.Project2020
             ImageThemeIconMoon.Width = WidthForElements;
             BitmapImageIconMoon = new BitmapImage();
             BitmapImageIconMoon.BeginInit();
-            BitmapImageIconMoon.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\MoonSettings.png");
+            BitmapImageIconMoon.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\MoonSettings.png");
             BitmapImageIconMoon.DecodePixelWidth = WidthForElements;
             BitmapImageIconMoon.EndInit();
             ImageThemeIconMoon.Source = BitmapImageIconMoon;
@@ -423,7 +489,7 @@ namespace Butymov.Project2020
             ImageLightBackground.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageLightBackground = new BitmapImage();
             BitmapImageLightBackground.BeginInit();
-            BitmapImageLightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\LightBackground.png");
+            BitmapImageLightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackground.png");
             BitmapImageLightBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
             BitmapImageLightBackground.EndInit();
             ImageLightBackground.Source = BitmapImageLightBackground;
@@ -433,7 +499,7 @@ namespace Butymov.Project2020
             ImageDarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageDarkBackground = new BitmapImage();
             BitmapImageDarkBackground.BeginInit();
-            BitmapImageDarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\DarkBackground.png");
+            BitmapImageDarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackground.png");
             BitmapImageDarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
             BitmapImageDarkBackground.EndInit();
             ImageDarkBackground.Source = BitmapImageDarkBackground;
@@ -447,7 +513,7 @@ namespace Butymov.Project2020
             ImageRussianFlag.Width = WidthForElements;
             BitmapImageRussianFlag = new BitmapImage();
             BitmapImageRussianFlag.BeginInit();
-            BitmapImageRussianFlag.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\RussianFlag.png");
+            BitmapImageRussianFlag.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\RussianFlag.png");
             BitmapImageRussianFlag.DecodePixelWidth = WidthForElements;
             BitmapImageRussianFlag.EndInit();
             ImageRussianFlag.Source = BitmapImageRussianFlag;
@@ -457,7 +523,7 @@ namespace Butymov.Project2020
             ImageBritishFlag.Width = WidthForElements;
             BitmapImageBritishFlag = new BitmapImage();
             BitmapImageBritishFlag.BeginInit();
-            BitmapImageBritishFlag.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\BritishFlag.png");
+            BitmapImageBritishFlag.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\BritishFlag.png");
             BitmapImageBritishFlag.DecodePixelWidth = WidthForElements;
             BitmapImageBritishFlag.EndInit();
             ImageBritishFlag.Source = BitmapImageBritishFlag;
@@ -475,17 +541,17 @@ namespace Butymov.Project2020
             ImageRedBird.Width = WidthForElements;
             BitmapImageRedBird = new BitmapImage();
             BitmapImageRedBird.BeginInit();
-            BitmapImageRedBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\RedBird.png");
+            BitmapImageRedBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\RedBird.png");
             BitmapImageRedBird.DecodePixelWidth = WidthForElements;
             BitmapImageRedBird.EndInit();
             ImageRedBird.Source = BitmapImageRedBird;
             ImageRedBird.Margin = new Thickness(0);
             //синяя птица
             ImageBlueBird = new Image();
-            ImageBlueBird.Width = 700;
+            ImageBlueBird.Width = WidthForElements;
             BitmapImageBlueBird = new BitmapImage();
             BitmapImageBlueBird.BeginInit();
-            BitmapImageBlueBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\BlueBird.png");
+            BitmapImageBlueBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\BlueBird.png");
             BitmapImageBlueBird.DecodePixelWidth = WidthForElements;
             BitmapImageBlueBird.EndInit();
             ImageBlueBird.Source = BitmapImageBlueBird;
@@ -495,7 +561,7 @@ namespace Butymov.Project2020
             ImageSettingsRedBird.Width = WidthForElements;
             BitmapImageSettingsRedBird = new BitmapImage();
             BitmapImageSettingsRedBird.BeginInit();
-            BitmapImageSettingsRedBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\RedBird.png");
+            BitmapImageSettingsRedBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\RedBird.png");
             BitmapImageSettingsRedBird.DecodePixelWidth = WidthForElements;
             BitmapImageSettingsRedBird.EndInit();
             ImageSettingsRedBird.Source = BitmapImageSettingsRedBird;
@@ -505,72 +571,35 @@ namespace Butymov.Project2020
             ImageSettingsBlueBird.Width = WidthForElements;
             BitmapImageSettingsBlueBird = new BitmapImage();
             BitmapImageSettingsBlueBird.BeginInit();
-            BitmapImageSettingsBlueBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\BlueBird.png");
+            BitmapImageSettingsBlueBird.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\BlueBird.png");
             BitmapImageSettingsBlueBird.DecodePixelWidth = WidthForElements;
             BitmapImageSettingsBlueBird.EndInit();
             ImageSettingsBlueBird.Source = BitmapImageSettingsBlueBird;
             ImageSettingsBlueBird.Margin = new Thickness(0);
-            //птицы по умолчанию
-            switch(BirdValue)
-            {
-                case 1:
-                    ImageTheBird = ImageRedBird;
-                    ImageSettingsTheBird = ImageSettingsRedBird;
-                    break;
-                case 2:
-                    ImageTheBird = ImageBlueBird;
-                    ImageSettingsTheBird = ImageSettingsBlueBird;
-                    break;
-            }
-            //флаг по умолчанию
-            switch(LanguageValue)
-            {
-                case 1:
-                    ImageTheFlag = ImageBritishFlag;
-                    break;
-                case 2:
-                    ImageTheFlag = ImageRussianFlag;
-                    break;
-            }
-            //фон, фон второго окна, иконка темы по умолчанию
-            switch(ThemeValue)
-            {
-                case 1:
-                    ImageWindow2Background = ImageWindow2LightBackground;
-                    ImageBackground = ImageLightBackground;
-                    ImageThemeIcon = ImageThemeIconSun;
-                    break;
-                case 2:
-                    ImageWindow2Background = ImageWindow2DarkBackground;
-                    ImageBackground = ImageDarkBackground;
-                    ImageThemeIcon = ImageThemeIconMoon;
-                    break;
-            }
+            //второе окно
+            ImageWindow2Background = new Image();
+            ImageWindow2Background.Width = System.Convert.ToInt16(Width * 1.3);
+            //работа с файлом
+            SetDataValue();
+            SetData();
+            //установка фона на окна
+            ImageWindow1Background = new Image();
+            ImageWindow1Background.Width = System.Convert.ToInt16(Width * 1.3);
+            ImageWindow1Background = ImageBackgroundForAll;
+            //фон экрана настроек по умолчанию
+            ImageWindowSettingsBackground = new Image();
+            ImageWindowSettingsBackground.Width = System.Convert.ToInt16(Width * 1.3);
+            ImageWindowSettingsBackground = ImageBackgroundForAll;
+
             //функция, отвечающая за случайное появление корзины
             void RandomizeBasket()
             {
-                /*const int XMin = 225;
-                const int XMax = 600;
-                Random Randomizer = new Random();
-                RandomX = Randomizer.Next(XMin, XMax);
-                RandomX += 249;
-
-                RandomXMax = RandomX + 25 + 249;
-                RandomXMin = RandomX - 25 +249;
-                Console.WriteLine("Randomize basket and fields to hit");
-                Console.WriteLine(RandomX);
-                Console.WriteLine(RandomXMax);
-                Console.WriteLine(RandomXMin);*///было верно
-                int XMin = System.Convert.ToInt16(Width / 6.8); //200
-                int XMax = System.Convert.ToInt16(Width / 1.5); //1070
+                int XMin = System.Convert.ToInt16(Width / 6.8);
+                int XMax = System.Convert.ToInt16(Width / 1.5);
                 Random Randomizer = new Random();
                 RandomX = Randomizer.Next(XMin, XMax);
                 RandomXMin = RandomX - System.Convert.ToInt16(Width / 55) + System.Convert.ToInt16(Width / 22.39);
                 RandomXMax = RandomX + System.Convert.ToInt16(Width / 55) + System.Convert.ToInt16(Width / 22.39);
-                Console.WriteLine("Randomize basket and fields to hit");
-                Console.WriteLine(RandomX);
-                Console.WriteLine(RandomXMin);
-                Console.WriteLine(RandomXMax);
             }
             //функция, отвечающая за проверку попадания в корзину
             bool GoalCheck(double X)
@@ -587,7 +616,7 @@ namespace Butymov.Project2020
             //функция, отвечающая за смену знаечния темы
             void ChangeValueTheme()
             {
-                switch(ThemeValue)
+                switch (ThemeValue)
                 {
                     case 1:
                         ThemeValue = 2;
@@ -600,7 +629,7 @@ namespace Butymov.Project2020
             //функция, отвечающая за смену темы
             void ChangeTheme()
             {
-                switch(ThemeValue)
+                switch (ThemeValue)
                 {
                     case 1:
                         ImageBackground = ImageLightBackground;
@@ -608,15 +637,11 @@ namespace Butymov.Project2020
                         ImageWindow1Background = ImageLightBackgroundForAll;
                         ImageWindow2Background = ImageWindow2LightBackground;
                         ImageWindowSettingsBackground = ImageLightBackgroundForAll;
-                        
-
                         break;
                     case 2:
                         ImageBackground = ImageDarkBackground;
                         ImageThemeIcon = ImageThemeIconMoon;
-      
                         ImageWindow1Background = ImageDarkBackgroundForAll;
-  
                         ImageWindow2Background = ImageWindow2DarkBackground;
                         ImageWindowSettingsBackground = ImageDarkBackgroundForAll;
                         break;
@@ -636,7 +661,7 @@ namespace Butymov.Project2020
                 }
             }
             //функция, отвечающая за смену языка
-            void ChangeLanguage() 
+            void ChangeLanguage()
             {
                 switch (LanguageValue)
                 {
@@ -681,10 +706,10 @@ namespace Butymov.Project2020
             //функция, отвеачющая за смену значения птицы
             void ChangeValueTheBird()
             {
-                switch(BirdValue)
+                switch (BirdValue)
                 {
                     case 1:
-                        BirdValue = 2; 
+                        BirdValue = 2;
                         break;
                     case 2:
                         BirdValue = 1;
@@ -694,7 +719,7 @@ namespace Butymov.Project2020
             //функция, отвечающая за смену птицы
             void ChangeTheBird()
             {
-                switch(BirdValue)
+                switch (BirdValue)
                 {
                     case 1:
                         ImageSettingsTheBird = ImageSettingsRedBird;
@@ -708,21 +733,24 @@ namespace Butymov.Project2020
                         break;
                 }
             }
-            
-            Title = "Angry birds))";
-            
+
+            Title = "Hit the basket";
             //объявление и параметры кнопки Play на первом экране
             Button Window1Play = new Button();
             Window1TextBlockPlay = new TextBlock();
-            //Window1TextBlockPlay.FontSize = 24;//было верно
             Window1TextBlockPlay.FontSize = TextBlocksFontSize;
             Window1TextBlockPlay.TextAlignment = TextAlignment.Center;
-            Window1TextBlockPlay.Inlines.Add(new Run("PLAY"));
+            switch (LanguageValue)
+            {
+                case 1:
+                    Window1TextBlockPlay.Inlines.Add(new Run("PLAY"));
+                    break;
+                case 2:
+                    Window1TextBlockPlay.Inlines.Add(new Run("ИГРАТЬ"));
+                    break;
+            }
             Window1Play.Content = Window1TextBlockPlay;
-            //Window1Play.Margin = new Thickness(50);//было верно
             Window1Play.Margin = new Thickness(ButtonsMargin);
-            //Window1Play.Height = 50;//было верно
-            //Window1Play.Width = 200;//было верно
             Window1Play.Height = ButtonsHeight;
             Window1Play.Width = ButtonsWidth;
             //объявление и параметры кнопки Settings на первом экране
@@ -730,11 +758,17 @@ namespace Butymov.Project2020
             Window1TextBlockSettings = new TextBlock();
             Window1TextBlockSettings.FontSize = TextBlocksFontSize;
             Window1TextBlockSettings.TextAlignment = TextAlignment.Center;
-            Window1TextBlockSettings.Inlines.Add(new Run("SETTINGS"));
+            switch (LanguageValue)
+            {
+                case 1:
+                    Window1TextBlockSettings.Inlines.Add(new Run("SETTINGS"));
+                    break;
+                case 2:
+                    Window1TextBlockSettings.Inlines.Add(new Run("НАСТРОЙКИ"));
+                    break;
+            }
+
             Window1Settings.Content = Window1TextBlockSettings;
-            /*Window1Settings.Margin = new Thickness(50);
-            Window1Settings.Height = 50;
-            Window1Settings.Width = 200;*/
             Window1Settings.Margin = new Thickness(ButtonsMargin);
             Window1Settings.Height = ButtonsHeight;
             Window1Settings.Width = ButtonsWidth;
@@ -743,11 +777,17 @@ namespace Butymov.Project2020
             Window1TextBlockExit = new TextBlock();
             Window1TextBlockExit.FontSize = TextBlocksFontSize;
             Window1TextBlockExit.TextAlignment = TextAlignment.Center;
-            Window1TextBlockExit.Inlines.Add(new Run("EXIT"));
+            switch (LanguageValue)
+            {
+                case 1:
+                    Window1TextBlockExit.Inlines.Add(new Run("EXIT"));
+                    break;
+                case 2:
+                    Window1TextBlockExit.Inlines.Add(new Run("ВЫХОД"));
+                    break;
+            }
+
             Window1Exit.Content = Window1TextBlockExit;
-            /*Window1Exit.Margin = new Thickness(50);
-            Window1Exit.Height = 50;
-            Window1Exit.Width = 200;*/
             Window1Exit.Margin = new Thickness(ButtonsMargin);
             Window1Exit.Height = ButtonsHeight;
             Window1Exit.Width = ButtonsWidth;
@@ -756,7 +796,6 @@ namespace Butymov.Project2020
             Window1Stack.Margin = new Thickness(0);
             //объявление и параметры Grid на первом экране
             Grid Window1Grid = new Grid();
-            //Window1Grid.Margin = new Thickness(200);//было верно
             Window1Grid.Margin = new Thickness(WindowGridMargin);
             Window1Grid.RowDefinitions.Add(new RowDefinition());
             Window1Grid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -774,48 +813,58 @@ namespace Butymov.Project2020
             Window1Stack.Children.Add(Window1Grid);
             //объявление и параметры Canvas на первом экране 
             Window1Canvas = new Canvas();
-            Window1Canvas.SizeChanged += Window1CanvasOnSizeChanged;
-            Window1Canvas.Height = SystemParameters.VirtualScreenHeight; 
+            Window1Canvas.Height = SystemParameters.VirtualScreenHeight;
             Window1Canvas.Width = SystemParameters.VirtualScreenWidth;
             Window1Canvas.Children.Add(ImageWindow1Background);
             Window1Canvas.Children.Add(Window1Stack);
-            /*Canvas.SetLeft(Window1Stack, (Window1Canvas.Width / 6) - 5);
-            Canvas.SetTop(Window1Stack, (Window1Canvas.Height / 1.5) - 5);*/
-            //Canvas.SetLeft(Window1Stack, (Width / 16) - (Width / 30));
             Canvas.SetLeft(Window1Stack, (Width / 34.28));
             Canvas.SetTop(Window1Stack, (Height / 5));
             Content = Window1Canvas;
             //клик по кнопке Exit на первом экране
             Window1Exit.PreviewMouseLeftButtonDown += Window1ExitClicked;
-            void Window1ExitClicked(object sender, MouseButtonEventArgs e) 
+            void Window1ExitClicked(object sender, MouseButtonEventArgs e)
             {
+                SoundPlayerButtonClick.Play();
                 Close();
             }
             //клик по кнопке Settings на первом экране
             Window1Settings.PreviewMouseLeftButtonDown += Window1SettingsClicked;
             void Window1SettingsClicked(object sender, MouseButtonEventArgs e)
             {
+                SoundPlayerButtonClick.Play();
                 Window1Canvas.Children.Clear();
                 //объявление и параметры кнопки Back на экране настроек
                 Button WindowSettingsBack = new Button();
                 WindowSettingsTextBlockBack = new TextBlock();
                 WindowSettingsTextBlockBack.FontSize = TextBlocksFontSize;
                 WindowSettingsTextBlockBack.TextAlignment = TextAlignment.Center;
-                WindowSettingsTextBlockBack.Inlines.Add(new Run("BACK"));
+                switch (LanguageValue)
+                {
+                    case 1:
+                        WindowSettingsTextBlockBack.Inlines.Add(new Run("BACK"));
+                        break;
+                    case 2:
+                        WindowSettingsTextBlockBack.Inlines.Add(new Run("НАЗАД"));
+                        break;
+                }
                 WindowSettingsBack.Content = WindowSettingsTextBlockBack;
-                //WindowSettingsBack.Margin = new Thickness(80);
-                //WindowSettingsBack.Height = 50;
-                //WindowSettingsBack.Width = 200;
-                WindowSettingsBack.Margin = new Thickness(ButtonsMargin*1.5);
+                WindowSettingsBack.Margin = new Thickness(ButtonsMargin * 1.5);
                 WindowSettingsBack.Height = ButtonsHeight;
                 WindowSettingsBack.Width = ButtonsWidth;
-
                 //объявление и параметры кнопки Bird на экране настроек
                 Button WindowSettingsBird = new Button();
                 WindowSettingsTextBlockBird = new TextBlock();
                 WindowSettingsTextBlockBird.FontSize = TextBlocksFontSize;
                 WindowSettingsTextBlockBird.TextAlignment = TextAlignment.Center;
-                WindowSettingsTextBlockBird.Inlines.Add(new Run("BIRD"));
+                switch (LanguageValue)
+                {
+                    case 1:
+                        WindowSettingsTextBlockBird.Inlines.Add(new Run("BIRD"));
+                        break;
+                    case 2:
+                        WindowSettingsTextBlockBird.Inlines.Add(new Run("ПТИЦА"));
+                        break;
+                }
                 WindowSettingsBird.Content = WindowSettingsTextBlockBird;
                 WindowSettingsBird.Margin = new Thickness(ButtonsMargin * 1.5);
                 WindowSettingsBird.Height = ButtonsHeight;
@@ -825,7 +874,15 @@ namespace Butymov.Project2020
                 WindowSettingsTextBlockLanguage = new TextBlock();
                 WindowSettingsTextBlockLanguage.FontSize = TextBlocksFontSize;
                 WindowSettingsTextBlockLanguage.TextAlignment = TextAlignment.Center;
-                WindowSettingsTextBlockLanguage.Inlines.Add(new Run("LANGUAGE"));
+                switch (LanguageValue)
+                {
+                    case 1:
+                        WindowSettingsTextBlockLanguage.Inlines.Add(new Run("LANGUAGE"));
+                        break;
+                    case 2:
+                        WindowSettingsTextBlockLanguage.Inlines.Add(new Run("ЯЗЫК"));
+                        break;
+                }
                 WindowSettingsLanguage.Content = WindowSettingsTextBlockLanguage;
                 WindowSettingsLanguage.Margin = new Thickness(ButtonsMargin * 1.5);
                 WindowSettingsLanguage.Height = ButtonsHeight;
@@ -835,7 +892,15 @@ namespace Butymov.Project2020
                 WindowSettingsTextBlockTheme = new TextBlock();
                 WindowSettingsTextBlockTheme.FontSize = TextBlocksFontSize;
                 WindowSettingsTextBlockTheme.TextAlignment = TextAlignment.Center;
-                WindowSettingsTextBlockTheme.Inlines.Add(new Run("THEME"));
+                switch (LanguageValue)
+                {
+                    case 1:
+                        WindowSettingsTextBlockTheme.Inlines.Add(new Run("THEME"));
+                        break;
+                    case 2:
+                        WindowSettingsTextBlockTheme.Inlines.Add(new Run("ТЕМА"));
+                        break;
+                }
                 WindowSettingsTheme.Content = WindowSettingsTextBlockTheme;
                 WindowSettingsTheme.Margin = new Thickness(ButtonsMargin * 1.5);
                 WindowSettingsTheme.Height = ButtonsHeight;
@@ -864,7 +929,6 @@ namespace Butymov.Project2020
 
                 //объявление и параметры Canvas на экране настроек
                 WindowSettingsCanvas = new Canvas();
-                WindowSettingsCanvas.SizeChanged += WindowSettingsCanvasOnSizeChanged;
                 WindowSettingsCanvas.Height = SystemParameters.VirtualScreenHeight;
                 WindowSettingsCanvas.Width = SystemParameters.VirtualScreenWidth;
                 WindowSettingsCanvas.Children.Add(ImageWindowSettingsBackground);
@@ -873,27 +937,19 @@ namespace Butymov.Project2020
                 WindowSettingsCanvas.Children.Add(ImageThemeIcon);
                 WindowSettingsCanvas.Children.Add(WindowSettingsStack);
 
-                //Canvas.SetLeft(WindowSettingsStack, (Width / 3) - (Width / 11.5));
                 Canvas.SetLeft(WindowSettingsStack, (Width / 4.05));
                 Canvas.SetTop(WindowSettingsStack, (Height / 4));
-                //Canvas.SetLeft(ImageTheFlag, (Width / 2) - (Width / 16));
                 Canvas.SetLeft(ImageTheFlag, (Width / 2.28));
-                //Canvas.SetTop(ImageTheFlag, (Height / 4) - (Height/50));
                 Canvas.SetTop(ImageTheFlag, (Height / 4.34));
-                //Canvas.SetLeft(ImageSettingsTheBird, (Width / 4) - (Width / 14));
                 Canvas.SetLeft(ImageSettingsTheBird, (Width / 5.59));
-                //Canvas.SetTop(ImageSettingsTheBird, (Height / 4) - (Height / 50));
                 Canvas.SetTop(ImageSettingsTheBird, (Height / 4.34));
-                //Canvas.SetLeft(ImageThemeIcon, (Width / 4) - (Width / 14));
                 Canvas.SetLeft(ImageThemeIcon, (Width / 5.59));
-                //Canvas.SetTop(ImageThemeIcon, (Height / 2) - (Height / 120));
-                Canvas.SetTop(ImageThemeIcon, (Height / 2.03) );
-
-
+                Canvas.SetTop(ImageThemeIcon, (Height / 2.03));
                 Content = WindowSettingsCanvas;
                 //клик по кнопке Back на экране настроек
                 WindowSettingsBack.Click += delegate
                 {
+                    SoundPlayerButtonClick.Play();
                     Content = Window1Canvas;
                     WindowSettingsCanvas.Children.Clear();
                     Window1Canvas.Children.Add(ImageWindow1Background);
@@ -902,6 +958,7 @@ namespace Butymov.Project2020
                 //клик по кнопке Theme на экране настроек
                 WindowSettingsTheme.Click += delegate
                 {
+                    SoundPlayerButtonClick.Play();
                     ChangeValueTheme();
                     WindowSettingsCanvas.Children.Clear();
                     ChangeTheme();
@@ -912,12 +969,14 @@ namespace Butymov.Project2020
                     WindowSettingsCanvas.Children.Add(WindowSettingsStack);
                     Canvas.SetLeft(ImageThemeIcon, (Width / 5.59));
                     Canvas.SetTop(ImageThemeIcon, (Height / 2.03));
-                    /*Canvas.SetLeft(ImageWindowSettingsBackground, (WindowSettingsCanvas.Width / 6) - 300);
-                    Canvas.SetTop(ImageWindowSettingsBackground, (WindowSettingsCanvas.Height / 1.5) - 552);*///было верно
+                    WriteNewDataToFile();
+
+
                 };
                 //клик по кнопке Bird на экране настроек
                 WindowSettingsBird.Click += delegate
                 {
+                    SoundPlayerButtonClick.Play();
                     ChangeValueTheBird();
                     WindowSettingsCanvas.Children.Clear();
                     ChangeTheBird();
@@ -928,11 +987,14 @@ namespace Butymov.Project2020
                     WindowSettingsCanvas.Children.Add(WindowSettingsStack);
                     Canvas.SetLeft(ImageSettingsTheBird, (Width / 5.59));
                     Canvas.SetTop(ImageSettingsTheBird, (Height / 4.34));
+                    WriteNewDataToFile();
+
 
                 };
                 //клик по кнопке Language на экране настроек
                 WindowSettingsLanguage.Click += delegate
                 {
+                    SoundPlayerButtonClick.Play();
                     ChangeValueLanguage();
                     WindowSettingsCanvas.Children.Clear();
                     ChangeLanguage();
@@ -943,12 +1005,15 @@ namespace Butymov.Project2020
                     WindowSettingsCanvas.Children.Add(WindowSettingsStack);
                     Canvas.SetLeft(ImageTheFlag, (Width / 2.28));
                     Canvas.SetTop(ImageTheFlag, (Height / 4.34));
+                    WriteNewDataToFile();
+
                 };
             }
             //клик по кнопке Play на первом экране
             Window1Play.PreviewMouseLeftButtonDown += Window1PlayClicked;
-            void Window1PlayClicked(object sender, MouseButtonEventArgs e) 
+            void Window1PlayClicked(object sender, MouseButtonEventArgs e)
             {
+                SoundPlayerButtonClick.Play();
                 RandomizeBasket();
                 Window1Canvas.Children.Clear();
                 //объявление и параметры кнопки Start на втором экране
@@ -1047,45 +1112,27 @@ namespace Butymov.Project2020
                 Window2Stack.Children.Add(Window2Grid);
                 //объявление и параметры Canvas на втором экране
                 Window2Canvas = new Canvas();
-                Window2Canvas.SizeChanged += Window2CanvasOnSizeChanged;
                 Window2Canvas.Height = SystemParameters.VirtualScreenHeight;
                 Window2Canvas.Width = SystemParameters.VirtualScreenWidth;
-                //ImageBasketInvisible.Margin = new Thickness(RandomX, +385, 0, 0);
-                //ImageBasketVisible.Margin = new Thickness(RandomX, +385, 0, 0);
-                //ImageWindow2TheBird.Margin = new Thickness(-170, +385, 0, 0);
                 Window2Canvas.Children.Add(ImageWindow2Background);
                 Window2Canvas.Children.Add(ImageWindow2TheBird);
                 Window2Canvas.Children.Add(ImageBasketVisible);
                 Window2Canvas.Children.Add(ImageBasketInvisible);
                 Window2Canvas.Children.Add(Window2Stack);
-                /*Canvas.SetLeft(ImageWindow2TheBird, (Width / 50) - (Width / 6));
-                Canvas.SetTop(ImageWindow2TheBird, (Height / 2) + (Height / 50));
-                Canvas.SetLeft(ImageBasketInvisible, (Width / 50) - (Width / 6) + RandomX);
-                Canvas.SetTop(ImageBasketInvisible, (Height / 2) + (Height / 50));
-                Canvas.SetLeft(ImageBasketVisible, (Width / 50) - (Width / 6) + RandomX);
-                Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));*/
                 Canvas.SetLeft(ImageWindow2TheBird, (Width / (-6.81)));
                 Canvas.SetTop(ImageWindow2TheBird, (Height / 1.92));
                 Canvas.SetLeft(ImageBasketInvisible, (Width / (-6.81)) + RandomX);
                 Canvas.SetTop(ImageBasketInvisible, (Height / 1.92));
                 Canvas.SetLeft(ImageBasketVisible, (Width / (-6.81)) + RandomX);
                 Canvas.SetTop(ImageBasketVisible, (Height / 1.92));
-                Canvas.SetLeft(Window2Stack, (Width / 7.4) );
+                Canvas.SetLeft(Window2Stack, (Width / 7.4));
                 Canvas.SetTop(Window2Stack, (Height / 4));
                 Content = Window2Canvas;
-                /*switch (LanguageValue)
-                {
-                    case 1:
-                        MessageBox.Show("Hit the basket!", "Quest.");
-                        break;
-                    case 2:
-                        MessageBox.Show("Попади в корзину!", "Задание.");
-                        break;
-                }*/
                 //клик по кнопке Main menu на втором экране
                 Window2MainMenu.PreviewMouseLeftButtonDown += Window2MainMenuClicked;
                 void Window2MainMenuClicked(object sender2, MouseButtonEventArgs e2) //клик по кнопке Main menu
                 {
+                    SoundPlayerButtonClick.Play();
                     Content = Window1Canvas;
                     Window2Canvas.Children.Clear();
                     Window1Canvas.Children.Add(ImageWindow1Background);
@@ -1096,9 +1143,11 @@ namespace Butymov.Project2020
                 Window2Start.PreviewMouseLeftButtonDown += Window2StartClicked;
                 void Window2StartClicked(object sender2, MouseButtonEventArgs e2)
                 {
+                    SoundPlayerButtonClick.Play();
                     //обработка входных данных
-                    if (IsDataCorrect(Window2InitialVelocity.Text, Window2Angle.Text) == true) 
+                    if (IsDataCorrect(Window2InitialVelocity.Text, Window2Angle.Text) == true)
                     {
+                        SoundPlayerStartGame.Play();
                         TriesCounter++;
                         Window2Canvas.Children.Clear();
                         double MaxHeight = 0;
@@ -1181,23 +1230,16 @@ namespace Butymov.Project2020
                         //клик по кнопке Back на третьем экране
                         Window3Back.Click += delegate
                         {
-
+                            SoundPlayerButtonClick.Play();
                             LastPoint = 0;
                             MaxHeight = 0;
                             MaxLenght = 0;
-                            
                             Window3Canvas.Children.Clear();
                             Window2Canvas.Children.Add(ImageWindow2Background);
                             Window2Canvas.Children.Add(ImageBasketVisible);
                             Window2Canvas.Children.Add(ImageBasketInvisible);
                             Window2Canvas.Children.Add(ImageWindow2TheBird);
                             Window2Canvas.Children.Add(Window2Stack);
-                            /*Canvas.SetLeft(ImageTheBird, (Width / 50) - (Width / 6));
-                            Canvas.SetTop(ImageTheBird, (Height / 2) + (Height / 50));
-                            Canvas.SetLeft(ImageBasketInvisible, (Width / 50) - (Width / 6) + RandomX);
-                            Canvas.SetTop(ImageBasketInvisible, (Height / 2) + (Height / 50));
-                            Canvas.SetLeft(ImageBasketVisible, (Width / 50) - (Width / 6) + RandomX);
-                            Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));*/
                             Canvas.SetLeft(ImageTheBird, (Width / (-6.81)));
                             Canvas.SetTop(ImageTheBird, (Height / 1.92));
                             Canvas.SetLeft(ImageBasketInvisible, (Width / (-6.81)) + RandomX);
@@ -1205,11 +1247,11 @@ namespace Butymov.Project2020
                             Canvas.SetLeft(ImageBasketVisible, (Width / (-6.81)) + RandomX);
                             Canvas.SetTop(ImageBasketVisible, (Height / 1.92));
                             Content = Window2Canvas;
-                            
                         };
                         //клик по кнопке Restart на третьем экране
                         Window3Restart.Click += delegate
                         {
+                            SoundPlayerButtonClick.Play();
                             Window3Canvas.Children.Clear();
                             Window3Canvas.Children.Add(ImageBackground);
                             if (GoalCheck(MaxLenght) == true)
@@ -1219,12 +1261,6 @@ namespace Butymov.Project2020
                             Window3Canvas.Children.Add(ImageBasketInvisible);
                             Window3Canvas.Children.Add(ImageTheBird);
                             Window3Canvas.Children.Add(ImageBasketVisible);
-                            /*Canvas.SetLeft(ImageTheBird, (Width / 50) - (Width / 6));
-                            Canvas.SetTop(ImageTheBird, (Height / 2) + (Height / 50));
-                            Canvas.SetLeft(ImageBasketInvisible, (Width / 50) - (Width / 6) + RandomX);
-                            Canvas.SetTop(ImageBasketInvisible, (Height / 2) + (Height / 50));
-                            Canvas.SetLeft(ImageBasketVisible, (Width / 50) - (Width / 6) + RandomX);
-                            Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));*/
                             Canvas.SetLeft(ImageTheBird, (Width / (-6.81)));
                             Canvas.SetTop(ImageTheBird, (Height / 1.92));
                             Canvas.SetLeft(ImageBasketInvisible, (Width / (-6.81)) + RandomX);
@@ -1232,6 +1268,7 @@ namespace Butymov.Project2020
                             Canvas.SetLeft(ImageBasketVisible, (Width / (-6.81)) + RandomX);
                             Canvas.SetTop(ImageBasketVisible, (Height / 1.92));
                             BirdTimer.Start();
+                            SoundPlayerStartGame.Play();
                         };
                         int InitialSpeed = System.Convert.ToInt16(Window2InitialVelocity.Text);
                         int InitialAngle = System.Convert.ToInt16(Window2Angle.Text);
@@ -1240,42 +1277,12 @@ namespace Butymov.Project2020
                         //вычисление координаты X
                         double CalculateXCord(int InitialVelocity, int Angle, double CurrentTime)
                         {
-                            //double XCord = InitialVelocity * Math.Cos(Angle) * CurrentTime;
-                            //return XCord;
-                            /*double XCord;
-                            double CalculateXCordAngle = 0;
-                            if ((Angle <= 180) && (Math.Cos(Angle)) < 0)
-                            {
-                                CalculateXCordAngle = -Math.Cos(Angle);
-                                XCord = InitialVelocity * CalculateXCordAngle * CurrentTime;
-                                return XCord;
-                            }
-                            else
-                            {
-                                XCord = InitialVelocity * Math.Cos(Angle) * CurrentTime;
-                                return XCord;
-                            }*/
                             double XCord = InitialVelocity * CosTable[Angle] * CurrentTime;
                             return XCord;
                         }
                         //вычисление координаты Y
                         double CalculateYCord(int InitialVelocity, int Angle, double CurrentTime)
                         {
-                            //double YCord = (InitialVelocity * Math.Sin(Angle) * CurrentTime) - ((g * Math.Pow(CurrentTime, 2)) / (2));
-                            //return YCord;
-                            /*double YCord;
-                            double CalculateYCordAngle = 0;
-                            if ((Angle < 180) && (Math.Sin(Angle)) < 0)
-                            {
-                                CalculateYCordAngle = -Math.Sin(Angle);
-                                YCord = (InitialVelocity * CalculateYCordAngle * CurrentTime) - ((g * Math.Pow(CurrentTime, 2)) / (2));
-                                return YCord;
-                            }
-                            else
-                            {
-                                YCord = (InitialVelocity * Math.Sin(Angle) * CurrentTime) - ((g * Math.Pow(CurrentTime, 2)) / (2));
-                                return YCord;
-                            }*/
                             double YCord = (InitialVelocity * SinTable[Angle] * CurrentTime) - ((g * Math.Pow(CurrentTime, 2)) / (2));
                             return YCord;
                         }
@@ -1285,7 +1292,7 @@ namespace Butymov.Project2020
                             int NumCoordinates = 0;
                             double CurrentTime = 0;
                             int YCordZeroChecker = 0;
-                            for (int i = 0; i < i+1; i++)
+                            for (int i = 0; i < i + 1; i++)
                             {
                                 CalculateXCord(InitialSpeed, InitialAngle, CurrentTime);
                                 CalculateYCord(InitialSpeed, InitialAngle, CurrentTime);
@@ -1298,16 +1305,16 @@ namespace Butymov.Project2020
                                     break;
                                 }
                                 NumCoordinates++;
-                                CurrentTime+=Step;
+                                CurrentTime += Step;
                             }
                             return NumCoordinates;
                         }
                         //объявление и заполнение массива координат
-                        Coordinates = new Point[CalculateNumCoordinates(InitialSpeed, InitialAngle)+1];
+                        Coordinates = new Point[CalculateNumCoordinates(InitialSpeed, InitialAngle) + 1];
                         double CurrentTimeForPoints = 0;
                         for (int i = 0; i < Coordinates.Length; i++)
                         {
-                            if(i+1==Coordinates.Length)
+                            if (i + 1 == Coordinates.Length)
                             {
                                 Coordinates[i].X = CalculateXCord(InitialSpeed, InitialAngle, CurrentTimeForPoints);
                                 Coordinates[i].Y = 0;
@@ -1324,18 +1331,12 @@ namespace Butymov.Project2020
                                 {
                                     MaxLenght = Coordinates[i].X;
                                 }
-                         
+
                             }
                             CurrentTimeForPoints += Step;
                         }
-                        for (int i = 0; i < Coordinates.Length; i++)
-                        {
-                            Console.WriteLine(System.Convert.ToString(Coordinates[i]));
-                        }
-                    
                         //объявление и параметры Canvas на 3 окне
                         Window3Canvas = new Canvas();
-                        Window3Canvas.SizeChanged += Window3CanvasOnSizeChanged;
                         Window3Canvas.Height = SystemParameters.VirtualScreenHeight;
                         Window3Canvas.Width = SystemParameters.VirtualScreenWidth;
                         Content = Window3Canvas;
@@ -1351,12 +1352,6 @@ namespace Butymov.Project2020
                         Window3Canvas.Children.Add(ImageBasketInvisible);
                         Window3Canvas.Children.Add(ImageTheBird);
                         Window3Canvas.Children.Add(ImageBasketVisible);
-                        /*Canvas.SetLeft(ImageTheBird, (Width / 50) - (Width / 6));
-                        Canvas.SetTop(ImageTheBird, (Height / 2) + (Height / 50));
-                        Canvas.SetLeft(ImageBasketInvisible, (Width / 50) - (Width / 6) + RandomX);
-                        Canvas.SetTop(ImageBasketInvisible, (Height / 2) + (Height / 50));
-                        Canvas.SetLeft(ImageBasketVisible, (Width / 50) - (Width / 6) + RandomX);
-                        Canvas.SetTop(ImageBasketVisible, (Height / 2) + (Height / 50));*/
                         Canvas.SetLeft(ImageTheBird, (Width / (-6.81)));
                         Canvas.SetTop(ImageTheBird, (Height / 1.92));
                         Canvas.SetLeft(ImageBasketInvisible, (Width / (-6.81)) + RandomX);
@@ -1371,17 +1366,11 @@ namespace Butymov.Project2020
                         BirdTimer.Tick += delegate
                         {
                             ImageTheBird.Margin = new Thickness(Coordinates[T].X, Coordinates[T].Y, 0, -Coordinates[T].Y);
-                            /*Dot = new Ellipse();
-                            Dot.Width = 2;
-                            Dot.Height = 2;
-                            Dot.StrokeThickness = 2;
-                            Dot.Stroke = Brushes.Black;
-                            Canvas.SetLeft(Dot, (Window3Canvas.Width / 6) -5);
-                            Canvas.SetTop(Dot, (Window3Canvas.Height / 1.5) -5);
-                            Dot.Margin = new Thickness(Coordinates[T].X, Coordinates[T].Y, 0, 0);
-                            Window3Canvas.Children.Add(Dot);*/
                             T++;
-                            //Console.WriteLine(T.ToString());
+                            if (T == Coordinates.Length - 40)
+                            {
+                                SoundPlayerFalling.Play();
+                            }
                             //по окночанию анимации
                             if (T == Coordinates.Length)
                             {
@@ -1390,35 +1379,41 @@ namespace Butymov.Project2020
                                 Window3Canvas.Children.Add(Trajectory);
                                 Window3Canvas.Children.Add(ImageTheBird);
                                 Window3Canvas.Children.Add(ImageBasketVisible);
-                                /*Canvas.SetLeft(Trajectory, (Width / 2) - (Width / 2.77));
-                                Canvas.SetTop(Trajectory, (Height / 1) - (Height/3.1));*/
                                 Canvas.SetLeft(Trajectory, (Width / 7.19));
-                                Canvas.SetTop(Trajectory, (Height / 1.476) );
+                                Canvas.SetTop(Trajectory, (Height / 1.476));
                                 LastPoint = T;
                                 BirdTimer.Stop();
                                 AnimationCounter++;
                                 T = 0;
-                                //Console.WriteLine("Good");
                                 if ((GoalCheck(MaxLenght) == true) && (Window3Canvas.Children.Contains(ImageWinScreen) == false))
                                 {
                                     Window3Canvas.Children.Add(ImageWinScreen);
-                                    /*Canvas.SetLeft(ImageWinScreen, (Width / 2) - (Width / 2.1));
-                                    Canvas.SetTop(ImageWinScreen, (Height / 3) - (Height / 3.1));*/
-                                    Canvas.SetLeft(ImageWinScreen, (Width / 32.53));
-                                    Canvas.SetTop(ImageWinScreen, (Height / 92.97) );
+                                    switch (LanguageValue)
+                                    {
+                                        case 1:
+                                            Canvas.SetLeft(ImageWinScreen, (Width / 46));
+                                            Canvas.SetTop(ImageWinScreen, (Height / 92.97));
+                                            break;
+                                        case 2:
+                                            Canvas.SetLeft(ImageWinScreen, (Width / 56));
+                                            Canvas.SetTop(ImageWinScreen, (Height / 92.97));
+                                            break;
+                                    }
                                     IsWin = 1;
+                                    SoundPlayerWinGame.Play();
                                 }
                                 Window3Canvas.Children.Add(Window3Stack);
                             }
                             //клик по кнопке Next на третьем экране
                             Window3Next.Click += delegate
                             {
+                                SoundPlayerButtonClick.Play();
                                 Window3Canvas.Children.Clear();
                                 SpecialForImageWindow4LightBackground = new Image();
                                 SpecialForImageWindow4LightBackground.Width = System.Convert.ToInt16(Width * 1.3);
                                 SpecialForBitmapImageWindow4LightBackground = new BitmapImage();
                                 SpecialForBitmapImageWindow4LightBackground.BeginInit();
-                                SpecialForBitmapImageWindow4LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\LightBackgroundForAll.png");
+                                SpecialForBitmapImageWindow4LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackgroundForAll.png");
                                 SpecialForBitmapImageWindow4LightBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
                                 SpecialForBitmapImageWindow4LightBackground.EndInit();
                                 SpecialForImageWindow4LightBackground.Source = SpecialForBitmapImageWindow4LightBackground;
@@ -1428,14 +1423,14 @@ namespace Butymov.Project2020
                                 SpecialForImageWindow4DarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
                                 SpecialForBitmapImageWindow4DarkBackground = new BitmapImage();
                                 SpecialForBitmapImageWindow4DarkBackground.BeginInit();
-                                SpecialForBitmapImageWindow4DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Angry birds)) Images\DarkBackgroundForAll.png");
+                                SpecialForBitmapImageWindow4DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackgroundForAll.png");
                                 SpecialForBitmapImageWindow4DarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
                                 SpecialForBitmapImageWindow4DarkBackground.EndInit();
                                 SpecialForImageWindow4DarkBackground.Source = SpecialForBitmapImageWindow4DarkBackground;
                                 SpecialForImageWindow4DarkBackground.Margin = new Thickness(0);
                                 ImageWindow4Background = new Image();
                                 ImageWindow4Background.Width = System.Convert.ToInt16(Width * 1.3);
-                                switch(ThemeValue)
+                                switch (ThemeValue)
                                 {
                                     case 1:
                                         ImageWindow4Background = SpecialForImageWindow4LightBackground;
@@ -1451,7 +1446,7 @@ namespace Butymov.Project2020
                                 Window4TextBlockMainMenu = new TextBlock();
                                 Window4TextBlockMainMenu.FontSize = TextBlocksFontSize;
                                 Window4TextBlockMainMenu.TextAlignment = TextAlignment.Center;
-                                switch(LanguageValue)
+                                switch (LanguageValue)
                                 {
                                     case 1:
                                         Window4TextBlockMainMenu.Inlines.Add(new Run("MAIN MENU"));
@@ -1469,7 +1464,7 @@ namespace Butymov.Project2020
                                 Window4TextBlockSave = new TextBlock();
                                 Window4TextBlockSave.FontSize = TextBlocksFontSize;
                                 Window4TextBlockSave.TextAlignment = TextAlignment.Center;
-                                switch(LanguageValue)
+                                switch (LanguageValue)
                                 {
                                     case 1:
                                         Window4TextBlockSave.Inlines.Add(new Run("SAVE"));
@@ -1541,7 +1536,7 @@ namespace Butymov.Project2020
                                 TextBlock Window4RangeValue = new TextBlock();
                                 Window4RangeValue.FontSize = TextBlocksFontSize;
                                 Window4RangeValue.TextAlignment = TextAlignment.Center;
-                                Window4RangeValue.Inlines.Add(new Run(System.Convert.ToString(MaxLenght)));
+                                Window4RangeValue.Inlines.Add(new Run(System.Convert.ToString(Math.Round(MaxLenght, 2))));
                                 TextBlock Window4FlightTimeValue = new TextBlock();
                                 Window4FlightTimeValue.FontSize = TextBlocksFontSize;
                                 Window4FlightTimeValue.TextAlignment = TextAlignment.Center;
@@ -1549,7 +1544,7 @@ namespace Butymov.Project2020
                                 TextBlock Window4HighestPointValue = new TextBlock();
                                 Window4HighestPointValue.FontSize = TextBlocksFontSize;
                                 Window4HighestPointValue.TextAlignment = TextAlignment.Center;
-                                Window4HighestPointValue.Inlines.Add(new Run(System.Convert.ToString(MaxHeight)));
+                                Window4HighestPointValue.Inlines.Add(new Run(System.Convert.ToString(Math.Round(MaxHeight, 2))));
                                 TextBlock Window4InitialAngleValue = new TextBlock();
                                 Window4InitialAngleValue.FontSize = TextBlocksFontSize;
                                 Window4InitialAngleValue.TextAlignment = TextAlignment.Center;
@@ -1579,7 +1574,6 @@ namespace Butymov.Project2020
                                         break;
 
                                 }
-                                
                                 //объявляение и параметры Grid для таблицы результатов на четвертом экране
                                 Grid Window4Grid = new Grid();
                                 Window4Grid.RowDefinitions.Add(new RowDefinition());
@@ -1639,7 +1633,6 @@ namespace Butymov.Project2020
                                 Window4Stack.Children.Add(Window4Grid);
                                 //объявление и параметры Canvas на четвертом экране
                                 Window4Canvas = new Canvas();
-                                Window4Canvas.SizeChanged += Window4CanvasOnSizeChanged;
                                 Window4Canvas.Height = SystemParameters.VirtualScreenHeight;
                                 Window4Canvas.Width = SystemParameters.VirtualScreenWidth;
                                 Window4Canvas.Children.Add(ImageWindow4Background);
@@ -1650,18 +1643,26 @@ namespace Butymov.Project2020
                                 Content = Window4Canvas;
                                 Canvas.SetLeft(Window4ScoreName, (Width / 2.14));
                                 Canvas.SetTop(Window4ScoreName, (Height / 4.74));
-                                Canvas.SetLeft(Window4GridForButtons, (Width / 7.2) );
-                                Canvas.SetTop(Window4GridForButtons, (Height / 3) );
-
-                                Canvas.SetLeft(Window4Stack, (Width / 4));
-                                //Canvas.SetTop(Window4Stack, (Height / 10) - (Height / 9.5));
-                                Canvas.SetTop(Window4Stack, (Height / (-190.09)));
-
+                                Canvas.SetLeft(Window4GridForButtons, (Width / 7.2));
+                                Canvas.SetTop(Window4GridForButtons, (Height / 3));
                                 Canvas.SetLeft(Window4Score, (Width / 3.15));
                                 Canvas.SetTop(Window4Score, (Height / 4));
+                                switch (LanguageValue)
+                                {
+                                    case 1:
+                                        Canvas.SetLeft(Window4Stack, (Width / 4));
+                                        Canvas.SetTop(Window4Stack, (Height / (-190.09)));
+                                        break;
+                                    case 2:
+                                        Canvas.SetLeft(Window4Stack, (Width / 4.5));
+                                        Canvas.SetTop(Window4Stack, (Height / (-190.09)));
+                                        break;
+
+                                }
                                 //клик по кнопке MainMenu на четвертом экране
                                 Window4MainMenu.Click += delegate
                                 {
+                                    SoundPlayerButtonClick.Play();
                                     Window4Canvas.Children.Clear();
                                     Window1Canvas.Children.Add(ImageWindow1Background);
                                     Window1Canvas.Children.Add(Window1Stack);
@@ -1672,56 +1673,57 @@ namespace Butymov.Project2020
                                 //клик по кнопке Save на четвертом экране
                                 Window4Save.Click += delegate
                                 {
+                                    SoundPlayerButtonClick.Play();
                                     if (LanguageValue == 1)
                                     {
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(CurrentDate) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Range: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(MaxLenght) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Flight time: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(LastPoint * 10 / 1000) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Highest point: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(MaxHeight) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Initial angle: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(Window2Angle.Text) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Initial speed: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(Window2InitialVelocity.Text) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Moves to win: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(CurrentDate) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Range: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxLenght) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Flight time: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(LastPoint * 10 / 1000) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Highest point: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxHeight) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Initial angle: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2Angle.Text) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Initial speed: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2InitialVelocity.Text) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Moves to win: ");
                                         switch (IsWin)
                                         {
                                             case 0:
-                                                File.AppendAllText("Angry birds)) Data.txt", "Did not win" + Environment.NewLine);
+                                                File.AppendAllText("Hit the basket.Data.txt", "Did not win" + Environment.NewLine);
                                                 break;
                                             case 1:
-                                                File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(TriesCounter) + Environment.NewLine);
+                                                File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(TriesCounter) + Environment.NewLine);
                                                 break;
                                         }
-                                        File.AppendAllText("Angry birds)) Data.txt", Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", Environment.NewLine);
                                         MessageBox.Show("Your data has been saved!", "Complete.");
                                     }
                                     if (LanguageValue == 2)
                                     {
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(CurrentDate) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Дистанция: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(MaxLenght) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Время полёта: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(LastPoint * 10 / 1000) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Наивысшая точка: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(MaxHeight) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Начальный угол: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(Window2Angle.Text) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Начальная скорость: ");
-                                        File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(Window2InitialVelocity.Text) + Environment.NewLine);
-                                        File.AppendAllText("Angry birds)) Data.txt", "Попыток до победы: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(CurrentDate) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Дистанция: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxLenght) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Время полёта: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(LastPoint * 10 / 1000) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Наивысшая точка: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxHeight) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Начальный угол: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2Angle.Text) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Начальная скорость: ");
+                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2InitialVelocity.Text) + Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", "Попыток до победы: ");
                                         switch (IsWin)
                                         {
                                             case 0:
-                                                File.AppendAllText("Angry birds)) Data.txt", "Не выиграл" + Environment.NewLine);
+                                                File.AppendAllText("Hit the basket.Data.txt", "Не выиграл" + Environment.NewLine);
                                                 break;
                                             case 1:
-                                                File.AppendAllText("Angry birds)) Data.txt", System.Convert.ToString(TriesCounter) + Environment.NewLine);
+                                                File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(TriesCounter) + Environment.NewLine);
                                                 break;
                                         }
-                                        File.AppendAllText("Angry birds)) Data.txt", Environment.NewLine);
+                                        File.AppendAllText("Hit the basket.Data.txt", Environment.NewLine);
                                         MessageBox.Show("Ваши данные сохранены!", "Успешно.");
                                     }
                                 };
@@ -1741,35 +1743,15 @@ namespace Butymov.Project2020
                     }
                 };
                 //обработка входных данных
-                bool IsDataCorrect(string IS, string AN) 
+                bool IsDataCorrect(string IS, string AN)
                 {
                     int CheckAngle = System.Convert.ToInt16(AN);
                     if ((CheckAngle > 180) || (CheckAngle < 0))
                     {
                         return false;
                     }
-                    //int DotCheckerIS = 0;
                     for (int i = 0; i < IS.Length; i++)
                     {
-                        /*if (DotCheckerIS > 1)
-                        {
-                            return false;
-                        }
-                        if(IS[i] == ' ')
-                        {
-                            return false;
-                        }
-                        if (!(IS[i] >= '0' && IS[i] <= '9'))
-                        {
-                            if (IS[i] == '.')
-                            {
-                                DotCheckerIS++;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }*/
                         if (IS[i] == ' ')
                         {
                             return false;
@@ -1779,28 +1761,8 @@ namespace Butymov.Project2020
                             return false;
                         }
                     }
-                    //int DotCheckerAN = 0;
                     for (int i = 0; i < AN.Length; i++)
                     {
-                        /*if (DotCheckerAN > 1)
-                        {
-                            return false;
-                        }
-                        if(AN[i] == ' ')
-                        {
-                            return false;
-                        }
-                        if (!(AN[i] >= '0' && AN[i] <= '9'))
-                        {
-                            if (AN[i] == '.')
-                            {
-                                DotCheckerAN++;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }*/
                         if (AN[i] == ' ')
                         {
                             return false;
