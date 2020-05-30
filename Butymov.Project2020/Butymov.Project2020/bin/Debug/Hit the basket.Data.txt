@@ -1,0 +1,109 @@
+06.05.2020 0:21:28
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 0:21:28
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 0:22:22
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 15:50:46
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 17:52:19
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 20:01:19
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+06.05.2020 23:47:57
+Range: 579,955475654772
+Flight time: 1,4
+Highest point: 236,409745542833
+Initial angle: 45
+Initial speed: 80
+
+08.05.2020 21:21:01
+Дистанция: 579,955475654772
+Время полёта: 1,4
+Наивысшая точка: 236,409745542833
+Начальный угол: 45
+Начальная скорость: 80
+
+14.05.2020 23:43:17
+Range: 0,054030230586814
+Flight time: 0,03
+Highest point: 0,0351470984807896
+Initial angle: 1
+Initial speed: 1
+
+19.05.2020 21:30:01
+Range: 1039,8748768647
+Flight time: 1,87
+Highest point: 422,933097263901
+Initial angle: 45
+Initial speed: 107
+
+Moves to win: 2
+19.05.2020 21:32:44
+Range: 1024,5880069901
+Flight time: 1,86
+Highest point: 415,065117125672
+Initial angle: 45
+Initial speed: 106
+Moves to win: 2
+19.05.2020 21:32:44
+Range: 1024,5880069901
+Flight time: 1,86
+Highest point: 415,065117125672
+Initial angle: 45
+Initial speed: 106
+Moves to win: 2
+19.05.2020 21:34:29
+Range: 1060,94028861629
+Flight time: 1,89
+Highest point: 430,873258107037
+Initial angle: 45
+Initial speed: 108
+Moves to win: 0
+
+19.05.2020 21:35:53
+Range: 928,506615235336
+Flight time: 1,77
+Highest point: 376,827052605924
+Initial angle: 45
+Initial speed: 101
+Moves to win: 3
+
+25.05.2020 15:01:50
+Дистанция: 0,054030230586814
+Время полёта: 0,03
+Наивысшая точка: 0,0351470984807896
+Начальный угол: 1
+Начальная скорость: 1
+Попыток до победы: Не выиграл
+
