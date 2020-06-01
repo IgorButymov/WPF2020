@@ -26,7 +26,8 @@ namespace Butymov.Project2020
         //1 - красная, 2 - синяя
         //третье число - тема
         //1 - светлая, 2 - тёмная
-
+        //четвертое число - звуки
+        //0 - без звука, 1 - со звуком
 
         //объекты первого экрана
         TextBlock Window1TextBlockPlay;
@@ -93,11 +94,13 @@ namespace Butymov.Project2020
         TextBlock Window4TextBlockMainMenu;
         TextBlock Window4TextBlockSave;
         //объекты окна настроек
+        TextBlock WindowSettingsTextBlockSounds;
         Canvas WindowSettingsCanvas;
         StackPanel WindowSettingsStack;
         int BirdValue; //1 - красная, 2 - синяя
         int LanguageValue; //1 - английский, 2 - русский
         int ThemeValue; //1 - светлая, 2 - темная
+        int SoundsValue; //0 - без звука, 1 - со звуком
         Image ImageSettingsTheBird;
         Image ImageSettingsRedBird;
         Image ImageSettingsBlueBird;
@@ -128,6 +131,13 @@ namespace Butymov.Project2020
         Image SpecialForImageWindow4DarkBackground;
         BitmapImage SpecialForBitmapImageWindow4LightBackground;
         BitmapImage SpecialForBitmapImageWindow4DarkBackground;
+        Image ImageSounds;
+        Image ImageSoundsOn;
+        BitmapImage BitmapImageSoundsOn;
+        Image ImageSoundsOff;
+        BitmapImage BitmapImageSoundsOff;
+        double MaxHeight;
+        double MaxLenght;
         int RandomXMax;
         int RandomXMin;
         int RandomX;
@@ -140,6 +150,7 @@ namespace Butymov.Project2020
         double[] CosTable;
         double[] SinTable;
         string UD;
+        
         SoundPlayer SoundPlayerStartGame;
         SoundPlayer SoundPlayerFalling;
         SoundPlayer SoundPlayerWinGame;
@@ -177,17 +188,17 @@ namespace Butymov.Project2020
             string[] ReadUD = File.ReadAllLines(UDPath);
             string CheckReadUD = ReadUD[0];
             //проверка корректных данных в файле
-            if (CheckReadUD.Length != 3)
+            if (CheckReadUD.Length != 4)
             {
                 var UDFile = File.Create(UDPath);
                 UDFile.Close();
-                const string ValueForDataIfUDFileDoNotExist = "111";
+                const string ValueForDataIfUDFileDoNotExist = "1111";
                 File.AppendAllText(UDPath, ValueForDataIfUDFileDoNotExist);
                 ReadUD = File.ReadAllLines(UDPath);
                 MessageBox.Show("Data file was not correct, settings have been reset.", "Warning.");
             }
             UD = System.Convert.ToString(ReadUD[0]);
-            //функция, отвечающая за установку значений языка, птицы, темы при запуске
+            //функция, отвечающая за установку значений языка, птицы, темы, звуков при запуске
             void SetDataValue()
             {
                 if (UD[0] == '1')
@@ -216,6 +227,15 @@ namespace Butymov.Project2020
                 {
                     ThemeValue = 2;
                 }
+
+                if (UD[3] == '0')
+                {
+                    SoundsValue = 0;
+                }
+                if (UD[3] == '1')
+                {
+                    SoundsValue = 1;
+                }
                 if ((UD[0] != '1') && (UD[0] != '2'))
                 {
                     var UDFile = File.Create(UDPath);
@@ -226,6 +246,7 @@ namespace Butymov.Project2020
                     LanguageValue = 1;
                     BirdValue = 1;
                     ThemeValue = 1;
+                    SoundsValue = 1;
                 }
                 if ((UD[1] != '1') && (UD[1] != '2'))
                 {
@@ -237,6 +258,7 @@ namespace Butymov.Project2020
                     LanguageValue = 1;
                     BirdValue = 1;
                     ThemeValue = 1;
+                    SoundsValue = 1;
                 }
                 if ((UD[2] != '1') && (UD[2] != '2'))
                 {
@@ -248,10 +270,23 @@ namespace Butymov.Project2020
                     LanguageValue = 1;
                     BirdValue = 1;
                     ThemeValue = 1;
+                    SoundsValue = 1;
+                }
+                if ((UD[3] != '0') && (UD[3] != '1'))
+                {
+                    var UDFile = File.Create(UDPath);
+                    UDFile.Close();
+                    const string ValueForDataIfUDFileDoNotExist = "1111";
+                    File.AppendAllText(UDPath, ValueForDataIfUDFileDoNotExist);
+                    MessageBox.Show("Data was not correct, settings have been reset.", "Warning.");
+                    LanguageValue = 1;
+                    BirdValue = 1;
+                    ThemeValue = 1;
+                    SoundsValue = 1;
                 }
 
             }
-            //функция, отвечающая за установку языка, птицы, темы при запуске
+            //функция, отвечающая за установку языка, птицы, темы, звуков при запуске
             void SetData()
             {
                 switch (LanguageValue)
@@ -270,10 +305,12 @@ namespace Butymov.Project2020
                     case 1:
                         ImageTheBird = ImageRedBird;
                         ImageSettingsTheBird = ImageSettingsRedBird;
+                        ImageWindow2TheBird = ImageWindow2RedBird;
                         break;
                     case 2:
                         ImageTheBird = ImageBlueBird;
                         ImageSettingsTheBird = ImageSettingsBlueBird;
+                        ImageWindow2TheBird = ImageWindow2BlueBird;
                         break;
                 }
                 switch (ThemeValue)
@@ -291,8 +328,17 @@ namespace Butymov.Project2020
                         ImageThemeIcon = ImageThemeIconMoon;
                         break;
                 }
+                switch(SoundsValue)
+                {
+                    case 1:
+                        ImageSounds = ImageSoundsOn;
+                        break;
+                    case 0:
+                        ImageSounds = ImageSoundsOff;
+                        break;
+                }
             }
-            //функция, отвечающая за переписывание файла с данными (вызывается при нажатии на кнопку Language, Bird, Theme)
+            //функция, отвечающая за переписывание файла с данными (вызывается при нажатии на кнопку Language, Bird, Theme, Sounds)
             void WriteNewDataToFile()
             {
                 var UDFile = File.Create(UDPath);
@@ -304,6 +350,7 @@ namespace Butymov.Project2020
                 ValueFordata += LanguageValue;
                 ValueFordata += BirdValue;
                 ValueFordata += ThemeValue;
+                ValueFordata += SoundsValue;
                 File.AppendAllText(UDPath, ValueFordata);
             }
             //функция, отвечающая за проверку существования файла
@@ -313,7 +360,7 @@ namespace Butymov.Project2020
                 {
                     var UDFile = File.Create(UDPath);
                     UDFile.Close();
-                    const string ValueForDataIfUDFileDoNotExist = "111";
+                    const string ValueForDataIfUDFileDoNotExist = "1111";
                     File.AppendAllText(UDPath, ValueForDataIfUDFileDoNotExist);
                     MessageBox.Show("Data file did not exist, settings have been reset.", "Warning.");
                     return false;
@@ -345,7 +392,59 @@ namespace Butymov.Project2020
 
             //размеры окна
             this.WindowState = WindowState.Maximized;
+            /*//фон на четвертом окне
+            SpecialForImageWindow4LightBackground = new Image();
+            SpecialForImageWindow4LightBackground.Width = System.Convert.ToInt16(Width * 1.3);
+            SpecialForBitmapImageWindow4LightBackground = new BitmapImage();
+            SpecialForBitmapImageWindow4LightBackground.BeginInit();
+            SpecialForBitmapImageWindow4LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackgroundForAll.png");
+            SpecialForBitmapImageWindow4LightBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
+            SpecialForBitmapImageWindow4LightBackground.EndInit();
+            SpecialForImageWindow4LightBackground.Source = SpecialForBitmapImageWindow4LightBackground;
+            SpecialForImageWindow4LightBackground.Margin = new Thickness(0);
 
+            SpecialForImageWindow4DarkBackground = new Image();
+            SpecialForImageWindow4DarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
+            SpecialForBitmapImageWindow4DarkBackground = new BitmapImage();
+            SpecialForBitmapImageWindow4DarkBackground.BeginInit();
+            SpecialForBitmapImageWindow4DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackgroundForAll.png");
+            SpecialForBitmapImageWindow4DarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
+            SpecialForBitmapImageWindow4DarkBackground.EndInit();
+            SpecialForImageWindow4DarkBackground.Source = SpecialForBitmapImageWindow4DarkBackground;
+            SpecialForImageWindow4DarkBackground.Margin = new Thickness(0);*/
+            SpecialForBitmapImageWindow4LightBackground = new BitmapImage();
+            SpecialForBitmapImageWindow4LightBackground.BeginInit();
+            SpecialForBitmapImageWindow4LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackgroundForAll.png");
+            SpecialForBitmapImageWindow4LightBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
+            SpecialForBitmapImageWindow4LightBackground.EndInit();
+            SpecialForBitmapImageWindow4DarkBackground = new BitmapImage();
+            SpecialForBitmapImageWindow4DarkBackground.BeginInit();
+            SpecialForBitmapImageWindow4DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackgroundForAll.png");
+            SpecialForBitmapImageWindow4DarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
+            SpecialForBitmapImageWindow4DarkBackground.EndInit();
+            //иконки звуков
+            ImageSounds = new Image();
+            ImageSounds.Width = WidthForElements;
+            //звук включен
+            ImageSoundsOn = new Image();
+            ImageSoundsOn.Width = WidthForElements;
+            BitmapImageSoundsOn = new BitmapImage();
+            BitmapImageSoundsOn.BeginInit();
+            BitmapImageSoundsOn.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\SoundsOn.png");
+            BitmapImageSoundsOn.DecodePixelWidth = WidthForElements;
+            BitmapImageSoundsOn.EndInit();
+            ImageSoundsOn.Source = BitmapImageSoundsOn;
+            ImageSoundsOn.Margin = new Thickness(0);
+            //звук выключен
+            ImageSoundsOff = new Image();
+            ImageSoundsOff.Width = WidthForElements;
+            BitmapImageSoundsOff = new BitmapImage();
+            BitmapImageSoundsOff.BeginInit();
+            BitmapImageSoundsOff.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\SoundsOff.png");
+            BitmapImageSoundsOff.DecodePixelWidth = WidthForElements;
+            BitmapImageSoundsOff.EndInit();
+            ImageSoundsOff.Source = BitmapImageSoundsOff;
+            ImageSoundsOff.Margin = new Thickness(0);
             //птицы для второго окна
             ImageWindow2TheBird = new Image();
             ImageWindow2TheBird.Width = WidthForElements;
@@ -457,7 +556,7 @@ namespace Butymov.Project2020
             BitmapImageWindow2DarkBackground.EndInit();
             ImageWindow2DarkBackground.Source = BitmapImageWindow2DarkBackground;
             ImageWindow2DarkBackground.Margin = new Thickness(0);
-
+            
             //иконка темы
             ImageThemeIcon = new Image();
             ImageThemeIcon.Width = WidthForElements;
@@ -590,7 +689,335 @@ namespace Butymov.Project2020
             ImageWindowSettingsBackground = new Image();
             ImageWindowSettingsBackground.Width = System.Convert.ToInt16(Width * 1.3);
             ImageWindowSettingsBackground = ImageBackgroundForAll;
+            //клик по кнопке Next на третьем экране 
+            //*была неожиданная ошибка, приводившая к обработке событий кол-во раз, равное времени таймера птицы в миллисекундах
+            void Window3NextClicked(object sender, RoutedEventArgs e)
+            {
+                //*устанавливаем пометку в событие, что оно уже обработано, запрещаем последующую обработку в дереве
+                e.Handled = true;
+                Window3Canvas.Children.Clear();
+                PlaySound(SoundPlayerButtonClick);
+                
+                CurrentDate = new DateTime();
+                CurrentDate = DateTime.Now;
+                //объявление и параметры кнопки Main menu на четвертом экране
+                Button Window4MainMenu = new Button();
+                Window4TextBlockMainMenu = new TextBlock();
+                Window4TextBlockMainMenu.FontSize = TextBlocksFontSize;
+                Window4TextBlockMainMenu.TextAlignment = TextAlignment.Center;
+                switch (LanguageValue)
+                {
+                    case 1:
+                        Window4TextBlockMainMenu.Inlines.Add(new Run("MAIN MENU"));
+                        break;
+                    case 2:
+                        Window4TextBlockMainMenu.Inlines.Add(new Run("ГЛАВНОЕ МЕНЮ"));
+                        break;
+                }
+                Window4MainMenu.Content = Window4TextBlockMainMenu;
+                Window4MainMenu.Margin = new Thickness(ButtonsMargin);
+                Window4MainMenu.Height = ButtonsHeight;
+                Window4MainMenu.Width = ButtonsWidth;
+                //объявление и параметры кнопки Save на четвертом экране
+                Button Window4Save = new Button();
+                Window4TextBlockSave = new TextBlock();
+                Window4TextBlockSave.FontSize = TextBlocksFontSize;
+                Window4TextBlockSave.TextAlignment = TextAlignment.Center;
+                switch (LanguageValue)
+                {
+                    case 1:
+                        Window4TextBlockSave.Inlines.Add(new Run("SAVE"));
+                        break;
+                    case 2:
+                        Window4TextBlockSave.Inlines.Add(new Run("СОХРАНИТЬ"));
+                        break;
+                }
+                Window4Save.Content = Window4TextBlockSave;
+                Window4Save.Margin = new Thickness(ButtonsMargin);
+                Window4Save.Height = ButtonsHeight;
+                Window4Save.Width = ButtonsWidth;
+                //объявление и парметры Grid для кнопок на четвертом экране
+                Window4GridForButtons = new Grid();
+                Window4GridForButtons.RowDefinitions.Add(new RowDefinition());
+                Window4GridForButtons.ColumnDefinitions.Add(new ColumnDefinition());
+                Window4GridForButtons.ColumnDefinitions.Add(new ColumnDefinition());
+                Window4GridForButtons.Children.Add(Window4Save);
+                Grid.SetRow(Window4Save, 0);
+                Grid.SetColumn(Window4Save, 0);
+                Window4GridForButtons.Children.Add(Window4MainMenu);
+                Grid.SetRow(Window4MainMenu, 0);
+                Grid.SetColumn(Window4MainMenu, 1);
+                Window4GridForButtons.Margin = new Thickness(WindowGridMargin);
+                //первый столбец таблицы результатов
+                TextBlock Window4Range = new TextBlock();
+                Window4Range.FontSize = TextBlocksFontSize;
+                Window4Range.TextAlignment = TextAlignment.Center;
+                TextBlock Window4FlightTime = new TextBlock();
+                Window4FlightTime.FontSize = TextBlocksFontSize;
+                Window4FlightTime.TextAlignment = TextAlignment.Center;
+                TextBlock Window4HighestPoint = new TextBlock();
+                Window4HighestPoint.FontSize = TextBlocksFontSize;
+                Window4HighestPoint.TextAlignment = TextAlignment.Center;
+                TextBlock Window4InitialAngle = new TextBlock();
+                Window4InitialAngle.FontSize = TextBlocksFontSize;
+                Window4InitialAngle.TextAlignment = TextAlignment.Center;
+                TextBlock Window4InitialSpeed = new TextBlock();
+                Window4InitialSpeed.FontSize = TextBlocksFontSize;
+                Window4InitialSpeed.TextAlignment = TextAlignment.Center;
+                TextBlock Window4ScoreName = new TextBlock();
+                Window4ScoreName.FontSize = TextBlocksFontSize;
+                Window4ScoreName.TextAlignment = TextAlignment.Center;
+                TextBlock Window4Tries = new TextBlock();
+                Window4Tries.FontSize = TextBlocksFontSize;
+                Window4Tries.TextAlignment = TextAlignment.Center;
+                switch (LanguageValue)
+                {
+                    case 1:
+                        Window4ScoreName.Inlines.Add("RESULTS");
+                        Window4Range.Inlines.Add(new Run("Range: "));
+                        Window4FlightTime.Inlines.Add(new Run("Flight time: "));
+                        Window4HighestPoint.Inlines.Add(new Run("Highest point: "));
+                        Window4InitialSpeed.Inlines.Add(new Run("Initial speed: "));
+                        Window4InitialAngle.Inlines.Add(new Run("Initial angle: "));
+                        Window4Tries.Inlines.Add(new Run("Moves to win: "));
+                        break;
+                    case 2:
+                        Window4ScoreName.Inlines.Add("РЕЗУЛЬТАТЫ");
+                        Window4Range.Inlines.Add(new Run("Дистанция: "));
+                        Window4FlightTime.Inlines.Add(new Run("Время полёта: "));
+                        Window4HighestPoint.Inlines.Add(new Run("Наивысшая точка: "));
+                        Window4InitialSpeed.Inlines.Add(new Run("Начальная скорость: "));
+                        Window4InitialAngle.Inlines.Add(new Run("Начальный угол: "));
+                        Window4Tries.Inlines.Add(new Run("Попыток до победы: "));
+                        break;
+                }
+                //второй столбец таблицы результатов
+                TextBlock Window4RangeValue = new TextBlock();
+                Window4RangeValue.FontSize = TextBlocksFontSize;
+                Window4RangeValue.TextAlignment = TextAlignment.Center;
+                Window4RangeValue.Inlines.Add(new Run(System.Convert.ToString(Math.Round(MaxLenght, 2))));
+                TextBlock Window4FlightTimeValue = new TextBlock();
+                Window4FlightTimeValue.FontSize = TextBlocksFontSize;
+                Window4FlightTimeValue.TextAlignment = TextAlignment.Center;
+                Window4FlightTimeValue.Inlines.Add(new Run(System.Convert.ToString(LastPoint * 10 / 1000)));
+                TextBlock Window4HighestPointValue = new TextBlock();
+                Window4HighestPointValue.FontSize = TextBlocksFontSize;
+                Window4HighestPointValue.TextAlignment = TextAlignment.Center;
+                Window4HighestPointValue.Inlines.Add(new Run(System.Convert.ToString(Math.Round(MaxHeight, 2))));
+                TextBlock Window4InitialAngleValue = new TextBlock();
+                Window4InitialAngleValue.FontSize = TextBlocksFontSize;
+                Window4InitialAngleValue.TextAlignment = TextAlignment.Center;
+                Window4InitialAngleValue.Inlines.Add(new Run(System.Convert.ToString(Window2Angle.Text)));
+                TextBlock Window4InitialSpeedValue = new TextBlock();
+                Window4InitialSpeedValue.FontSize = TextBlocksFontSize;
+                Window4InitialSpeedValue.TextAlignment = TextAlignment.Center;
+                Window4InitialSpeedValue.Inlines.Add(new Run(System.Convert.ToString(Window2InitialVelocity.Text)));
+                TextBlock Window4TriesValue = new TextBlock();
+                Window4TriesValue.FontSize = TextBlocksFontSize;
+                Window4TriesValue.TextAlignment = TextAlignment.Center;
+                switch (IsWin)
+                {
+                    case 0:
+                        switch (LanguageValue)
+                        {
+                            case 1:
+                                Window4TriesValue.Inlines.Add(new Run("Did not win"));
+                                break;
+                            case 2:
+                                Window4TriesValue.Inlines.Add(new Run("Не выиграл"));
+                                break;
+                        }
+                        break;
+                    case 1:
+                        Window4TriesValue.Inlines.Add(new Run(System.Convert.ToString(TriesCounter)));
+                        break;
+                }
+                //объявляение и параметры Grid для таблицы результатов на четвертом экране
+                Grid Window4Grid = new Grid();
+                Window4Grid.RowDefinitions.Add(new RowDefinition());
+                Window4Grid.RowDefinitions.Add(new RowDefinition());
+                Window4Grid.RowDefinitions.Add(new RowDefinition());
+                Window4Grid.RowDefinitions.Add(new RowDefinition());
+                Window4Grid.RowDefinitions.Add(new RowDefinition());
+                Window4Grid.RowDefinitions.Add(new RowDefinition());
+                Window4Grid.RowDefinitions.Add(new RowDefinition());
+                Window4Grid.ColumnDefinitions.Add(new ColumnDefinition());
+                Window4Grid.ColumnDefinitions.Add(new ColumnDefinition());
+                Window4Grid.Children.Add(Window4Range);
+                Grid.SetRow(Window4Range, 0);
+                Grid.SetColumn(Window4Range, 0);
+                Window4Grid.Children.Add(Window4FlightTime);
+                Grid.SetRow(Window4FlightTime, 1);
+                Grid.SetColumn(Window4FlightTime, 0);
+                Window4Grid.Children.Add(Window4HighestPoint);
+                Grid.SetRow(Window4HighestPoint, 2);
+                Grid.SetColumn(Window4HighestPoint, 0);
+                Window4Grid.Children.Add(Window4InitialAngle);
+                Grid.SetRow(Window4InitialAngle, 3);
+                Grid.SetColumn(Window4InitialAngle, 0);
+                Window4Grid.Children.Add(Window4InitialSpeed);
+                Grid.SetRow(Window4InitialSpeed, 4);
+                Grid.SetColumn(Window4InitialSpeed, 0);
+                Window4Grid.Children.Add(Window4Tries);
+                Grid.SetRow(Window4Tries, 5);
+                Grid.SetColumn(Window4Tries, 0);
+                Window4Grid.Children.Add(Window4RangeValue);
+                Grid.SetRow(Window4RangeValue, 0);
+                Grid.SetColumn(Window4RangeValue, 1);
+                Window4Grid.Children.Add(Window4FlightTimeValue);
+                Grid.SetRow(Window4FlightTimeValue, 1);
+                Grid.SetColumn(Window4FlightTimeValue, 1);
+                Window4Grid.Children.Add(Window4HighestPointValue);
+                Grid.SetRow(Window4HighestPointValue, 2);
+                Grid.SetColumn(Window4HighestPointValue, 1);
+                Window4Grid.Children.Add(Window4InitialAngleValue);
+                Grid.SetRow(Window4InitialAngleValue, 3);
+                Grid.SetColumn(Window4InitialAngleValue, 1);
+                Window4Grid.Children.Add(Window4InitialSpeedValue);
+                Grid.SetRow(Window4InitialSpeedValue, 4);
+                Grid.SetColumn(Window4InitialSpeedValue, 1);
+                Window4Grid.Children.Add(Window4TriesValue);
+                Grid.SetRow(Window4TriesValue, 5);
+                Grid.SetColumn(Window4TriesValue, 1);
+                Window4Grid.Margin = new Thickness(WindowGridMargin);
+                //объявление и параметры прямоугольника, имитирующего таблицу результатов
+                Window4Score = new Rectangle();
+                Window4Score.Stroke = System.Windows.Media.Brushes.Black;
+                Window4Score.Fill = System.Windows.Media.Brushes.WhiteSmoke;
+                Window4Score.Height = Height / 3.84;
+                Window4Score.Width = Width / 2.732;
+                //фон на четвертом окне
+                SpecialForImageWindow4LightBackground = new Image();
+                SpecialForImageWindow4LightBackground.Width = System.Convert.ToInt16(Width * 1.3);
+                /*SpecialForBitmapImageWindow4LightBackground = new BitmapImage();
+                SpecialForBitmapImageWindow4LightBackground.BeginInit();
+                SpecialForBitmapImageWindow4LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackgroundForAll.png");
+                SpecialForBitmapImageWindow4LightBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
+                SpecialForBitmapImageWindow4LightBackground.EndInit();*/
+                SpecialForImageWindow4LightBackground.Source = SpecialForBitmapImageWindow4LightBackground;
+                SpecialForImageWindow4LightBackground.Margin = new Thickness(0);
 
+                SpecialForImageWindow4DarkBackground = new Image();
+                SpecialForImageWindow4DarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
+                /*SpecialForBitmapImageWindow4DarkBackground = new BitmapImage();
+                SpecialForBitmapImageWindow4DarkBackground.BeginInit();
+                SpecialForBitmapImageWindow4DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackgroundForAll.png");
+                SpecialForBitmapImageWindow4DarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
+                SpecialForBitmapImageWindow4DarkBackground.EndInit();*/
+                SpecialForImageWindow4DarkBackground.Source = SpecialForBitmapImageWindow4DarkBackground;
+                SpecialForImageWindow4DarkBackground.Margin = new Thickness(0);
+                //четертое окно
+                ImageWindow4Background = new Image();
+                ImageWindow4Background.Width = System.Convert.ToInt16(Width * 1.3);
+                switch (ThemeValue)
+                {
+                    case 1:
+                        ImageWindow4Background = SpecialForImageWindow4LightBackground;
+                        break;
+                    case 2:
+                        ImageWindow4Background = SpecialForImageWindow4DarkBackground;
+                        break;
+                }
+                //объявление и параметры StackPanel на четвертом экране
+                Window4Stack = new StackPanel();
+                Window4Stack.Children.Add(Window4Grid);
+                //объявление и параметры Canvas на четвертом экране
+                Window4Canvas = new Canvas();
+                Window4Canvas.Height = SystemParameters.VirtualScreenHeight;
+                Window4Canvas.Width = SystemParameters.VirtualScreenWidth;
+                Window4Canvas.Children.Add(ImageWindow4Background);
+                Window4Canvas.Children.Add(Window4Score);
+                Window4Canvas.Children.Add(Window4Stack);
+                Window4Canvas.Children.Add(Window4GridForButtons);
+                Window4Canvas.Children.Add(Window4ScoreName);
+                Content = Window4Canvas;
+                Canvas.SetLeft(Window4ScoreName, (Width / 2.14));
+                Canvas.SetTop(Window4ScoreName, (Height / 4.74));
+                Canvas.SetLeft(Window4GridForButtons, (Width / 7.2));
+                Canvas.SetTop(Window4GridForButtons, (Height / 3));
+                Canvas.SetLeft(Window4Score, (Width / 3.15));
+                Canvas.SetTop(Window4Score, (Height / 4));
+                switch (LanguageValue)
+                {
+                    case 1:
+                        Canvas.SetLeft(Window4Stack, (Width / 4));
+                        Canvas.SetTop(Window4Stack, (Height / (-190.09)));
+                        break;
+                    case 2:
+                        Canvas.SetLeft(Window4Stack, (Width / 4.5));
+                        Canvas.SetTop(Window4Stack, (Height / (-190.09)));
+                        break;
+                }
+                //клик по кнопке MainMenu на четвертом экране
+                Window4MainMenu.Click += delegate
+                {
+                    PlaySound(SoundPlayerButtonClick);
+                    Window4Canvas.Children.Clear();
+                    Window1Canvas.Children.Add(ImageWindow1Background);
+                    Window1Canvas.Children.Add(Window1Stack);
+                    Content = Window1Canvas;
+                    TriesCounter = 0;
+                    IsWin = 0;
+                };
+                //клик по кнопке Save на четвертом экране
+                Window4Save.Click += delegate
+                {
+                    PlaySound(SoundPlayerButtonClick);
+                    if (LanguageValue == 1)
+                    {
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(CurrentDate) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Range: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxLenght) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Flight time: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(LastPoint * 10 / 1000) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Highest point: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxHeight) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Initial angle: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2Angle.Text) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Initial speed: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2InitialVelocity.Text) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Moves to win: ");
+                        switch (IsWin)
+                        {
+                            case 0:
+                                File.AppendAllText("Hit the basket.Data.txt", "Did not win" + Environment.NewLine);
+                                break;
+                            case 1:
+                                File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(TriesCounter) + Environment.NewLine);
+                                break;
+                        }
+                        File.AppendAllText("Hit the basket.Data.txt", Environment.NewLine);
+                        MessageBox.Show("Your data has been saved!", "Complete.");
+                    }
+                    if (LanguageValue == 2)
+                    {
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(CurrentDate) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Дистанция: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxLenght) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Время полёта: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(LastPoint * 10 / 1000) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Наивысшая точка: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxHeight) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Начальный угол: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2Angle.Text) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Начальная скорость: ");
+                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2InitialVelocity.Text) + Environment.NewLine);
+                        File.AppendAllText("Hit the basket.Data.txt", "Попыток до победы: ");
+                        switch (IsWin)
+                        {
+                            case 0:
+                                File.AppendAllText("Hit the basket.Data.txt", "Не выиграл" + Environment.NewLine);
+                                break;
+                            case 1:
+                                File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(TriesCounter) + Environment.NewLine);
+                                break;
+                        }
+                        File.AppendAllText("Hit the basket.Data.txt", Environment.NewLine);
+                        MessageBox.Show("Ваши данные сохранены!", "Успешно.");
+                    }
+                };
+            }
+            
             //функция, отвечающая за случайное появление корзины
             void RandomizeBasket()
             {
@@ -611,6 +1038,40 @@ namespace Butymov.Project2020
                 else
                 {
                     return false;
+                }
+            }
+            //функция, отвечающая за смену значения звуков
+            void ChangeValueSounds()
+            {
+                switch (SoundsValue)
+                {
+                    case 0:
+                        SoundsValue = 1;
+                        break;
+                    case 1:
+                        SoundsValue = 0;
+                        break;
+                }
+            }
+            //функция, отвечающая за смену режима звуков
+            void ChangeSounds()
+            {
+                switch(SoundsValue)
+                {
+                    case 0:
+                        ImageSounds = ImageSoundsOff;
+                        break;
+                    case 1:
+                        ImageSounds = ImageSoundsOn;
+                        break;
+                }
+            }
+            //функция, отвечающая за проигрывание звука
+            void PlaySound(SoundPlayer PS)
+            {
+                if (SoundsValue == 1)
+                {
+                    PS.Play();
                 }
             }
             //функция, отвечающая за смену знаечния темы
@@ -682,6 +1143,8 @@ namespace Butymov.Project2020
                         WindowSettingsTextBlockLanguage.Inlines.Add(new Run("LANGUAGE"));
                         WindowSettingsTextBlockTheme.Inlines.Clear();
                         WindowSettingsTextBlockTheme.Inlines.Add(new Run("THEME"));
+                        WindowSettingsTextBlockSounds.Inlines.Clear();
+                        WindowSettingsTextBlockSounds.Inlines.Add(new Run("SOUNDS"));
                         break;
                     case 2:
                         ImageWinScreen = ImageRussianWinScreen;
@@ -700,6 +1163,8 @@ namespace Butymov.Project2020
                         WindowSettingsTextBlockLanguage.Inlines.Add(new Run("ЯЗЫК"));
                         WindowSettingsTextBlockTheme.Inlines.Clear();
                         WindowSettingsTextBlockTheme.Inlines.Add(new Run("ТЕМА"));
+                        WindowSettingsTextBlockSounds.Inlines.Clear();
+                        WindowSettingsTextBlockSounds.Inlines.Add(new Run("ЗВУКИ"));
                         break;
                 }
             }
@@ -824,15 +1289,33 @@ namespace Butymov.Project2020
             Window1Exit.PreviewMouseLeftButtonDown += Window1ExitClicked;
             void Window1ExitClicked(object sender, MouseButtonEventArgs e)
             {
-                SoundPlayerButtonClick.Play();
+                PlaySound(SoundPlayerButtonClick);
                 Close();
             }
             //клик по кнопке Settings на первом экране
             Window1Settings.PreviewMouseLeftButtonDown += Window1SettingsClicked;
             void Window1SettingsClicked(object sender, MouseButtonEventArgs e)
             {
-                SoundPlayerButtonClick.Play();
+                PlaySound(SoundPlayerButtonClick);
                 Window1Canvas.Children.Clear();
+                //объявление и параметры Sounds кнопки на экране настроек
+                Button WindowSettingsSounds = new Button();
+                WindowSettingsTextBlockSounds = new TextBlock();
+                WindowSettingsTextBlockSounds.FontSize = TextBlocksFontSize;
+                WindowSettingsTextBlockSounds.TextAlignment = TextAlignment.Center;
+                switch (LanguageValue)
+                {
+                    case 1:
+                        WindowSettingsTextBlockSounds.Inlines.Add(new Run("SOUNDS"));
+                        break;
+                    case 2:
+                        WindowSettingsTextBlockSounds.Inlines.Add(new Run("ЗВУКИ"));
+                        break;
+                }
+                WindowSettingsSounds.Content = WindowSettingsTextBlockSounds;
+                WindowSettingsSounds.Margin = new Thickness(ButtonsMargin * 1.5);
+                WindowSettingsSounds.Height = ButtonsHeight;
+                WindowSettingsSounds.Width = ButtonsWidth;
                 //объявление и параметры кнопки Back на экране настроек
                 Button WindowSettingsBack = new Button();
                 WindowSettingsTextBlockBack = new TextBlock();
@@ -911,8 +1394,10 @@ namespace Butymov.Project2020
                 Grid WindowSettingsGrid = new Grid();
                 WindowSettingsGrid.RowDefinitions.Add(new RowDefinition());
                 WindowSettingsGrid.RowDefinitions.Add(new RowDefinition());
+                WindowSettingsGrid.RowDefinitions.Add(new RowDefinition());
                 WindowSettingsGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 WindowSettingsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
                 WindowSettingsGrid.Children.Add(WindowSettingsBird);
                 Grid.SetRow(WindowSettingsBird, 0);
                 Grid.SetColumn(WindowSettingsBird, 0);
@@ -922,11 +1407,16 @@ namespace Butymov.Project2020
                 WindowSettingsGrid.Children.Add(WindowSettingsTheme);
                 Grid.SetRow(WindowSettingsTheme, 1);
                 Grid.SetColumn(WindowSettingsTheme, 0);
+                WindowSettingsGrid.Children.Add(WindowSettingsSounds);
+                Grid.SetRow(WindowSettingsSounds, 1);
+                Grid.SetColumn(WindowSettingsSounds, 1);
                 WindowSettingsGrid.Children.Add(WindowSettingsBack);
-                Grid.SetRow(WindowSettingsBack, 1);
+                Grid.SetRow(WindowSettingsBack, 2);
                 Grid.SetColumn(WindowSettingsBack, 1);
                 WindowSettingsStack.Children.Add(WindowSettingsGrid);
 
+                
+                
                 //объявление и параметры Canvas на экране настроек
                 WindowSettingsCanvas = new Canvas();
                 WindowSettingsCanvas.Height = SystemParameters.VirtualScreenHeight;
@@ -935,76 +1425,95 @@ namespace Butymov.Project2020
                 WindowSettingsCanvas.Children.Add(ImageTheFlag);
                 WindowSettingsCanvas.Children.Add(ImageSettingsTheBird);
                 WindowSettingsCanvas.Children.Add(ImageThemeIcon);
+                WindowSettingsCanvas.Children.Add(ImageSounds);
                 WindowSettingsCanvas.Children.Add(WindowSettingsStack);
 
                 Canvas.SetLeft(WindowSettingsStack, (Width / 4.05));
-                Canvas.SetTop(WindowSettingsStack, (Height / 4));
+                Canvas.SetTop(WindowSettingsStack, (Height / 10)); 
                 Canvas.SetLeft(ImageTheFlag, (Width / 2.28));
-                Canvas.SetTop(ImageTheFlag, (Height / 4.34));
+                Canvas.SetTop(ImageTheFlag, (Height / 12.3));
                 Canvas.SetLeft(ImageSettingsTheBird, (Width / 5.59));
-                Canvas.SetTop(ImageSettingsTheBird, (Height / 4.34));
+                Canvas.SetTop(ImageSettingsTheBird, (Height / 12));
                 Canvas.SetLeft(ImageThemeIcon, (Width / 5.59));
-                Canvas.SetTop(ImageThemeIcon, (Height / 2.03));
+                Canvas.SetTop(ImageThemeIcon, (Height / 2.9));
+                Canvas.SetLeft(ImageSounds, (Width / 2.28));
+                Canvas.SetTop(ImageSounds, (Height / 2.9));
                 Content = WindowSettingsCanvas;
                 //клик по кнопке Back на экране настроек
                 WindowSettingsBack.Click += delegate
                 {
-                    SoundPlayerButtonClick.Play();
+                    PlaySound(SoundPlayerButtonClick);
                     Content = Window1Canvas;
                     WindowSettingsCanvas.Children.Clear();
                     Window1Canvas.Children.Add(ImageWindow1Background);
                     Window1Canvas.Children.Add(Window1Stack);
                 };
+                //клик по кнопке Sounds на экране настроек
+                WindowSettingsSounds.Click += delegate
+                {
+                    PlaySound(SoundPlayerButtonClick);
+                    ChangeValueSounds();
+                    WindowSettingsCanvas.Children.Clear();
+                    ChangeSounds();
+                    WindowSettingsCanvas.Children.Add(ImageWindowSettingsBackground);
+                    WindowSettingsCanvas.Children.Add(ImageThemeIcon);
+                    WindowSettingsCanvas.Children.Add(ImageTheFlag);
+                    WindowSettingsCanvas.Children.Add(ImageSounds);
+                    WindowSettingsCanvas.Children.Add(ImageSettingsTheBird);
+                    WindowSettingsCanvas.Children.Add(WindowSettingsStack);
+                    Canvas.SetLeft(ImageSounds, (Width / 2.28));
+                    Canvas.SetTop(ImageSounds, (Height / 2.9));
+                    WriteNewDataToFile();
+                };
                 //клик по кнопке Theme на экране настроек
                 WindowSettingsTheme.Click += delegate
                 {
-                    SoundPlayerButtonClick.Play();
+                    PlaySound(SoundPlayerButtonClick);
                     ChangeValueTheme();
                     WindowSettingsCanvas.Children.Clear();
                     ChangeTheme();
                     WindowSettingsCanvas.Children.Add(ImageWindowSettingsBackground);
                     WindowSettingsCanvas.Children.Add(ImageThemeIcon);
                     WindowSettingsCanvas.Children.Add(ImageTheFlag);
+                    WindowSettingsCanvas.Children.Add(ImageSounds);
                     WindowSettingsCanvas.Children.Add(ImageSettingsTheBird);
                     WindowSettingsCanvas.Children.Add(WindowSettingsStack);
                     Canvas.SetLeft(ImageThemeIcon, (Width / 5.59));
-                    Canvas.SetTop(ImageThemeIcon, (Height / 2.03));
+                    Canvas.SetTop(ImageThemeIcon, (Height / 2.9));
                     WriteNewDataToFile();
-
-
                 };
                 //клик по кнопке Bird на экране настроек
                 WindowSettingsBird.Click += delegate
                 {
-                    SoundPlayerButtonClick.Play();
+                    PlaySound(SoundPlayerButtonClick);
                     ChangeValueTheBird();
                     WindowSettingsCanvas.Children.Clear();
                     ChangeTheBird();
                     WindowSettingsCanvas.Children.Add(ImageWindowSettingsBackground);
                     WindowSettingsCanvas.Children.Add(ImageThemeIcon);
                     WindowSettingsCanvas.Children.Add(ImageTheFlag);
+                    WindowSettingsCanvas.Children.Add(ImageSounds);
                     WindowSettingsCanvas.Children.Add(ImageSettingsTheBird);
                     WindowSettingsCanvas.Children.Add(WindowSettingsStack);
                     Canvas.SetLeft(ImageSettingsTheBird, (Width / 5.59));
-                    Canvas.SetTop(ImageSettingsTheBird, (Height / 4.34));
+                    Canvas.SetTop(ImageSettingsTheBird, (Height / 12));
                     WriteNewDataToFile();
-
-
                 };
                 //клик по кнопке Language на экране настроек
                 WindowSettingsLanguage.Click += delegate
                 {
-                    SoundPlayerButtonClick.Play();
+                    PlaySound(SoundPlayerButtonClick);
                     ChangeValueLanguage();
                     WindowSettingsCanvas.Children.Clear();
                     ChangeLanguage();
                     WindowSettingsCanvas.Children.Add(ImageWindowSettingsBackground);
                     WindowSettingsCanvas.Children.Add(ImageThemeIcon);
                     WindowSettingsCanvas.Children.Add(ImageTheFlag);
+                    WindowSettingsCanvas.Children.Add(ImageSounds);
                     WindowSettingsCanvas.Children.Add(ImageSettingsTheBird);
                     WindowSettingsCanvas.Children.Add(WindowSettingsStack);
                     Canvas.SetLeft(ImageTheFlag, (Width / 2.28));
-                    Canvas.SetTop(ImageTheFlag, (Height / 4.34));
+                    Canvas.SetTop(ImageTheFlag, (Height / 12.3));
                     WriteNewDataToFile();
 
                 };
@@ -1013,7 +1522,7 @@ namespace Butymov.Project2020
             Window1Play.PreviewMouseLeftButtonDown += Window1PlayClicked;
             void Window1PlayClicked(object sender, MouseButtonEventArgs e)
             {
-                SoundPlayerButtonClick.Play();
+                PlaySound(SoundPlayerButtonClick);
                 RandomizeBasket();
                 Window1Canvas.Children.Clear();
                 //объявление и параметры кнопки Start на втором экране
@@ -1132,7 +1641,7 @@ namespace Butymov.Project2020
                 Window2MainMenu.PreviewMouseLeftButtonDown += Window2MainMenuClicked;
                 void Window2MainMenuClicked(object sender2, MouseButtonEventArgs e2) //клик по кнопке Main menu
                 {
-                    SoundPlayerButtonClick.Play();
+                    PlaySound(SoundPlayerButtonClick);
                     Content = Window1Canvas;
                     Window2Canvas.Children.Clear();
                     Window1Canvas.Children.Add(ImageWindow1Background);
@@ -1143,15 +1652,15 @@ namespace Butymov.Project2020
                 Window2Start.PreviewMouseLeftButtonDown += Window2StartClicked;
                 void Window2StartClicked(object sender2, MouseButtonEventArgs e2)
                 {
-                    SoundPlayerButtonClick.Play();
+                    PlaySound(SoundPlayerButtonClick);
                     //обработка входных данных
                     if (IsDataCorrect(Window2InitialVelocity.Text, Window2Angle.Text) == true)
                     {
-                        SoundPlayerStartGame.Play();
+                        PlaySound(SoundPlayerStartGame);
                         TriesCounter++;
                         Window2Canvas.Children.Clear();
-                        double MaxHeight = 0;
-                        double MaxLenght = 0;
+                        MaxHeight = 0;
+                        MaxLenght = 0;
                         //объявление и параметры кнопки Restart на третьем экране
                         Button Window3Restart = new Button();
                         Window3TextBlockRestart = new TextBlock();
@@ -1230,7 +1739,7 @@ namespace Butymov.Project2020
                         //клик по кнопке Back на третьем экране
                         Window3Back.Click += delegate
                         {
-                            SoundPlayerButtonClick.Play();
+                            PlaySound(SoundPlayerButtonClick);
                             LastPoint = 0;
                             MaxHeight = 0;
                             MaxLenght = 0;
@@ -1251,7 +1760,7 @@ namespace Butymov.Project2020
                         //клик по кнопке Restart на третьем экране
                         Window3Restart.Click += delegate
                         {
-                            SoundPlayerButtonClick.Play();
+                            PlaySound(SoundPlayerButtonClick);
                             Window3Canvas.Children.Clear();
                             Window3Canvas.Children.Add(ImageBackground);
                             if (GoalCheck(MaxLenght) == true)
@@ -1369,7 +1878,7 @@ namespace Butymov.Project2020
                             T++;
                             if (T == Coordinates.Length - 40)
                             {
-                                SoundPlayerFalling.Play();
+                                PlaySound(SoundPlayerFalling);
                             }
                             //по окночанию анимации
                             if (T == Coordinates.Length)
@@ -1400,334 +1909,12 @@ namespace Butymov.Project2020
                                             break;
                                     }
                                     IsWin = 1;
-                                    SoundPlayerWinGame.Play();
+                                    PlaySound(SoundPlayerWinGame);
                                 }
                                 Window3Canvas.Children.Add(Window3Stack);
                             }
                             //клик по кнопке Next на третьем экране
-                            Window3Next.Click += delegate
-                            {
-                                SoundPlayerButtonClick.Play();
-                                Window3Canvas.Children.Clear();
-                                SpecialForImageWindow4LightBackground = new Image();
-                                SpecialForImageWindow4LightBackground.Width = System.Convert.ToInt16(Width * 1.3);
-                                SpecialForBitmapImageWindow4LightBackground = new BitmapImage();
-                                SpecialForBitmapImageWindow4LightBackground.BeginInit();
-                                SpecialForBitmapImageWindow4LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackgroundForAll.png");
-                                SpecialForBitmapImageWindow4LightBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
-                                SpecialForBitmapImageWindow4LightBackground.EndInit();
-                                SpecialForImageWindow4LightBackground.Source = SpecialForBitmapImageWindow4LightBackground;
-                                SpecialForImageWindow4LightBackground.Margin = new Thickness(0);
-
-                                SpecialForImageWindow4DarkBackground = new Image();
-                                SpecialForImageWindow4DarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
-                                SpecialForBitmapImageWindow4DarkBackground = new BitmapImage();
-                                SpecialForBitmapImageWindow4DarkBackground.BeginInit();
-                                SpecialForBitmapImageWindow4DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackgroundForAll.png");
-                                SpecialForBitmapImageWindow4DarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
-                                SpecialForBitmapImageWindow4DarkBackground.EndInit();
-                                SpecialForImageWindow4DarkBackground.Source = SpecialForBitmapImageWindow4DarkBackground;
-                                SpecialForImageWindow4DarkBackground.Margin = new Thickness(0);
-                                ImageWindow4Background = new Image();
-                                ImageWindow4Background.Width = System.Convert.ToInt16(Width * 1.3);
-                                switch (ThemeValue)
-                                {
-                                    case 1:
-                                        ImageWindow4Background = SpecialForImageWindow4LightBackground;
-                                        break;
-                                    case 2:
-                                        ImageWindow4Background = SpecialForImageWindow4DarkBackground;
-                                        break;
-                                }
-                                CurrentDate = new DateTime();
-                                CurrentDate = DateTime.Now;
-                                //объявление и параметры кнопки Main menu на четвертом экране
-                                Button Window4MainMenu = new Button();
-                                Window4TextBlockMainMenu = new TextBlock();
-                                Window4TextBlockMainMenu.FontSize = TextBlocksFontSize;
-                                Window4TextBlockMainMenu.TextAlignment = TextAlignment.Center;
-                                switch (LanguageValue)
-                                {
-                                    case 1:
-                                        Window4TextBlockMainMenu.Inlines.Add(new Run("MAIN MENU"));
-                                        break;
-                                    case 2:
-                                        Window4TextBlockMainMenu.Inlines.Add(new Run("ГЛАВНОЕ МЕНЮ"));
-                                        break;
-                                }
-                                Window4MainMenu.Content = Window4TextBlockMainMenu;
-                                Window4MainMenu.Margin = new Thickness(ButtonsMargin);
-                                Window4MainMenu.Height = ButtonsHeight;
-                                Window4MainMenu.Width = ButtonsWidth;
-                                //объявление и параметры кнопки Save на четвертом экране
-                                Button Window4Save = new Button();
-                                Window4TextBlockSave = new TextBlock();
-                                Window4TextBlockSave.FontSize = TextBlocksFontSize;
-                                Window4TextBlockSave.TextAlignment = TextAlignment.Center;
-                                switch (LanguageValue)
-                                {
-                                    case 1:
-                                        Window4TextBlockSave.Inlines.Add(new Run("SAVE"));
-                                        break;
-                                    case 2:
-                                        Window4TextBlockSave.Inlines.Add(new Run("СОХРАНИТЬ"));
-                                        break;
-                                }
-                                Window4Save.Content = Window4TextBlockSave;
-                                Window4Save.Margin = new Thickness(ButtonsMargin);
-                                Window4Save.Height = ButtonsHeight;
-                                Window4Save.Width = ButtonsWidth;
-                                //объявление и парметры Grid для кнопок на четвертом экране
-                                Window4GridForButtons = new Grid();
-                                Window4GridForButtons.RowDefinitions.Add(new RowDefinition());
-                                Window4GridForButtons.ColumnDefinitions.Add(new ColumnDefinition());
-                                Window4GridForButtons.ColumnDefinitions.Add(new ColumnDefinition());
-                                Window4GridForButtons.Children.Add(Window4Save);
-                                Grid.SetRow(Window4Save, 0);
-                                Grid.SetColumn(Window4Save, 0);
-                                Window4GridForButtons.Children.Add(Window4MainMenu);
-                                Grid.SetRow(Window4MainMenu, 0);
-                                Grid.SetColumn(Window4MainMenu, 1);
-                                Window4GridForButtons.Margin = new Thickness(WindowGridMargin);
-                                //первый столбец таблицы результатов
-                                TextBlock Window4Range = new TextBlock();
-                                Window4Range.FontSize = TextBlocksFontSize;
-                                Window4Range.TextAlignment = TextAlignment.Center;
-                                TextBlock Window4FlightTime = new TextBlock();
-                                Window4FlightTime.FontSize = TextBlocksFontSize;
-                                Window4FlightTime.TextAlignment = TextAlignment.Center;
-                                TextBlock Window4HighestPoint = new TextBlock();
-                                Window4HighestPoint.FontSize = TextBlocksFontSize;
-                                Window4HighestPoint.TextAlignment = TextAlignment.Center;
-                                TextBlock Window4InitialAngle = new TextBlock();
-                                Window4InitialAngle.FontSize = TextBlocksFontSize;
-                                Window4InitialAngle.TextAlignment = TextAlignment.Center;
-                                TextBlock Window4InitialSpeed = new TextBlock();
-                                Window4InitialSpeed.FontSize = TextBlocksFontSize;
-                                Window4InitialSpeed.TextAlignment = TextAlignment.Center;
-                                TextBlock Window4ScoreName = new TextBlock();
-                                Window4ScoreName.FontSize = TextBlocksFontSize;
-                                Window4ScoreName.TextAlignment = TextAlignment.Center;
-                                TextBlock Window4Tries = new TextBlock();
-                                Window4Tries.FontSize = TextBlocksFontSize;
-                                Window4Tries.TextAlignment = TextAlignment.Center;
-                                switch (LanguageValue)
-                                {
-                                    case 1:
-                                        Window4ScoreName.Inlines.Add("RESULTS");
-                                        Window4Range.Inlines.Add(new Run("Range: "));
-                                        Window4FlightTime.Inlines.Add(new Run("Flight time: "));
-                                        Window4HighestPoint.Inlines.Add(new Run("Highest point: "));
-                                        Window4InitialSpeed.Inlines.Add(new Run("Initial speed: "));
-                                        Window4InitialAngle.Inlines.Add(new Run("Initial angle: "));
-                                        Window4Tries.Inlines.Add(new Run("Moves to win: "));
-                                        break;
-                                    case 2:
-                                        Window4ScoreName.Inlines.Add("РЕЗУЛЬТАТЫ");
-                                        Window4Range.Inlines.Add(new Run("Дистанция: "));
-                                        Window4FlightTime.Inlines.Add(new Run("Время полёта: "));
-                                        Window4HighestPoint.Inlines.Add(new Run("Наивысшая точка: "));
-                                        Window4InitialSpeed.Inlines.Add(new Run("Начальная скорость: "));
-                                        Window4InitialAngle.Inlines.Add(new Run("Начальный угол: "));
-                                        Window4Tries.Inlines.Add(new Run("Попыток до победы: "));
-                                        break;
-                                }
-                                //второй столбец таблицы результатов
-                                TextBlock Window4RangeValue = new TextBlock();
-                                Window4RangeValue.FontSize = TextBlocksFontSize;
-                                Window4RangeValue.TextAlignment = TextAlignment.Center;
-                                Window4RangeValue.Inlines.Add(new Run(System.Convert.ToString(Math.Round(MaxLenght, 2))));
-                                TextBlock Window4FlightTimeValue = new TextBlock();
-                                Window4FlightTimeValue.FontSize = TextBlocksFontSize;
-                                Window4FlightTimeValue.TextAlignment = TextAlignment.Center;
-                                Window4FlightTimeValue.Inlines.Add(new Run(System.Convert.ToString(LastPoint * 10 / 1000)));
-                                TextBlock Window4HighestPointValue = new TextBlock();
-                                Window4HighestPointValue.FontSize = TextBlocksFontSize;
-                                Window4HighestPointValue.TextAlignment = TextAlignment.Center;
-                                Window4HighestPointValue.Inlines.Add(new Run(System.Convert.ToString(Math.Round(MaxHeight, 2))));
-                                TextBlock Window4InitialAngleValue = new TextBlock();
-                                Window4InitialAngleValue.FontSize = TextBlocksFontSize;
-                                Window4InitialAngleValue.TextAlignment = TextAlignment.Center;
-                                Window4InitialAngleValue.Inlines.Add(new Run(System.Convert.ToString(Window2Angle.Text)));
-                                TextBlock Window4InitialSpeedValue = new TextBlock();
-                                Window4InitialSpeedValue.FontSize = TextBlocksFontSize;
-                                Window4InitialSpeedValue.TextAlignment = TextAlignment.Center;
-                                Window4InitialSpeedValue.Inlines.Add(new Run(System.Convert.ToString(Window2InitialVelocity.Text)));
-                                TextBlock Window4TriesValue = new TextBlock();
-                                Window4TriesValue.FontSize = TextBlocksFontSize;
-                                Window4TriesValue.TextAlignment = TextAlignment.Center;
-                                switch (IsWin)
-                                {
-                                    case 0:
-                                        switch (LanguageValue)
-                                        {
-                                            case 1:
-                                                Window4TriesValue.Inlines.Add(new Run("Did not win"));
-                                                break;
-                                            case 2:
-                                                Window4TriesValue.Inlines.Add(new Run("Не выиграл"));
-                                                break;
-                                        }
-                                        break;
-                                    case 1:
-                                        Window4TriesValue.Inlines.Add(new Run(System.Convert.ToString(TriesCounter)));
-                                        break;
-
-                                }
-                                //объявляение и параметры Grid для таблицы результатов на четвертом экране
-                                Grid Window4Grid = new Grid();
-                                Window4Grid.RowDefinitions.Add(new RowDefinition());
-                                Window4Grid.RowDefinitions.Add(new RowDefinition());
-                                Window4Grid.RowDefinitions.Add(new RowDefinition());
-                                Window4Grid.RowDefinitions.Add(new RowDefinition());
-                                Window4Grid.RowDefinitions.Add(new RowDefinition());
-                                Window4Grid.RowDefinitions.Add(new RowDefinition());
-                                Window4Grid.RowDefinitions.Add(new RowDefinition());
-                                Window4Grid.ColumnDefinitions.Add(new ColumnDefinition());
-                                Window4Grid.ColumnDefinitions.Add(new ColumnDefinition());
-                                Window4Grid.Children.Add(Window4Range);
-                                Grid.SetRow(Window4Range, 0);
-                                Grid.SetColumn(Window4Range, 0);
-                                Window4Grid.Children.Add(Window4FlightTime);
-                                Grid.SetRow(Window4FlightTime, 1);
-                                Grid.SetColumn(Window4FlightTime, 0);
-                                Window4Grid.Children.Add(Window4HighestPoint);
-                                Grid.SetRow(Window4HighestPoint, 2);
-                                Grid.SetColumn(Window4HighestPoint, 0);
-                                Window4Grid.Children.Add(Window4InitialAngle);
-                                Grid.SetRow(Window4InitialAngle, 3);
-                                Grid.SetColumn(Window4InitialAngle, 0);
-                                Window4Grid.Children.Add(Window4InitialSpeed);
-                                Grid.SetRow(Window4InitialSpeed, 4);
-                                Grid.SetColumn(Window4InitialSpeed, 0);
-                                Window4Grid.Children.Add(Window4Tries);
-                                Grid.SetRow(Window4Tries, 5);
-                                Grid.SetColumn(Window4Tries, 0);
-                                Window4Grid.Children.Add(Window4RangeValue);
-                                Grid.SetRow(Window4RangeValue, 0);
-                                Grid.SetColumn(Window4RangeValue, 1);
-                                Window4Grid.Children.Add(Window4FlightTimeValue);
-                                Grid.SetRow(Window4FlightTimeValue, 1);
-                                Grid.SetColumn(Window4FlightTimeValue, 1);
-                                Window4Grid.Children.Add(Window4HighestPointValue);
-                                Grid.SetRow(Window4HighestPointValue, 2);
-                                Grid.SetColumn(Window4HighestPointValue, 1);
-                                Window4Grid.Children.Add(Window4InitialAngleValue);
-                                Grid.SetRow(Window4InitialAngleValue, 3);
-                                Grid.SetColumn(Window4InitialAngleValue, 1);
-                                Window4Grid.Children.Add(Window4InitialSpeedValue);
-                                Grid.SetRow(Window4InitialSpeedValue, 4);
-                                Grid.SetColumn(Window4InitialSpeedValue, 1);
-                                Window4Grid.Children.Add(Window4TriesValue);
-                                Grid.SetRow(Window4TriesValue, 5);
-                                Grid.SetColumn(Window4TriesValue, 1);
-                                Window4Grid.Margin = new Thickness(WindowGridMargin);
-                                //объявление и параметры прямоугольника, имитирующего таблицу результатов
-                                Window4Score = new Rectangle();
-                                Window4Score.Stroke = System.Windows.Media.Brushes.Black;
-                                Window4Score.Fill = System.Windows.Media.Brushes.WhiteSmoke;
-                                Window4Score.Height = Height / 3.84;
-                                Window4Score.Width = Width / 2.732;
-                                //объявление и параметры StackPanel на четвертом экране
-                                Window4Stack = new StackPanel();
-                                Window4Stack.Children.Add(Window4Grid);
-                                //объявление и параметры Canvas на четвертом экране
-                                Window4Canvas = new Canvas();
-                                Window4Canvas.Height = SystemParameters.VirtualScreenHeight;
-                                Window4Canvas.Width = SystemParameters.VirtualScreenWidth;
-                                Window4Canvas.Children.Add(ImageWindow4Background);
-                                Window4Canvas.Children.Add(Window4Score);
-                                Window4Canvas.Children.Add(Window4Stack);
-                                Window4Canvas.Children.Add(Window4GridForButtons);
-                                Window4Canvas.Children.Add(Window4ScoreName);
-                                Content = Window4Canvas;
-                                Canvas.SetLeft(Window4ScoreName, (Width / 2.14));
-                                Canvas.SetTop(Window4ScoreName, (Height / 4.74));
-                                Canvas.SetLeft(Window4GridForButtons, (Width / 7.2));
-                                Canvas.SetTop(Window4GridForButtons, (Height / 3));
-                                Canvas.SetLeft(Window4Score, (Width / 3.15));
-                                Canvas.SetTop(Window4Score, (Height / 4));
-                                switch (LanguageValue)
-                                {
-                                    case 1:
-                                        Canvas.SetLeft(Window4Stack, (Width / 4));
-                                        Canvas.SetTop(Window4Stack, (Height / (-190.09)));
-                                        break;
-                                    case 2:
-                                        Canvas.SetLeft(Window4Stack, (Width / 4.5));
-                                        Canvas.SetTop(Window4Stack, (Height / (-190.09)));
-                                        break;
-
-                                }
-                                //клик по кнопке MainMenu на четвертом экране
-                                Window4MainMenu.Click += delegate
-                                {
-                                    SoundPlayerButtonClick.Play();
-                                    Window4Canvas.Children.Clear();
-                                    Window1Canvas.Children.Add(ImageWindow1Background);
-                                    Window1Canvas.Children.Add(Window1Stack);
-                                    Content = Window1Canvas;
-                                    TriesCounter = 0;
-                                    IsWin = 0;
-                                };
-                                //клик по кнопке Save на четвертом экране
-                                Window4Save.Click += delegate
-                                {
-                                    SoundPlayerButtonClick.Play();
-                                    if (LanguageValue == 1)
-                                    {
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(CurrentDate) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Range: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxLenght) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Flight time: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(LastPoint * 10 / 1000) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Highest point: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxHeight) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Initial angle: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2Angle.Text) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Initial speed: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2InitialVelocity.Text) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Moves to win: ");
-                                        switch (IsWin)
-                                        {
-                                            case 0:
-                                                File.AppendAllText("Hit the basket.Data.txt", "Did not win" + Environment.NewLine);
-                                                break;
-                                            case 1:
-                                                File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(TriesCounter) + Environment.NewLine);
-                                                break;
-                                        }
-                                        File.AppendAllText("Hit the basket.Data.txt", Environment.NewLine);
-                                        MessageBox.Show("Your data has been saved!", "Complete.");
-                                    }
-                                    if (LanguageValue == 2)
-                                    {
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(CurrentDate) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Дистанция: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxLenght) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Время полёта: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(LastPoint * 10 / 1000) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Наивысшая точка: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(MaxHeight) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Начальный угол: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2Angle.Text) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Начальная скорость: ");
-                                        File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(Window2InitialVelocity.Text) + Environment.NewLine);
-                                        File.AppendAllText("Hit the basket.Data.txt", "Попыток до победы: ");
-                                        switch (IsWin)
-                                        {
-                                            case 0:
-                                                File.AppendAllText("Hit the basket.Data.txt", "Не выиграл" + Environment.NewLine);
-                                                break;
-                                            case 1:
-                                                File.AppendAllText("Hit the basket.Data.txt", System.Convert.ToString(TriesCounter) + Environment.NewLine);
-                                                break;
-                                        }
-                                        File.AppendAllText("Hit the basket.Data.txt", Environment.NewLine);
-                                        MessageBox.Show("Ваши данные сохранены!", "Успешно.");
-                                    }
-                                };
-                            };
+                            Window3Next.Click += Window3NextClicked;
                         };
                     }
                     else
