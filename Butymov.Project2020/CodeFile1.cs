@@ -53,7 +53,6 @@ namespace Butymov.Project2020
         TextBlock Window3TextBlockRestart;
         TextBlock Window3TextBlockBack;
         TextBlock Window3TextBlockNext;
-        //Ellipse Dot;
         Image ImageWindow1Background;
         Image ImageWindow2Background;
         Image ImageWindow4Background;
@@ -150,11 +149,11 @@ namespace Butymov.Project2020
         double[] CosTable;
         double[] SinTable;
         string UD;
-        
         SoundPlayer SoundPlayerStartGame;
         SoundPlayer SoundPlayerFalling;
         SoundPlayer SoundPlayerWinGame;
         SoundPlayer SoundPlayerButtonClick;
+        
         [STAThread]
         public static void Main()
         {
@@ -165,28 +164,35 @@ namespace Butymov.Project2020
         public MainWindow()
         {
             //работа со звуком
+            
             //начало игры
             SoundPlayerStartGame = new SoundPlayer();
             SoundPlayerStartGame.SoundLocation = @"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Sounds\StartGame.wav";
             SoundPlayerStartGame.Load();
+            
             //падение
             SoundPlayerFalling = new SoundPlayer();
             SoundPlayerFalling.SoundLocation = @"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Sounds\Falling.wav";
             SoundPlayerFalling.Load();
+            
             //победа
             SoundPlayerWinGame = new SoundPlayer();
             SoundPlayerWinGame.SoundLocation = @"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Sounds\WinGame.wav";
             SoundPlayerStartGame.Load();
+            
             //клик по кнопке
             SoundPlayerButtonClick = new SoundPlayer();
             SoundPlayerButtonClick.SoundLocation = @"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Sounds\ButtonClick.wav";
             SoundPlayerButtonClick.Load();
+            
             //работа с файлом User'sData.txt
+            
             const string UDPath = @"C:\Users\pc\source\repos\Butymov.Project2020\User'sData.txt";
             IsUDFileExists();
             //чтение из файла
             string[] ReadUD = File.ReadAllLines(UDPath);
             string CheckReadUD = ReadUD[0];
+            
             //проверка корректных данных в файле
             if (CheckReadUD.Length != 4)
             {
@@ -198,6 +204,7 @@ namespace Butymov.Project2020
                 MessageBox.Show("Data file was not correct, settings have been reset.", "Warning.");
             }
             UD = System.Convert.ToString(ReadUD[0]);
+            
             //функция, отвечающая за установку значений языка, птицы, темы, звуков при запуске
             void SetDataValue()
             {
@@ -286,6 +293,7 @@ namespace Butymov.Project2020
                 }
 
             }
+            
             //функция, отвечающая за установку языка, птицы, темы, звуков при запуске
             void SetData()
             {
@@ -338,6 +346,7 @@ namespace Butymov.Project2020
                         break;
                 }
             }
+            
             //функция, отвечающая за переписывание файла с данными (вызывается при нажатии на кнопку Language, Bird, Theme, Sounds)
             void WriteNewDataToFile()
             {
@@ -353,6 +362,7 @@ namespace Butymov.Project2020
                 ValueFordata += SoundsValue;
                 File.AppendAllText(UDPath, ValueFordata);
             }
+            
             //функция, отвечающая за проверку существования файла
             bool IsUDFileExists()
             {
@@ -370,6 +380,7 @@ namespace Butymov.Project2020
                     return true;
                 }
             }
+            
             //разрешение экрана, установка размеров элементов 
             double Width = System.Windows.SystemParameters.PrimaryScreenWidth;
             double Height = System.Windows.SystemParameters.PrimaryScreenHeight;
@@ -381,6 +392,7 @@ namespace Butymov.Project2020
             WidthForElements = System.Convert.ToInt16(Width / 2);
 
             //значения cos и sin
+            
             //dpva.ru/Guide/GuideMathematics/GuideMathematicsFiguresTables/CosinusTable0to360by1/
             //dpva.ru/Guide/GuideMathematics/GuideMathematicsFiguresTables/SinusTable0to360by1/
             CosTable = new double[181] { 1, 0.9998, 0.9994, 0.9986, 0.9976, 0.9962, 0.9945, 0.9925, 0.9903, 0.9877, 0.9848, 0.9816, 0.9781, 0.9744, 0.9703, 0.9659, 0.9613, 0.9563, 0.9511, 0.9455, 0.9397, 0.9336, 0.9272, 0.9205, 0.9135, 0.9063, 0.8988, 0.891, 0.8829, 0.8746, 0.866, 0.8572, 0.848, 0.8387, 0.829, 0.8192, 0.809, 0.7986, 0.788, 0.7771, 0.766, 0.7547, 0.7431, 0.7314, 0.7193, 0.7071, 0.6947, 0.682, 0.6691, 0.6561, 0.6428, 0.6293, 0.6157, 0.6018, 0.5878, 0.5736, 0.5592, 0.5446, 0.5299, 0.515, 0.5, 0.4848, 0.4695, 0.454, 0.4384, 0.4226, 0.4067, 0.3907, 0.3746, 0.3584, 0.342, 0.3256, 0.309, 0.2924, 0.2756, 0.2588, 0.2419, 0.225, 0.2079, 0.1908, 0.1736, 0.1564, 0.1392, 0.1219, 0.1045, 0.0872, 0.0698, 0.0523, 0.0349, 0.0175, 0, -0.0175, -0.0349, -0.0523, -0.0698, -0.0872, -0.1045, -0.1219, -0.1392, -0.1564, -0.1736, -0.1908, -0.2079, -0.225, -0.2419, -0.2588, -0.2756, -0.2924, -0.309, -0.3256, -0.342, -0.3584, -0.3746, -0.3907, -0.4067, -0.4226, -0.4384, -0.454, -0.4695, -0.4848, -0.5, -0.515, -0.5299, -0.5446, -0.5592, -0.5736, -0.5878, -0.6018, -0.6157, -0.6293, -0.6428, -0.6561, -0.6691, -0.682, -0.6947, -0.7071, -0.7193, -0.7314, -0.7431, -0.7547, -0.766, -0.7771, -0.788, -0.7986, -0.809, -0.8192, -0.829, -0.8387, -0.848, -0.8572, -0.866, -0.8746, -0.8829, -0.891, -0.8988, -0.9063, -0.9135, -0.9205, -0.9272, -0.9336, -0.9397, -0.9455, -0.9511, -0.9563, -0.9613, -0.9659, -0.9703, -0.9744, -0.9781, -0.9816, -0.9848, -0.9877, -0.9903, -0.9925, -0.9945, -0.9962, -0.9976, -0.9986, -0.9994, -0.9998, -1 };
@@ -392,26 +404,6 @@ namespace Butymov.Project2020
 
             //размеры окна
             this.WindowState = WindowState.Maximized;
-            /*//фон на четвертом окне
-            SpecialForImageWindow4LightBackground = new Image();
-            SpecialForImageWindow4LightBackground.Width = System.Convert.ToInt16(Width * 1.3);
-            SpecialForBitmapImageWindow4LightBackground = new BitmapImage();
-            SpecialForBitmapImageWindow4LightBackground.BeginInit();
-            SpecialForBitmapImageWindow4LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackgroundForAll.png");
-            SpecialForBitmapImageWindow4LightBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
-            SpecialForBitmapImageWindow4LightBackground.EndInit();
-            SpecialForImageWindow4LightBackground.Source = SpecialForBitmapImageWindow4LightBackground;
-            SpecialForImageWindow4LightBackground.Margin = new Thickness(0);
-
-            SpecialForImageWindow4DarkBackground = new Image();
-            SpecialForImageWindow4DarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
-            SpecialForBitmapImageWindow4DarkBackground = new BitmapImage();
-            SpecialForBitmapImageWindow4DarkBackground.BeginInit();
-            SpecialForBitmapImageWindow4DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackgroundForAll.png");
-            SpecialForBitmapImageWindow4DarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
-            SpecialForBitmapImageWindow4DarkBackground.EndInit();
-            SpecialForImageWindow4DarkBackground.Source = SpecialForBitmapImageWindow4DarkBackground;
-            SpecialForImageWindow4DarkBackground.Margin = new Thickness(0);*/
             SpecialForBitmapImageWindow4LightBackground = new BitmapImage();
             SpecialForBitmapImageWindow4LightBackground.BeginInit();
             SpecialForBitmapImageWindow4LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackgroundForAll.png");
@@ -422,9 +414,11 @@ namespace Butymov.Project2020
             SpecialForBitmapImageWindow4DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackgroundForAll.png");
             SpecialForBitmapImageWindow4DarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
             SpecialForBitmapImageWindow4DarkBackground.EndInit();
+            
             //иконки звуков
             ImageSounds = new Image();
             ImageSounds.Width = WidthForElements;
+            
             //звук включен
             ImageSoundsOn = new Image();
             ImageSoundsOn.Width = WidthForElements;
@@ -435,6 +429,7 @@ namespace Butymov.Project2020
             BitmapImageSoundsOn.EndInit();
             ImageSoundsOn.Source = BitmapImageSoundsOn;
             ImageSoundsOn.Margin = new Thickness(0);
+            
             //звук выключен
             ImageSoundsOff = new Image();
             ImageSoundsOff.Width = WidthForElements;
@@ -445,7 +440,9 @@ namespace Butymov.Project2020
             BitmapImageSoundsOff.EndInit();
             ImageSoundsOff.Source = BitmapImageSoundsOff;
             ImageSoundsOff.Margin = new Thickness(0);
+            
             //птицы для второго окна
+            
             ImageWindow2TheBird = new Image();
             ImageWindow2TheBird.Width = WidthForElements;
             //красная птица для второго окна
@@ -458,6 +455,7 @@ namespace Butymov.Project2020
             BitmapImageWindow2RedBird.EndInit();
             ImageWindow2RedBird.Source = BitmapImageWindow2RedBird;
             ImageWindow2RedBird.Margin = new Thickness(0);
+            
             //синяя птица для второго окна
             ImageWindow2BlueBird = new Image();
             ImageWindow2BlueBird.Width = WidthForElements;
@@ -468,8 +466,10 @@ namespace Butymov.Project2020
             BitmapImageWindow2BlueBird.EndInit();
             ImageWindow2BlueBird.Source = BitmapImageWindow2BlueBird;
             ImageWindow2BlueBird.Margin = new Thickness(0);
+            
             //птица для второго окна по умолчанию
             ImageWindow2TheBird = ImageWindow2RedBird;
+            
             //видимая часть корзины
             ImageBasketVisible = new Image();
             ImageBasketVisible.Width = WidthForElements;
@@ -480,6 +480,7 @@ namespace Butymov.Project2020
             BitmapImageBasketVisible.EndInit();
             ImageBasketVisible.Source = BitmapImageBasketVisible;
             ImageBasketVisible.Margin = new Thickness(0);
+            
             //невидимая часть корзины
             ImageBasketInvisible = new Image();
             ImageBasketInvisible.Width = WidthForElements;
@@ -490,9 +491,12 @@ namespace Butymov.Project2020
             BitmapImageBasketInvisible.EndInit();
             ImageBasketInvisible.Source = BitmapImageBasketInvisible;
             ImageBasketInvisible.Margin = new Thickness(0);
+            
             //победный экран
+            
             ImageWinScreen = new Image();
             ImageWinScreen.Width = System.Convert.ToInt16(Width * 1.3);
+            
             //победный экран на англиском
             ImageEnglishWinScreen = new Image();
             ImageEnglishWinScreen.Width = System.Convert.ToInt16(Width * 1.3);
@@ -503,6 +507,7 @@ namespace Butymov.Project2020
             BitmapImageEnglishWinScreen.EndInit();
             ImageEnglishWinScreen.Source = BitmapImageEnglishWinScreen;
             ImageEnglishWinScreen.Margin = new Thickness(0);
+            
             //победный экран на русском
             ImageRussianWinScreen = new Image();
             ImageRussianWinScreen.Width = System.Convert.ToInt16(Width * 1.3);
@@ -513,9 +518,12 @@ namespace Butymov.Project2020
             BitmapImageRussianWinScreen.EndInit();
             ImageRussianWinScreen.Source = BitmapImageRussianWinScreen;
             ImageRussianWinScreen.Margin = new Thickness(0);
+            
             //фон для окон
+            
             ImageBackgroundForAll = new Image();
             ImageBackgroundForAll.Width = System.Convert.ToInt16(Width * 1.3);
+            
             //светлый фон для окон
             ImageLightBackgroundForAll = new Image();
             ImageLightBackgroundForAll.Width = System.Convert.ToInt16(Width * 1.3);
@@ -526,6 +534,7 @@ namespace Butymov.Project2020
             BitmapImageLightBackgroundForAll.EndInit();
             ImageLightBackgroundForAll.Source = BitmapImageLightBackgroundForAll;
             ImageLightBackgroundForAll.Margin = new Thickness(0);
+            
             //темный фон для окон
             ImageDarkBackgroundForAll = new Image();
             ImageDarkBackgroundForAll.Width = System.Convert.ToInt16(Width * 1.3);
@@ -536,7 +545,10 @@ namespace Butymov.Project2020
             BitmapImageDarkBackgroundForAll.EndInit();
             ImageDarkBackgroundForAll.Source = BitmapImageDarkBackgroundForAll;
             ImageDarkBackgroundForAll.Margin = new Thickness(0);
+            
             //фон для второго окна
+            
+            //светлый фон для второго окна
             ImageWindow2LightBackground = new Image();
             ImageWindow2LightBackground.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageWindow2LightBackground = new BitmapImage();
@@ -546,7 +558,8 @@ namespace Butymov.Project2020
             BitmapImageWindow2LightBackground.EndInit();
             ImageWindow2LightBackground.Source = BitmapImageWindow2LightBackground;
             ImageWindow2LightBackground.Margin = new Thickness(0);
-
+            
+            //темный фон для второго окна
             ImageWindow2DarkBackground = new Image();
             ImageWindow2DarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
             BitmapImageWindow2DarkBackground = new BitmapImage();
@@ -558,8 +571,10 @@ namespace Butymov.Project2020
             ImageWindow2DarkBackground.Margin = new Thickness(0);
             
             //иконка темы
+            
             ImageThemeIcon = new Image();
             ImageThemeIcon.Width = WidthForElements;
+            
             //иконка солнца для темы
             ImageThemeIconSun = new Image();
             ImageThemeIconSun.Width = WidthForElements;
@@ -570,6 +585,7 @@ namespace Butymov.Project2020
             BitmapImageIconSun.EndInit();
             ImageThemeIconSun.Source = BitmapImageIconSun;
             ImageThemeIconSun.Margin = new Thickness(0);
+            
             //иконка луны для темы
             ImageThemeIconMoon = new Image();
             ImageThemeIconMoon.Width = WidthForElements;
@@ -580,9 +596,12 @@ namespace Butymov.Project2020
             BitmapImageIconMoon.EndInit();
             ImageThemeIconMoon.Source = BitmapImageIconMoon;
             ImageThemeIconMoon.Margin = new Thickness(0);
+            
             //фон для игры
+            
             ImageBackground = new Image();
             ImageBackground.Width = System.Convert.ToInt16(Width * 1.3);
+            
             //светлый фон для игры
             ImageLightBackground = new Image();
             ImageLightBackground.Width = System.Convert.ToInt16(Width * 1.3);
@@ -593,6 +612,7 @@ namespace Butymov.Project2020
             BitmapImageLightBackground.EndInit();
             ImageLightBackground.Source = BitmapImageLightBackground;
             ImageLightBackground.Margin = new Thickness(0);
+            
             //темный фон для игры
             ImageDarkBackground = new Image();
             ImageDarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
@@ -603,10 +623,14 @@ namespace Butymov.Project2020
             BitmapImageDarkBackground.EndInit();
             ImageDarkBackground.Source = BitmapImageDarkBackground;
             ImageDarkBackground.Margin = new Thickness(0);
+            
             //объекты флага
+            
             ImageTheFlag = new Image();
             ImageTheFlag.Width = WidthForElements;
+            
             //иконки флага
+            
             //российский флаг
             ImageRussianFlag = new Image();
             ImageRussianFlag.Width = WidthForElements;
@@ -617,6 +641,7 @@ namespace Butymov.Project2020
             BitmapImageRussianFlag.EndInit();
             ImageRussianFlag.Source = BitmapImageRussianFlag;
             ImageRussianFlag.Margin = new Thickness(0);
+            
             //британский флаг
             ImageBritishFlag = new Image();
             ImageBritishFlag.Width = WidthForElements;
@@ -627,14 +652,19 @@ namespace Butymov.Project2020
             BitmapImageBritishFlag.EndInit();
             ImageBritishFlag.Source = BitmapImageBritishFlag;
             ImageBritishFlag.Margin = new Thickness(0);
+            
             //объекты птиц
+            
             //птица для игры
             ImageTheBird = new Image();
             ImageTheBird.Width = WidthForElements;
+            
             //птица для настроек
             ImageSettingsTheBird = new Image();
             ImageSettingsTheBird.Width = WidthForElements;
+            
             //иконки птицы
+            
             //красная птица
             ImageRedBird = new Image();
             ImageRedBird.Width = WidthForElements;
@@ -645,6 +675,7 @@ namespace Butymov.Project2020
             BitmapImageRedBird.EndInit();
             ImageRedBird.Source = BitmapImageRedBird;
             ImageRedBird.Margin = new Thickness(0);
+            
             //синяя птица
             ImageBlueBird = new Image();
             ImageBlueBird.Width = WidthForElements;
@@ -655,6 +686,7 @@ namespace Butymov.Project2020
             BitmapImageBlueBird.EndInit();
             ImageBlueBird.Source = BitmapImageBlueBird;
             ImageBlueBird.Margin = new Thickness(0);
+            
             //красная птица для настроек
             ImageSettingsRedBird = new Image();
             ImageSettingsRedBird.Width = WidthForElements;
@@ -665,6 +697,7 @@ namespace Butymov.Project2020
             BitmapImageSettingsRedBird.EndInit();
             ImageSettingsRedBird.Source = BitmapImageSettingsRedBird;
             ImageSettingsRedBird.Margin = new Thickness(0);
+            
             //синяя птица для настроек
             ImageSettingsBlueBird = new Image();
             ImageSettingsBlueBird.Width = WidthForElements;
@@ -675,20 +708,26 @@ namespace Butymov.Project2020
             BitmapImageSettingsBlueBird.EndInit();
             ImageSettingsBlueBird.Source = BitmapImageSettingsBlueBird;
             ImageSettingsBlueBird.Margin = new Thickness(0);
+            
             //второе окно
             ImageWindow2Background = new Image();
             ImageWindow2Background.Width = System.Convert.ToInt16(Width * 1.3);
+            
             //работа с файлом
+            
             SetDataValue();
             SetData();
+            
             //установка фона на окна
             ImageWindow1Background = new Image();
             ImageWindow1Background.Width = System.Convert.ToInt16(Width * 1.3);
             ImageWindow1Background = ImageBackgroundForAll;
+            
             //фон экрана настроек по умолчанию
             ImageWindowSettingsBackground = new Image();
             ImageWindowSettingsBackground.Width = System.Convert.ToInt16(Width * 1.3);
             ImageWindowSettingsBackground = ImageBackgroundForAll;
+            
             //клик по кнопке Next на третьем экране 
             //*была неожиданная ошибка, приводившая к обработке событий кол-во раз, равное времени таймера птицы в миллисекундах
             void Window3NextClicked(object sender, RoutedEventArgs e)
@@ -697,9 +736,9 @@ namespace Butymov.Project2020
                 e.Handled = true;
                 Window3Canvas.Children.Clear();
                 PlaySound(SoundPlayerButtonClick);
-                
                 CurrentDate = new DateTime();
                 CurrentDate = DateTime.Now;
+                
                 //объявление и параметры кнопки Main menu на четвертом экране
                 Button Window4MainMenu = new Button();
                 Window4TextBlockMainMenu = new TextBlock();
@@ -718,6 +757,7 @@ namespace Butymov.Project2020
                 Window4MainMenu.Margin = new Thickness(ButtonsMargin);
                 Window4MainMenu.Height = ButtonsHeight;
                 Window4MainMenu.Width = ButtonsWidth;
+                
                 //объявление и параметры кнопки Save на четвертом экране
                 Button Window4Save = new Button();
                 Window4TextBlockSave = new TextBlock();
@@ -736,6 +776,7 @@ namespace Butymov.Project2020
                 Window4Save.Margin = new Thickness(ButtonsMargin);
                 Window4Save.Height = ButtonsHeight;
                 Window4Save.Width = ButtonsWidth;
+                
                 //объявление и парметры Grid для кнопок на четвертом экране
                 Window4GridForButtons = new Grid();
                 Window4GridForButtons.RowDefinitions.Add(new RowDefinition());
@@ -748,6 +789,7 @@ namespace Butymov.Project2020
                 Grid.SetRow(Window4MainMenu, 0);
                 Grid.SetColumn(Window4MainMenu, 1);
                 Window4GridForButtons.Margin = new Thickness(WindowGridMargin);
+                
                 //первый столбец таблицы результатов
                 TextBlock Window4Range = new TextBlock();
                 Window4Range.FontSize = TextBlocksFontSize;
@@ -791,6 +833,7 @@ namespace Butymov.Project2020
                         Window4Tries.Inlines.Add(new Run("Попыток до победы: "));
                         break;
                 }
+                
                 //второй столбец таблицы результатов
                 TextBlock Window4RangeValue = new TextBlock();
                 Window4RangeValue.FontSize = TextBlocksFontSize;
@@ -832,6 +875,7 @@ namespace Butymov.Project2020
                         Window4TriesValue.Inlines.Add(new Run(System.Convert.ToString(TriesCounter)));
                         break;
                 }
+                
                 //объявляение и параметры Grid для таблицы результатов на четвертом экране
                 Grid Window4Grid = new Grid();
                 Window4Grid.RowDefinitions.Add(new RowDefinition());
@@ -880,32 +924,24 @@ namespace Butymov.Project2020
                 Grid.SetRow(Window4TriesValue, 5);
                 Grid.SetColumn(Window4TriesValue, 1);
                 Window4Grid.Margin = new Thickness(WindowGridMargin);
+                
                 //объявление и параметры прямоугольника, имитирующего таблицу результатов
                 Window4Score = new Rectangle();
                 Window4Score.Stroke = System.Windows.Media.Brushes.Black;
                 Window4Score.Fill = System.Windows.Media.Brushes.WhiteSmoke;
                 Window4Score.Height = Height / 3.84;
                 Window4Score.Width = Width / 2.732;
+                
                 //фон на четвертом окне
                 SpecialForImageWindow4LightBackground = new Image();
                 SpecialForImageWindow4LightBackground.Width = System.Convert.ToInt16(Width * 1.3);
-                /*SpecialForBitmapImageWindow4LightBackground = new BitmapImage();
-                SpecialForBitmapImageWindow4LightBackground.BeginInit();
-                SpecialForBitmapImageWindow4LightBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\LightBackgroundForAll.png");
-                SpecialForBitmapImageWindow4LightBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
-                SpecialForBitmapImageWindow4LightBackground.EndInit();*/
                 SpecialForImageWindow4LightBackground.Source = SpecialForBitmapImageWindow4LightBackground;
                 SpecialForImageWindow4LightBackground.Margin = new Thickness(0);
-
                 SpecialForImageWindow4DarkBackground = new Image();
                 SpecialForImageWindow4DarkBackground.Width = System.Convert.ToInt16(Width * 1.3);
-                /*SpecialForBitmapImageWindow4DarkBackground = new BitmapImage();
-                SpecialForBitmapImageWindow4DarkBackground.BeginInit();
-                SpecialForBitmapImageWindow4DarkBackground.UriSource = new Uri(@"C:\Users\pc\source\repos\Butymov.Project2020\Hit the basket.Images\DarkBackgroundForAll.png");
-                SpecialForBitmapImageWindow4DarkBackground.DecodePixelWidth = System.Convert.ToInt16(Width * 1.3);
-                SpecialForBitmapImageWindow4DarkBackground.EndInit();*/
                 SpecialForImageWindow4DarkBackground.Source = SpecialForBitmapImageWindow4DarkBackground;
                 SpecialForImageWindow4DarkBackground.Margin = new Thickness(0);
+                
                 //четертое окно
                 ImageWindow4Background = new Image();
                 ImageWindow4Background.Width = System.Convert.ToInt16(Width * 1.3);
@@ -918,9 +954,11 @@ namespace Butymov.Project2020
                         ImageWindow4Background = SpecialForImageWindow4DarkBackground;
                         break;
                 }
+                
                 //объявление и параметры StackPanel на четвертом экране
                 Window4Stack = new StackPanel();
                 Window4Stack.Children.Add(Window4Grid);
+                
                 //объявление и параметры Canvas на четвертом экране
                 Window4Canvas = new Canvas();
                 Window4Canvas.Height = SystemParameters.VirtualScreenHeight;
@@ -948,6 +986,7 @@ namespace Butymov.Project2020
                         Canvas.SetTop(Window4Stack, (Height / (-190.09)));
                         break;
                 }
+                
                 //клик по кнопке MainMenu на четвертом экране
                 Window4MainMenu.Click += delegate
                 {
@@ -959,6 +998,7 @@ namespace Butymov.Project2020
                     TriesCounter = 0;
                     IsWin = 0;
                 };
+                
                 //клик по кнопке Save на четвертом экране
                 Window4Save.Click += delegate
                 {
@@ -1028,6 +1068,7 @@ namespace Butymov.Project2020
                 RandomXMin = RandomX - System.Convert.ToInt16(Width / 55) + System.Convert.ToInt16(Width / 22.39);
                 RandomXMax = RandomX + System.Convert.ToInt16(Width / 55) + System.Convert.ToInt16(Width / 22.39);
             }
+            
             //функция, отвечающая за проверку попадания в корзину
             bool GoalCheck(double X)
             {
@@ -1040,6 +1081,7 @@ namespace Butymov.Project2020
                     return false;
                 }
             }
+            
             //функция, отвечающая за смену значения звуков
             void ChangeValueSounds()
             {
@@ -1053,6 +1095,7 @@ namespace Butymov.Project2020
                         break;
                 }
             }
+            
             //функция, отвечающая за смену режима звуков
             void ChangeSounds()
             {
@@ -1066,6 +1109,7 @@ namespace Butymov.Project2020
                         break;
                 }
             }
+            
             //функция, отвечающая за проигрывание звука
             void PlaySound(SoundPlayer PS)
             {
@@ -1074,6 +1118,7 @@ namespace Butymov.Project2020
                     PS.Play();
                 }
             }
+            
             //функция, отвечающая за смену знаечния темы
             void ChangeValueTheme()
             {
@@ -1087,6 +1132,7 @@ namespace Butymov.Project2020
                         break;
                 }
             }
+            
             //функция, отвечающая за смену темы
             void ChangeTheme()
             {
@@ -1108,6 +1154,7 @@ namespace Butymov.Project2020
                         break;
                 }
             }
+            
             //функция, отвечающая за смену значения языка
             void ChangeValueLanguage()
             {
@@ -1121,6 +1168,7 @@ namespace Butymov.Project2020
                         break;
                 }
             }
+            
             //функция, отвечающая за смену языка
             void ChangeLanguage()
             {
@@ -1168,6 +1216,7 @@ namespace Butymov.Project2020
                         break;
                 }
             }
+            
             //функция, отвеачющая за смену значения птицы
             void ChangeValueTheBird()
             {
@@ -1181,6 +1230,7 @@ namespace Butymov.Project2020
                         break;
                 }
             }
+            
             //функция, отвечающая за смену птицы
             void ChangeTheBird()
             {
@@ -1200,6 +1250,7 @@ namespace Butymov.Project2020
             }
 
             Title = "Hit the basket";
+            
             //объявление и параметры кнопки Play на первом экране
             Button Window1Play = new Button();
             Window1TextBlockPlay = new TextBlock();
@@ -1218,6 +1269,7 @@ namespace Butymov.Project2020
             Window1Play.Margin = new Thickness(ButtonsMargin);
             Window1Play.Height = ButtonsHeight;
             Window1Play.Width = ButtonsWidth;
+            
             //объявление и параметры кнопки Settings на первом экране
             Button Window1Settings = new Button();
             Window1TextBlockSettings = new TextBlock();
@@ -1237,6 +1289,7 @@ namespace Butymov.Project2020
             Window1Settings.Margin = new Thickness(ButtonsMargin);
             Window1Settings.Height = ButtonsHeight;
             Window1Settings.Width = ButtonsWidth;
+            
             //объявление и параметры кнопки Exit на первом экране
             Button Window1Exit = new Button();
             Window1TextBlockExit = new TextBlock();
@@ -1256,9 +1309,11 @@ namespace Butymov.Project2020
             Window1Exit.Margin = new Thickness(ButtonsMargin);
             Window1Exit.Height = ButtonsHeight;
             Window1Exit.Width = ButtonsWidth;
+            
             //объявление StackPanel на первом экране
             Window1Stack = new StackPanel();
             Window1Stack.Margin = new Thickness(0);
+            
             //объявление и параметры Grid на первом экране
             Grid Window1Grid = new Grid();
             Window1Grid.Margin = new Thickness(WindowGridMargin);
@@ -1276,6 +1331,7 @@ namespace Butymov.Project2020
             Grid.SetRow(Window1Exit, 0);
             Grid.SetColumn(Window1Exit, 2);
             Window1Stack.Children.Add(Window1Grid);
+            
             //объявление и параметры Canvas на первом экране 
             Window1Canvas = new Canvas();
             Window1Canvas.Height = SystemParameters.VirtualScreenHeight;
@@ -1285,6 +1341,7 @@ namespace Butymov.Project2020
             Canvas.SetLeft(Window1Stack, (Width / 34.28));
             Canvas.SetTop(Window1Stack, (Height / 5));
             Content = Window1Canvas;
+            
             //клик по кнопке Exit на первом экране
             Window1Exit.PreviewMouseLeftButtonDown += Window1ExitClicked;
             void Window1ExitClicked(object sender, MouseButtonEventArgs e)
@@ -1292,12 +1349,14 @@ namespace Butymov.Project2020
                 PlaySound(SoundPlayerButtonClick);
                 Close();
             }
+            
             //клик по кнопке Settings на первом экране
             Window1Settings.PreviewMouseLeftButtonDown += Window1SettingsClicked;
             void Window1SettingsClicked(object sender, MouseButtonEventArgs e)
             {
                 PlaySound(SoundPlayerButtonClick);
                 Window1Canvas.Children.Clear();
+                
                 //объявление и параметры Sounds кнопки на экране настроек
                 Button WindowSettingsSounds = new Button();
                 WindowSettingsTextBlockSounds = new TextBlock();
@@ -1316,6 +1375,7 @@ namespace Butymov.Project2020
                 WindowSettingsSounds.Margin = new Thickness(ButtonsMargin * 1.5);
                 WindowSettingsSounds.Height = ButtonsHeight;
                 WindowSettingsSounds.Width = ButtonsWidth;
+                
                 //объявление и параметры кнопки Back на экране настроек
                 Button WindowSettingsBack = new Button();
                 WindowSettingsTextBlockBack = new TextBlock();
@@ -1334,6 +1394,7 @@ namespace Butymov.Project2020
                 WindowSettingsBack.Margin = new Thickness(ButtonsMargin * 1.5);
                 WindowSettingsBack.Height = ButtonsHeight;
                 WindowSettingsBack.Width = ButtonsWidth;
+                
                 //объявление и параметры кнопки Bird на экране настроек
                 Button WindowSettingsBird = new Button();
                 WindowSettingsTextBlockBird = new TextBlock();
@@ -1352,6 +1413,7 @@ namespace Butymov.Project2020
                 WindowSettingsBird.Margin = new Thickness(ButtonsMargin * 1.5);
                 WindowSettingsBird.Height = ButtonsHeight;
                 WindowSettingsBird.Width = ButtonsWidth;
+                
                 //объявление и параметры кнопки Language на экране настроек
                 Button WindowSettingsLanguage = new Button();
                 WindowSettingsTextBlockLanguage = new TextBlock();
@@ -1370,6 +1432,7 @@ namespace Butymov.Project2020
                 WindowSettingsLanguage.Margin = new Thickness(ButtonsMargin * 1.5);
                 WindowSettingsLanguage.Height = ButtonsHeight;
                 WindowSettingsLanguage.Width = ButtonsWidth;
+                
                 //объявление и параметры кнопки Theme на экране настроек
                 Button WindowSettingsTheme = new Button();
                 WindowSettingsTextBlockTheme = new TextBlock();
@@ -1388,8 +1451,10 @@ namespace Butymov.Project2020
                 WindowSettingsTheme.Margin = new Thickness(ButtonsMargin * 1.5);
                 WindowSettingsTheme.Height = ButtonsHeight;
                 WindowSettingsTheme.Width = ButtonsWidth;
+                
                 //объявление и параметры StackPanel на экране настроек
                 WindowSettingsStack = new StackPanel();
+                
                 //объявление и параметры Grid на экране настроек
                 Grid WindowSettingsGrid = new Grid();
                 WindowSettingsGrid.RowDefinitions.Add(new RowDefinition());
@@ -1415,8 +1480,6 @@ namespace Butymov.Project2020
                 Grid.SetColumn(WindowSettingsBack, 1);
                 WindowSettingsStack.Children.Add(WindowSettingsGrid);
 
-                
-                
                 //объявление и параметры Canvas на экране настроек
                 WindowSettingsCanvas = new Canvas();
                 WindowSettingsCanvas.Height = SystemParameters.VirtualScreenHeight;
@@ -1439,6 +1502,7 @@ namespace Butymov.Project2020
                 Canvas.SetLeft(ImageSounds, (Width / 2.28));
                 Canvas.SetTop(ImageSounds, (Height / 2.9));
                 Content = WindowSettingsCanvas;
+                
                 //клик по кнопке Back на экране настроек
                 WindowSettingsBack.Click += delegate
                 {
@@ -1448,6 +1512,7 @@ namespace Butymov.Project2020
                     Window1Canvas.Children.Add(ImageWindow1Background);
                     Window1Canvas.Children.Add(Window1Stack);
                 };
+                
                 //клик по кнопке Sounds на экране настроек
                 WindowSettingsSounds.Click += delegate
                 {
@@ -1465,6 +1530,7 @@ namespace Butymov.Project2020
                     Canvas.SetTop(ImageSounds, (Height / 2.9));
                     WriteNewDataToFile();
                 };
+                
                 //клик по кнопке Theme на экране настроек
                 WindowSettingsTheme.Click += delegate
                 {
@@ -1482,6 +1548,7 @@ namespace Butymov.Project2020
                     Canvas.SetTop(ImageThemeIcon, (Height / 2.9));
                     WriteNewDataToFile();
                 };
+                
                 //клик по кнопке Bird на экране настроек
                 WindowSettingsBird.Click += delegate
                 {
@@ -1499,6 +1566,7 @@ namespace Butymov.Project2020
                     Canvas.SetTop(ImageSettingsTheBird, (Height / 12));
                     WriteNewDataToFile();
                 };
+                
                 //клик по кнопке Language на экране настроек
                 WindowSettingsLanguage.Click += delegate
                 {
@@ -1515,9 +1583,9 @@ namespace Butymov.Project2020
                     Canvas.SetLeft(ImageTheFlag, (Width / 2.28));
                     Canvas.SetTop(ImageTheFlag, (Height / 12.3));
                     WriteNewDataToFile();
-
                 };
             }
+            
             //клик по кнопке Play на первом экране
             Window1Play.PreviewMouseLeftButtonDown += Window1PlayClicked;
             void Window1PlayClicked(object sender, MouseButtonEventArgs e)
@@ -1525,6 +1593,7 @@ namespace Butymov.Project2020
                 PlaySound(SoundPlayerButtonClick);
                 RandomizeBasket();
                 Window1Canvas.Children.Clear();
+                
                 //объявление и параметры кнопки Start на втором экране
                 Button Window2Start = new Button();
                 Window2TextBlockStart = new TextBlock();
@@ -1543,6 +1612,7 @@ namespace Butymov.Project2020
                 Window2Start.Margin = new Thickness(ButtonsMargin);
                 Window2Start.Height = ButtonsHeight;
                 Window2Start.Width = ButtonsWidth;
+                
                 //объявление и параметры кнопки Main menu на втором экране
                 Button Window2MainMenu = new Button();
                 Window2TextBlockMainMenu = new TextBlock();
@@ -1561,8 +1631,10 @@ namespace Butymov.Project2020
                 Window2MainMenu.Margin = new Thickness(ButtonsMargin);
                 Window2MainMenu.Height = ButtonsHeight;
                 Window2MainMenu.Width = ButtonsWidth;
+                
                 //объявление StackPanel на втором экране
                 Window2Stack = new StackPanel();
+                
                 //объявление и параметры Grid на втором экране
                 Grid Window2Grid = new Grid();
                 Window2Grid.Margin = new Thickness(WindowGridMargin);
@@ -1576,6 +1648,7 @@ namespace Butymov.Project2020
                 Window2Grid.Children.Add(Window2MainMenu);
                 Grid.SetRow(Window2MainMenu, 0);
                 Grid.SetColumn(Window2MainMenu, 1);
+                
                 //объявление и парметры TextBox для начальной скорости на втором экране
                 Window2InitialVelocity = new TextBox();
                 string Window2InitialVelocityTextBritish = "INITIAL VELOCITY";
@@ -1597,6 +1670,7 @@ namespace Butymov.Project2020
                 Window2Grid.Children.Add(Window2InitialVelocity);
                 Grid.SetRow(Window2InitialVelocity, 1);
                 Grid.SetColumn(Window2InitialVelocity, 0);
+                
                 //объявление и парметры TextBox для угла на втором экране
                 Window2Angle = new TextBox();
                 string Window2AngleTextBritish = "ANGLE";
@@ -1619,6 +1693,7 @@ namespace Butymov.Project2020
                 Grid.SetRow(Window2Angle, 1);
                 Grid.SetColumn(Window2Angle, 1);
                 Window2Stack.Children.Add(Window2Grid);
+                
                 //объявление и параметры Canvas на втором экране
                 Window2Canvas = new Canvas();
                 Window2Canvas.Height = SystemParameters.VirtualScreenHeight;
@@ -1637,6 +1712,7 @@ namespace Butymov.Project2020
                 Canvas.SetLeft(Window2Stack, (Width / 7.4));
                 Canvas.SetTop(Window2Stack, (Height / 4));
                 Content = Window2Canvas;
+                
                 //клик по кнопке Main menu на втором экране
                 Window2MainMenu.PreviewMouseLeftButtonDown += Window2MainMenuClicked;
                 void Window2MainMenuClicked(object sender2, MouseButtonEventArgs e2) //клик по кнопке Main menu
@@ -1648,11 +1724,13 @@ namespace Butymov.Project2020
                     Window1Canvas.Children.Add(Window1Stack);
                     TriesCounter = 0;
                 };
+                
                 //клик по кнопке Start на втором экране
                 Window2Start.PreviewMouseLeftButtonDown += Window2StartClicked;
                 void Window2StartClicked(object sender2, MouseButtonEventArgs e2)
                 {
                     PlaySound(SoundPlayerButtonClick);
+                    
                     //обработка входных данных
                     if (IsDataCorrect(Window2InitialVelocity.Text, Window2Angle.Text) == true)
                     {
@@ -1661,6 +1739,7 @@ namespace Butymov.Project2020
                         Window2Canvas.Children.Clear();
                         MaxHeight = 0;
                         MaxLenght = 0;
+                        
                         //объявление и параметры кнопки Restart на третьем экране
                         Button Window3Restart = new Button();
                         Window3TextBlockRestart = new TextBlock();
@@ -1679,6 +1758,7 @@ namespace Butymov.Project2020
                         Window3Restart.Margin = new Thickness(ButtonsMargin);
                         Window3Restart.Height = ButtonsHeight;
                         Window3Restart.Width = ButtonsWidth;
+                        
                         //объявление и параметры кнопки Back на третьем экране
                         Button Window3Back = new Button();
                         Window3TextBlockBack = new TextBlock();
@@ -1697,6 +1777,7 @@ namespace Butymov.Project2020
                         Window3Back.Margin = new Thickness(ButtonsMargin);
                         Window3Back.Height = ButtonsHeight;
                         Window3Back.Width = ButtonsWidth;
+                        
                         //объявление и параметры кнопки Next на третьем экране
                         Button Window3Next = new Button();
                         Window3TextBlockNext = new TextBlock();
@@ -1715,8 +1796,10 @@ namespace Butymov.Project2020
                         Window3Next.Margin = new Thickness(ButtonsMargin);
                         Window3Next.Height = ButtonsHeight;
                         Window3Next.Width = ButtonsWidth;
+                        
                         //объявление StackPanel на третьем экране
                         Window3Stack = new StackPanel();
+                        
                         //объявление и параметры Grid на третьем экране
                         Grid Window3Grid = new Grid();
                         Window3Grid.Margin = new Thickness(WindowGridMargin);
@@ -1736,6 +1819,7 @@ namespace Butymov.Project2020
                         Window3Stack.Children.Add(Window3Grid);
                         Canvas.SetLeft(Window3Stack, (Width / 16) - (Width / 30));
                         Canvas.SetTop(Window3Stack, (Height / 10));
+                        
                         //клик по кнопке Back на третьем экране
                         Window3Back.Click += delegate
                         {
@@ -1757,6 +1841,7 @@ namespace Butymov.Project2020
                             Canvas.SetTop(ImageBasketVisible, (Height / 1.92));
                             Content = Window2Canvas;
                         };
+                        
                         //клик по кнопке Restart на третьем экране
                         Window3Restart.Click += delegate
                         {
@@ -1783,18 +1868,21 @@ namespace Butymov.Project2020
                         int InitialAngle = System.Convert.ToInt16(Window2Angle.Text);
                         const double Step = 0.1; //или 0.01??
                         const double g = 9.8;
+                        
                         //вычисление координаты X
                         double CalculateXCord(int InitialVelocity, int Angle, double CurrentTime)
                         {
                             double XCord = InitialVelocity * CosTable[Angle] * CurrentTime;
                             return XCord;
                         }
+                        
                         //вычисление координаты Y
                         double CalculateYCord(int InitialVelocity, int Angle, double CurrentTime)
                         {
                             double YCord = (InitialVelocity * SinTable[Angle] * CurrentTime) - ((g * Math.Pow(CurrentTime, 2)) / (2));
                             return YCord;
                         }
+                        
                         //вычисление количества координат 
                         int CalculateNumCoordinates(int InitialVelocity, int Angle)
                         {
@@ -1818,6 +1906,7 @@ namespace Butymov.Project2020
                             }
                             return NumCoordinates;
                         }
+                        
                         //объявление и заполнение массива координат
                         Coordinates = new Point[CalculateNumCoordinates(InitialSpeed, InitialAngle) + 1];
                         double CurrentTimeForPoints = 0;
@@ -1844,11 +1933,13 @@ namespace Butymov.Project2020
                             }
                             CurrentTimeForPoints += Step;
                         }
+                        
                         //объявление и параметры Canvas на 3 окне
                         Window3Canvas = new Canvas();
                         Window3Canvas.Height = SystemParameters.VirtualScreenHeight;
                         Window3Canvas.Width = SystemParameters.VirtualScreenWidth;
                         Content = Window3Canvas;
+                        
                         //объявление и параметры тракетории
                         Trajectory = new Polyline();
                         for (int i = 0; i < Coordinates.Length; i++)
@@ -1867,10 +1958,12 @@ namespace Butymov.Project2020
                         Canvas.SetTop(ImageBasketInvisible, (Height / 1.92));
                         Canvas.SetLeft(ImageBasketVisible, (Width / (-6.81)) + RandomX);
                         Canvas.SetTop(ImageBasketVisible, (Height / 1.92));
+                        
                         //объявление и параметры таймера
                         BirdTimer = new DispatcherTimer();
                         BirdTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
                         BirdTimer.Start();
+                        
                         //функция, описывающая шаг таймера
                         BirdTimer.Tick += delegate
                         {
@@ -1880,7 +1973,8 @@ namespace Butymov.Project2020
                             {
                                 PlaySound(SoundPlayerFalling);
                             }
-                            //по окночанию анимации
+                            
+                            //по окночании анимации
                             if (T == Coordinates.Length)
                             {
                                 Window3Canvas.Children.Remove(ImageTheBird);
@@ -1913,6 +2007,7 @@ namespace Butymov.Project2020
                                 }
                                 Window3Canvas.Children.Add(Window3Stack);
                             }
+                            
                             //клик по кнопке Next на третьем экране
                             Window3Next.Click += Window3NextClicked;
                         };
@@ -1929,6 +2024,7 @@ namespace Butymov.Project2020
                         }
                     }
                 };
+                
                 //обработка входных данных
                 bool IsDataCorrect(string IS, string AN)
                 {
