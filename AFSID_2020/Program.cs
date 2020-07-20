@@ -22,154 +22,125 @@ namespace AFSID_2020
             const double mu2 = 800;  //момент управления средней пробки, Н*м
             const double mu3 = 500;  //момент управления малой пробки, Н*м
 
-            double fi10 = 1;
-            double fi1f = 1;
 
-            double Rf = 1; //должно быть равно единице
-            double deltapsif = 1;
-            double psif = fi1f + deltapsif;
 
-            //углы
-            double O2O1P1 = deltapsif;
-            double ABS_O2P1 = Math.Sqrt(Math.Pow(Rf, 2) + Math.Pow(e2, 2) - 2 * Rf * e2 * Math.Cos(deltapsif));
-            double O1O2P1 = Math.Acos((Math.Pow(Rf, 2) - Math.Pow(e2, 2) - Math.Pow(ABS_O2P1, 2)) / (2 * e2 * ABS_O2P1));
-            double O3O2P1 = Math.Acos((Math.Pow(R3, 2) - Math.Pow(e3, 2) - Math.Pow(ABS_O2P1, 2)) / (2 * e3 * ABS_O2P1));
-            double O2O3P1 = Math.Acos((Math.Pow(ABS_O2P1, 2) - Math.Pow(R3, 2) - Math.Pow(e3, 2)) / (2 * e3 * R3));
-            //нужно изменять
-            double fi1 = 30; //угол поворота большой пробки
-            double fi2 = 30; //угол поворота средней пробки по отношению к большой пробке
-            double fi3 = 30; //угол поворота малой пробки по отношению к средней пробке
-            double m2 = 30;  //масса средней пробки с вырезом
-            double m3 = 30;  //масса малой пробки
-            double a = 30;   //a = |O2 C2|
-            double alpha = 30; //угол(О3 О2 С2)
+            int fi10 = 1;  //начальное значение угла fi1 (большая пробка)
+            int fi20 = 25; //начальное значение угла fi2 (средняя пробка)
+            int fi30 = 25; //начальное значение угла fi3 (малая пробка)
+            double Rf = 1; //Rf < |O1O2| + R2 = e2 + R2 = 0.7 + 1.6 = 2.3
+            double fi1f = 1; //конечное значение угла fi1
+            double deltapsif = 1; //дельта угла psif
+            double psif = fi10 + deltapsif; //угол psif
 
-            Console.Write("O2O1P1 = ");
-            Console.WriteLine(O2O1P1);
-            Console.Write("модуль O2P1 = ");
-            Console.WriteLine(ABS_O2P1);
-            Console.Write("O1O2P1 = ");
-            Console.WriteLine(O1O2P1);
-            Console.Write("O3O2P1 = ");
-            Console.WriteLine(O3O2P1);
-            Console.Write("O2O3P1 = ");
-            Console.WriteLine(O2O3P1);
 
-            
-
-            //производняа по времени
-            double TimeDerivative(double fi)
-            {
-                return 0;
-            }
-
-            //уравнения Лагранжа второго рода
-            /*double u1 = (J1 * TimeDerivative(TimeDerivative(fi1))) + (J2 * (TimeDerivative(TimeDerivative(fi1)) + TimeDerivative(TimeDerivative(fi2)))) + (J3 * (TimeDerivative(TimeDerivative(fi1)) + TimeDerivative(TimeDerivative(fi2)) + TimeDerivative(TimeDerivative(fi3)))) + (m2 * (Math.Pow(e2, 2) * TimeDerivative(TimeDerivative(fi1)) + (e2 * a * Math.Cos(fi2 + alpha) * (2 * TimeDerivative(TimeDerivative(fi1)) + TimeDerivative(TimeDerivative(fi2)))) - (e2 * a * Math.Sin(fi2 + alpha) * (2 * TimeDerivative(fi1) + TimeDerivative(fi2) * TimeDerivative(fi2))))) + (m3 * (Math.Pow(e2, 2) * TimeDerivative(TimeDerivative(fi1)) + Math.Pow(e3, 2) * (TimeDerivative(TimeDerivative(fi1)) + TimeDerivative(TimeDerivative(fi2))) + e2 * e3 * Math.Cos(fi2) * (2 * TimeDerivative(TimeDerivative(fi1)) + TimeDerivative(TimeDerivative(fi2))) - e2 * e3 * Math.Sin(fi2) * (2 * TimeDerivative(fi1) + TimeDerivative(fi2)) * TimeDerivative(fi2)));
-            double u2 = J2 * (TimeDerivative(TimeDerivative(fi1)) + TimeDerivative(TimeDerivative(fi2))) + J3 * (TimeDerivative(TimeDerivative(fi1)) + TimeDerivative(TimeDerivative(fi2)) + TimeDerivative(TimeDerivative(fi3))) + m2 * e2 * a * (Math.Cos(fi2 + alpha) * TimeDerivative(TimeDerivative(fi1)) + Math.Sin(fi2 + alpha) * Math.Pow(TimeDerivative(fi1), 2)) + m3 * (Math.Pow(e3, 2) * (TimeDerivative(TimeDerivative(fi1)) + TimeDerivative(TimeDerivative(fi2))) + e2 * e3 * (Math.Cos(fi2) * TimeDerivative(TimeDerivative(fi1)) + Math.Sin(fi2) * Math.Pow(TimeDerivative(fi1), 2)));
-            double u3 = J3 * (TimeDerivative(TimeDerivative(fi1)) + TimeDerivative(TimeDerivative(fi2)) + TimeDerivative(TimeDerivative(fi3)));
-           
-            Console.Write("u1 = ");
-            Console.WriteLine(u1);
-            Console.Write("u2 = ");
-            Console.WriteLine(u2);
-            Console.Write("u3 = ");
-            Console.WriteLine(u2);*/
-
-            //динамика средней и малой пробок 
-            //fi2 ??? 
-            //fi3 ??? a3 ??? 
-            double a1 = (1) / (J2 + m3 * Math.Pow(e3, 2));
-            double a2 = (J2 + J3 + m3 * Math.Pow(e3, 2)) / (J3 * (J2 + m3 * Math.Pow(e3, 2)));
-
-            double XResult;
-            double FiResult;
-
-            double X(double v)
-            {
-                if (v == 0)
-                {
-                    return 0;
-                }
-                else
-                {
-                    XResult = fi2 + (a1 / a2 * fi3);
-                    return XResult;
-                }
-            }
-
-            double Fi(double f)
-            {
-                if (f == 0)
-                {
-                    return 0;
-                }
-                else
-                {
-                    FiResult = fi2 + fi3;
-                    return FiResult;
-                }
-            }
+            double m1 = 142000;      //масса большой пробки, кг
+            double m2 = 81000;       //масса средней пробки с вырезом, кг
+            double m3 = 40000;       //масса малой пробки, кг
+            double a = 1 / (3 * R2); //a = |O2 C2|
+            double alpha = 0;        //угол(О3 О2 С2)
 
             double u1;
             double u2;
+            double u3;
 
-            
-            double fi20 = 1;
-            double fi2f = Math.PI - O1O2P1 - O3O2P1;
-            double fi30 = 1;
-            double fi3f = Math.PI - O2O3P1;
-            double t = 20;
-            double deltafi = fi2f + fi3f - fi20 - fi30;
-
-            
-
-            
+            double t = 0; 
 
             double V1 = 1; //оптимальное время разворота в первом случае
             double V2 = 1; //оптимальное время разворота во втором случае
-            double V1_X = 1;
-            double V2_X = 1;
-            double V = 1;
-            double deltaX = fi1f + (a1 * fi2f / a2) - fi10 - (a1 * fi20 / a2);
-            
 
-            if ((a2 * Math.Abs(deltaX)) >= (mu1 * a1 * deltafi / mu2))
+            double V = 1;
+            double fi2f = 0;
+            double fi3f = 0;
+            double TMin = 0; //минимальное суммарное время, необходимое на перемещение
+
+            //задаем значения сами 
+            double fi1 = 0; //угол поворота большой пробки
+            double fi2 = 0; //угол поворота средней пробки по отношению к большой пробке
+            double fi3 = 0; //угол поворота малой пробки по отношению к средней пробке
+
+
+            double a1 = (1) / (J2 + m3 * Math.Pow(e3, 2));
+            double a2 = (J2 + J3 + m3 * Math.Pow(e3, 2)) / (J3 * (J2 + m3 * Math.Pow(e3, 2)));
+
+            double deltaX = 0;
+            double deltafi = 0;
+            for (double i = fi2; i < 360 - fi2; i++) //цикл по fi2
             {
-                Console.WriteLine("Больше");
-                V1 = 2 * Math.Sqrt((a2 * Math.Abs(X(V1_X) - X(0))) / (a1 * mu1 * (a2 - a1)));
-                u1 = mu1 * Math.Sign(X(V1_X) - X(0)) * Math.Sign(V1 / 2 - t);
-                u2 = (4 * deltafi) / ((a1 - a2) * Math.Pow(V1, 2)) * (Math.Sign(V1 / 2 - t));
-                Console.Write("V1 = ");
-                Console.WriteLine(V1);
-                Console.Write("u1 = ");
-                Console.WriteLine(u1);
-                Console.Write("u2 = ");
-                Console.WriteLine(u2);
-            }
-            else if ((a2 * Math.Abs(deltaX)) <= (mu1 * a1 * deltafi / mu2))
-            {
-                Console.WriteLine("Меньше");
-                V2 = 2 * Math.Sqrt((Math.Abs(Fi(V) - Fi(0)) / (mu2 * (a2 - a1))));
-            }
-            
+
+                //углы
+                //double O2O1P1 = deltapsif;
+                //double ABS_O2P1 = Math.Sqrt(Math.Pow(Rf, 2) + Math.Pow(e2, 2) - 2 * Rf * e2 * Math.Cos(deltapsif));
+                double ABS_O2P1_POW2 = Math.Pow(Rf * Math.Cos(psif) - e2 * Math.Cos(fi10), 2) + Math.Pow(Rf * Math.Sin(psif) - e2 * Math.Sin(fi10), 2);
+                double O1O2P1 = Math.Acos((Math.Pow(Rf, 2) - Math.Pow(e2, 2) - ABS_O2P1_POW2) / (2 * e2 * Math.Sqrt(ABS_O2P1_POW2)));
+                double O3O2P1 = Math.Acos((Math.Pow(R3, 2) - Math.Pow(e3, 2) - ABS_O2P1_POW2) / (2 * e3 * Math.Sqrt(ABS_O2P1_POW2)));
+                double O2O3P1 = Math.Acos((ABS_O2P1_POW2 - Math.Pow(R3, 2) - Math.Pow(e3, 2)) / (2 * e3 * R3));
+
+
+
+
+                fi2f = Math.PI - O1O2P1 - O3O2P1; //конечное значение угла fi2
+                fi3f = Math.PI - O2O3P1; //конечное значение угла fi3
+
+                
+                
+
+                deltafi = fi2f + fi3f - fi20 - fi30; //дельта fi
+                deltaX = fi2f + a1 / a2 * fi3f - fi20 - a1 / a2 * fi30; //дельта Хи
+
+
+                if ((a2 * Math.Abs(deltaX)) >= (mu1 * a1 * deltafi / mu2))
+                {
+                    Console.WriteLine("Больше");
+                    V1 = 2 * Math.Sqrt((a2 * Math.Abs(deltaX)) / (a1 * mu1 * (a2 - a1)));
+                    u2 = mu1 * Math.Sign(deltaX) * Math.Sign(V1 / 2 - t);
+                    u3 = (4 * deltafi) / ((a1 - a2) * Math.Pow(V1, 2)) * (Math.Sign(V1 / 2 - t));
+
+                }
+                else if ((a2 * Math.Abs(deltaX)) <= (mu1 * a1 * deltafi / mu2))
+                {
+                    Console.WriteLine("Меньше");
+                    V2 = 2 * Math.Sqrt((Math.Abs(deltafi) / (mu2 * (a2 - a1))));
+                }
+            } //конец цикла по fi2
+
+
+
+
+
+
+
+            //ВТОРАЯ ЧАСТЬ
 
             double J1Star = J1 + J2 + J3 + m2 * Math.Pow(e2, 2) + 2 * e2 * a * Math.Cos(fi2 + alpha) + m3 * (Math.Pow(e2, 2) + Math.Pow(e3, 2) + 2 * e2 * e3 * Math.Cos(fi2));
-            double deltafi1 = 10; //нет знаечния
+            double deltafi1 = 10; //нет знаечния //угол(P1 O1 Qf)
             double V3 = 2 * Math.Sqrt(J1Star / mu1 * Math.Abs(deltafi1));
-            double T; //суммарное время, необходимое на перемещение
+            double T = 0; //суммарное время, необходимое на перемещение
+                    
             if ((a2 * Math.Abs(deltaX)) >= (mu1 * a1 * deltafi / mu2))
-            {
-                Console.WriteLine("Больше");
-                T = V1 + V3;
-                Console.Write("T = ");
-                Console.WriteLine(T);
+            {          
+                 Console.WriteLine("Больше");
+                 T = V1 + V3;
+                
+                /*Console.Write("T = ");
+                Console.WriteLine(T);*/
             }
             else if ((a2 * Math.Abs(deltaX)) <= (mu1 * a1 * deltafi / mu2))
             {
-                Console.WriteLine("Меньше");
-                T = V2 + V3;
-                Console.Write("T = ");
-                Console.WriteLine(T);
+                 Console.WriteLine("Меньше");
+                 T = V2 + V3;
+                 /*Console.Write("T = ");
+                 Console.WriteLine(T);*/
+            }
+            for (int i = 0; i < 360; i++)
+            {
+                //координаты точек M и N
+                double x = Rf * Math.Cos(i); //i = гамма i-тое
+                double y = Rf * Math.Sin(i);
+                //уравнение окружности радиуса R2 с центром в точке O2
+                double R22 = Math.Pow(x - e2 * Math.Cos(fi1f), 2) + Math.Pow(y - e2 * Math.Sin(fi1f), 2);
+                
+                double gamma1 = fi1f + Math.Acos((Math.Pow(Rf, 2) + Math.Pow(e2, 2) - R22) / (2 * Math.Pow(e2, 2) * Rf));
+                double gamma2 = fi1f - Math.Acos((Math.Pow(Rf, 2) + Math.Pow(e2, 2) - R22) / (2 * Math.Pow(e2, 2) * Rf));
             }
         }
     }
