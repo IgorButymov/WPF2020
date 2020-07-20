@@ -1,0 +1,7 @@
+C:\Users\pc\source\repos\AFSID_2020\bin\Debug\AFSID_2020.exe.config
+C:\Users\pc\source\repos\AFSID_2020\bin\Debug\AFSID_2020.exe
+C:\Users\pc\source\repos\AFSID_2020\bin\Debug\AFSID_2020.pdb
+C:\Users\pc\source\repos\AFSID_2020\obj\Debug\AFSID_2020.csprojAssemblyReference.cache
+C:\Users\pc\source\repos\AFSID_2020\obj\Debug\AFSID_2020.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\AFSID_2020\obj\Debug\AFSID_2020.exe
+C:\Users\pc\source\repos\AFSID_2020\obj\Debug\AFSID_2020.pdb
